@@ -24,11 +24,11 @@ func main() {
 	//worker信号通道
 	doneSignal := make(chan struct{}, 10)
 
-	//初始化task的goroutine，计算100个自然数之和
+	//初始化task的goroutine，计算101个自然数之和
 	go InitTask(taskChan, resultChan, 101)
 
 	//分发任务到NUMBER个goroutine池中
-	DistributeTask(taskChan, workers, doneSignal)
+	go DistributeTask(taskChan, workers, doneSignal)
 
 	//获取各个goroutine处理完任务的通知，并关闭结果通道
 	go CloseResult(doneSignal, resultChan, workers)
@@ -53,6 +53,7 @@ func (t *task) do() {
 
 //初始化待处理task chan
 func InitTask(taskchan chan<- task, r chan<- int, num int) {
+
 	qu := num / 10
 	mod := num % 10
 	high := qu * 10
@@ -66,7 +67,7 @@ func InitTask(taskchan chan<- task, r chan<- int, num int) {
 			end:    e,
 			result: r,
 		}
-		fmt.Println(b, e)
+		//fmt.Println(b, e)
 		//将单个分组的范围任务发送给taskchan
 		taskchan <- tsk
 	}
@@ -77,27 +78,30 @@ func InitTask(taskchan chan<- task, r chan<- int, num int) {
 			end:    num,
 			result: r,
 		}
-		fmt.Println(high+1, num)
+		//fmt.Println(high+1, num)
 		taskchan <- tsk
 	}
 
-	//初始化完成 关闭channel
+	// 关闭channel
 	close(taskchan)
 }
 
 //读取task chan ，并分发到worker goroutine处理，总的数量是workers
 func DistributeTask(taskchan <-chan task, workers int, done chan<- struct{}) {
+
 	for i := 0; i < workers; i++ {
 		go ProcessTask(taskchan, done)
 	}
+
 }
 
 //工作goroutine处理具体任务工作，并将处理结果发送到结果chan中
 func ProcessTask(taskchan <-chan task, done chan<- struct{}) {
-	for t := range taskchan {
 
+	for t := range taskchan {
 		t.do()
 	}
+
 	//发送计算完成信号
 	done <- struct{}{}
 }
