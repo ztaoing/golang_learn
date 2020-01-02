@@ -15,6 +15,7 @@ func main() {
 	ch <- 88
 
 	//关闭缓冲通道
+	//如果不关闭ch，会造成死锁:fatal error: all goroutines are asleep - deadlock!
 	close(ch)
 
 	//遍历缓冲中的数据
