@@ -23,7 +23,7 @@ func do(f Op, a, b int) int {
 }
 
 func main() {
-	//函数名add可以当做相同函数类型形参，不需要强制类型转换
+	//函数名add可以当做相同函数类型形参，不 需要强制类型转换
 	a := do(add, 1, 2)
 	fmt.Println(a)              //结果为：3
 	fmt.Printf("函数类型为：%T\n", a) //函数类型为：int
