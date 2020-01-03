@@ -1,2 +1,2 @@
 # golang_learn
-golang 学习笔记
+只争朝夕，不负韶华!
