@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /**
 考点：iota
 */
