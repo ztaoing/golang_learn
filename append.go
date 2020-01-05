@@ -4,7 +4,8 @@ import "fmt"
 
 func main() {
 	x := make([]int, 4, 4)
-	x1 := append(x, 1) // len(x) = 5
+	x1 := append(x, 1)
+
 	fmt.Printf("x1长度为：%d\n", len(x1))
 	for i, v := range x1 {
 		fmt.Printf("x1[%d]=[%d]\n", i, v)
@@ -18,6 +19,7 @@ func main() {
 	x1[3]=[0]
 	x1[4]=[1]
 	*/
+
 	fmt.Printf("x长度为：%d\n", len(x))
 	for i, v := range x {
 		fmt.Printf("x[%d]=[%d]\n", i, v)
