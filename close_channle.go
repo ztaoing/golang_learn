@@ -29,5 +29,7 @@ func main() {
 /**结果
 22 true
 88 true
-0 false 此时通道中已经没有数据，所以获取失败，并且没有发生阻塞
+0 false  close channel后，此时通道中已经没有数据，所以获取失败，并且没有发生阻塞
+
+如果没有 close channel ，从channel中取出两个值后（所有值），从channel中读取，此时主goroutine会被阻塞，并且形成死锁
 */
