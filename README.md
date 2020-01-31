@@ -48,6 +48,7 @@
 
 # 【defer】
 * [Golang之轻松化解defer的温柔陷阱](https://zhuanlan.zhihu.com/p/56557423)
+* [defer](https://draveness.me/golang/docs/part2-foundation/ch05-keyword/golang-defer/)
 
 # 【interface】
 * [深度解密Go语言之关于 interface 的10个问题](https://zhuanlan.zhihu.com/p/63649977)
@@ -68,3 +69,10 @@
 # 【select】
 * [Golang并发模型：轻松入门select](http://lessisbetter.site/2018/12/13/golang-slect/)
 * [Golang并发模型：select进阶](http://lessisbetter.site/2018/12/17/golang-selete-advance/)
+* [select](https://draveness.me/golang/docs/part2-foundation/ch05-keyword/golang-select/)
+
+#【make & new】
+* [make 和 new](https://draveness.me/golang/docs/part2-foundation/ch05-keyword/golang-make-and-new/)
+
+# 【etcd】
+* [高可用分布式存储 etcd 的实现原理](https://draveness.me/etcd-introduction)
