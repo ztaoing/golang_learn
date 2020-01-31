@@ -8,3 +8,6 @@
 * 《Go语言编程》-许式伟
 * 《Go程序设计语言》-译本
 * 《Go语言学习笔记》-雨痕
+
+【channel】
+深度解密Go语言之channel https://zhuanlan.zhihu.com/p/74613114
