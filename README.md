@@ -11,6 +11,7 @@
 
 # 【channel】
 * [深度解密Go语言之channel ](https://zhuanlan.zhihu.com/p/74613114)
+* [Golang并发：再也不愁选channel还是选锁](http://lessisbetter.site/2019/01/14/golang-channel-and-mutex/)
 
 # 【context】
 * [深度解密Go语言之context](https://zhuanlan.zhihu.com/p/68792989)
@@ -53,3 +54,17 @@
 
 # 【编译-链接-运行】
 * [Go 程序是怎样跑起来的](https://zhuanlan.zhihu.com/p/71993748)
+
+# 【内存泄漏】
+* [一起 goroutine 泄漏问题的排查](https://zhuanlan.zhihu.com/p/100740270)
+* [实战Go内存泄露](http://lessisbetter.site/2019/05/18/go-goroutine-leak/)
+
+# 【runtime】
+* [万字长文深入浅出 Golang Runtime](https://zhuanlan.zhihu.com/p/95056679)
+
+# 【sync】
+* [Golang并发的次优选择：sync包](http://lessisbetter.site/2019/01/04/golang-pkg-sync/)
+
+# 【select】
+* [Golang并发模型：轻松入门select](http://lessisbetter.site/2018/12/13/golang-slect/)
+* [Golang并发模型：select进阶](http://lessisbetter.site/2018/12/17/golang-selete-advance/)
