@@ -9,70 +9,111 @@
 * 《Go程序设计语言》-译本
 * 《Go语言学习笔记》-雨痕
 
-# 【channel】
+-------
+    etcd
+* [高可用分布式存储 etcd 的实现原理](https://draveness.me/etcd-introduction)
+
+-------
+    channel
 * [深度解密Go语言之channel ](https://zhuanlan.zhihu.com/p/74613114)
 * [Golang并发：再也不愁选channel还是选锁](http://lessisbetter.site/2019/01/14/golang-channel-and-mutex/)
-
-# 【context】
+* [channel-draveness](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-channel/)
+-------
+    context
 * [深度解密Go语言之context](https://zhuanlan.zhihu.com/p/68792989)
+* [上下文context](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-context/)
 
-# 【map】
+-------
+    map
 * [深度解密Go语言之 map](https://zhuanlan.zhihu.com/p/66676224)
 
-# 【scheduler】
+-------
+    scheduler
 * [深度解密Go语言之 scheduler](https://zhuanlan.zhihu.com/p/80853548)
+* [调度器-draveness](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-goroutine/)
 
-# 【error】
+-------
+    error
 * [Golang error 的突围](https://zhuanlan.zhihu.com/p/82985617)
 
-# 【pprof】
+-------
+    pprof
 * [深度解密Go语言之 pprof](https://zhuanlan.zhihu.com/p/91241270)
 
-# 【内存重排】
+-------
+    内存重排
 * [曹大谈内存重排](https://zhuanlan.zhihu.com/p/69414216)
 
-# 【unsafe】
+-------
+    unsafe
 * [深度解密Go语言之unsafe](https://zhuanlan.zhihu.com/p/67852800)
 
-# 【reflect】
+-------
+    reflect
 * [深度解密Go语言之反射](https://zhuanlan.zhihu.com/p/64884660)
+* [反射-dravness](https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-reflect/)
 
-# 【slice】
+-------
+    slice
 * [深度解密Go语言之Slice](https://zhuanlan.zhihu.com/p/61121325)
 
-# 【内存分配】
+-------
+    内存分配
 * [图解Go语言内存分配](https://zhuanlan.zhihu.com/p/59125443)
 
-# 【逃逸分析：栈与堆】
+-------
+    逃逸分析：栈与堆
 * [Golang之变量去哪儿？](https://zhuanlan.zhihu.com/p/58065429)
 
-# 【defer】
+-------
+    defer
 * [Golang之轻松化解defer的温柔陷阱](https://zhuanlan.zhihu.com/p/56557423)
-* [defer](https://draveness.me/golang/docs/part2-foundation/ch05-keyword/golang-defer/)
+* [defer-draveness](https://draveness.me/golang/docs/part2-foundation/ch05-keyword/golang-defer/)
 
-# 【interface】
+-------
+    interface
 * [深度解密Go语言之关于 interface 的10个问题](https://zhuanlan.zhihu.com/p/63649977)
+* [接口-draveness](https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-interface/)
 
-# 【编译-链接-运行】
+-------
+    编译-链接-运行
 * [Go 程序是怎样跑起来的](https://zhuanlan.zhihu.com/p/71993748)
 
-# 【内存泄漏】
+-------
+    内存泄漏
 * [一起 goroutine 泄漏问题的排查](https://zhuanlan.zhihu.com/p/100740270)
 * [实战Go内存泄露](http://lessisbetter.site/2019/05/18/go-goroutine-leak/)
 
-# 【runtime】
+-------
+    runtime
 * [万字长文深入浅出 Golang Runtime](https://zhuanlan.zhihu.com/p/95056679)
 
-# 【sync】
+-------
+    sync
 * [Golang并发的次优选择：sync包](http://lessisbetter.site/2019/01/04/golang-pkg-sync/)
 
-# 【select】
+-------
+    select
 * [Golang并发模型：轻松入门select](http://lessisbetter.site/2018/12/13/golang-slect/)
 * [Golang并发模型：select进阶](http://lessisbetter.site/2018/12/17/golang-selete-advance/)
 * [select](https://draveness.me/golang/docs/part2-foundation/ch05-keyword/golang-select/)
 
-#【make & new】
+-------
+    make  new
 * [make 和 new](https://draveness.me/golang/docs/part2-foundation/ch05-keyword/golang-make-and-new/)
 
-# 【etcd】
-* [高可用分布式存储 etcd 的实现原理](https://draveness.me/etcd-introduction)
+------
+    time
+* [定时器-draveness](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-timer/)
+
+-------
+    函数
+* [函数调用-draveness](https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-function-call/)
+
+-------
+    array
+* [数组-draveness](https://draveness.me/golang/docs/part2-foundation/ch03-datastructure/golang-array/)
+
+-------
+    slice
+* [slice-draveness](https://draveness.me/golang/docs/part2-foundation/ch03-datastructure/golang-array-and-slice/)
