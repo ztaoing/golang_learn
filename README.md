@@ -26,6 +26,7 @@
 -------
     map
 * [深度解密Go语言之 map](https://zhuanlan.zhihu.com/p/66676224)
+* [map并发崩溃一例(非线程安全)(曹大)](https://xargin.com/map-concurrent-throw/)
 
 -------
     scheduler
@@ -83,7 +84,7 @@
     内存泄漏
 * [一起 goroutine 泄漏问题的排查](https://zhuanlan.zhihu.com/p/100740270)
 * [实战Go内存泄露](http://lessisbetter.site/2019/05/18/go-goroutine-leak/)
-
+* [slice类型内存泄漏的逻辑(曹大)](https://xargin.com/logic-of-slice-memory-leak/)
 -------
     runtime
 * [万字长文深入浅出 Golang Runtime](https://zhuanlan.zhihu.com/p/95056679)
@@ -117,3 +118,11 @@
 -------
     slice
 * [slice-draveness](https://draveness.me/golang/docs/part2-foundation/ch03-datastructure/golang-array-and-slice/)
+
+-------
+    struct
+* [一个空struct的坑（曹大）](https://xargin.com/addr-of-empty-struct-may-not-eq/)
+
+-------
+    MPG
+* [为什么 Go 模块在下游服务抖动恢复后，CPU 占用无法恢复(曹大)](https://xargin.com/cpu-idle-cannot-recover-after-peak-load/)
