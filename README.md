@@ -126,3 +126,7 @@
 -------
     MPG
 * [为什么 Go 模块在下游服务抖动恢复后，CPU 占用无法恢复(曹大)](https://xargin.com/cpu-idle-cannot-recover-after-peak-load/)
+
+-------
+    gomaxprocs
+* [golang gomaxprocs调高引起调度性能损耗](http://xiaorui.cc/2020/01/11/golang-gomaxprocs%e8%b0%83%e9%ab%98%e5%bc%95%e8%b5%b7%e8%b0%83%e5%ba%a6%e6%80%a7%e8%83%bd%e6%8d%9f%e8%80%97/)
