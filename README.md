@@ -10,9 +10,12 @@
 * 《Go语言学习笔记》-雨痕
 
 -------
+    分布式锁：
     etcd
+    redis redlock
+    consul
 * [高可用分布式存储 etcd 的实现原理](https://draveness.me/etcd-introduction)
-
+* [源码分析golang consul分布式锁lock delay问题](http://xiaorui.cc/2019/05/19/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90golang-consul%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81lock-delay%E9%97%AE%E9%A2%98/)
 -------
     channel
 * [深度解密Go语言之channel ](https://zhuanlan.zhihu.com/p/74613114)
@@ -138,3 +141,19 @@
     grpc
     
 * [golang grpc网关使用连接池提吞吐量](http://xiaorui.cc/2019/08/13/golang-grpc%e7%bd%91%e5%85%b3%e7%94%a8%e8%bf%9e%e6%8e%a5%e6%b1%a0%e6%8f%90%e9%ab%98%e5%90%9e%e5%90%90%e9%87%8f/)
+
+-------
+    goroutine池
+* [使用golang协程池控制并发请求](http://xiaorui.cc/2019/05/24/%e4%bd%bf%e7%94%a8golang%e5%8d%8f%e7%a8%8b%e6%b1%a0%e6%8e%a7%e5%88%b6%e5%b9%b6%e5%8f%91%e8%af%b7%e6%b1%82/)
+
+-------
+    http
+* [源码解析http shutdown优雅退出的原理](http://xiaorui.cc/?p=5803)
+-------
+    Grpc protobuf
+* [Grpc protobuf的动态加载及类型反射实战](http://xiaorui.cc/2019/04/01/grpc-protobuf%e7%9a%84%e5%8a%a8%e6%80%81%e5%8a%a0%e8%bd%bd%e5%8f%8a%e7%b1%bb%e5%9e%8b%e5%8f%8d%e5%b0%84%e5%ae%9e%e6%88%98/)
+* [深入 ProtoBuf - 简介](https://www.jianshu.com/p/a24c88c0526a)
+
+-------
+    database/sql
+* [分析golang sql连接池大量的time wait问题](http://xiaorui.cc/?p=5771)
