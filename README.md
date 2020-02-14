@@ -34,6 +34,7 @@
 * [使用golang协程池控制并发请求](http://xiaorui.cc/2019/05/24/%e4%bd%bf%e7%94%a8golang%e5%8d%8f%e7%a8%8b%e6%b1%a0%e6%8e%a7%e5%88%b6%e5%b9%b6%e5%8f%91%e8%af%b7%e6%b1%82/)
 * [golang通用自定义连接池的实现](http://xiaorui.cc/?p=5434)
 * [解决golang redis连接池的io异常BUG?](http://xiaorui.cc/?p=5513)
+* [深入研究golang net/http连接池可用性](http://xiaorui.cc/?p=5056)
 
 -------
     channel
@@ -47,6 +48,8 @@
 * [golang多场景下RwMutex和mutex锁性能对比](http://xiaorui.cc/?p=5611)
 * [golang log日志里为什么需要加锁?](http://xiaorui.cc/?p=5195)
 * [通过golang goroutine stack分析死锁问题](http://xiaorui.cc/?p=5160)
+* [扩展golang的sync mutex的trylock及islocked](http://xiaorui.cc/?p=5084)
+* [golang新版如何优化sync.pool锁竞争消耗？](http://xiaorui.cc/?p=5878﻿)
 
 -------
     context
@@ -114,6 +117,7 @@
 
     sync
 * [Golang并发的次优选择：sync包](http://lessisbetter.site/2019/01/04/golang-pkg-sync/)
+* [golang新版如何优化sync.pool锁竞争消耗？](http://xiaorui.cc/?p=5878﻿)
 
 -------
     select
@@ -171,6 +175,7 @@
 -------
     http
 * [源码解析http shutdown优雅退出的原理](http://xiaorui.cc/?p=5803)
+
 -------
     Grpc protobuf
 * [Grpc protobuf的动态加载及类型反射实战](http://xiaorui.cc/2019/04/01/grpc-protobuf%e7%9a%84%e5%8a%a8%e6%80%81%e5%8a%a0%e8%bd%bd%e5%8f%8a%e7%b1%bb%e5%9e%8b%e5%8f%8d%e5%b0%84%e5%ae%9e%e6%88%98/)
