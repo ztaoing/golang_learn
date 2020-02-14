@@ -27,6 +27,7 @@
 * [实战Go内存泄露](http://lessisbetter.site/2019/05/18/go-goroutine-leak/)
 * [slice类型内存泄漏的逻辑(曹大)](https://xargin.com/logic-of-slice-memory-leak/)
 * [分析golang time.After引起内存暴增OOM问题](http://xiaorui.cc/?p=5745)
+* [探究golang的channel和map内存释放问题](http://xiaorui.cc/?p=5450)
 
 -------
     channel
@@ -41,6 +42,7 @@
     context
 * [深度解密Go语言之context](https://zhuanlan.zhihu.com/p/68792989)
 * [上下文context](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-context/)
+* [源码分析context的超时及关闭实现](http://xiaorui.cc/?p=5604)
 
 -------
     map
@@ -59,6 +61,7 @@
 -------
     pprof
 * [深度解密Go语言之 pprof](https://zhuanlan.zhihu.com/p/91241270)
+* [golang pprof分析net/http的性能瓶颈](http://xiaorui.cc/?p=5577)
 
 -------
     内存重排
@@ -153,8 +156,9 @@
 * [golang grpc网关使用连接池提吞吐量](http://xiaorui.cc/2019/08/13/golang-grpc%e7%bd%91%e5%85%b3%e7%94%a8%e8%bf%9e%e6%8e%a5%e6%b1%a0%e6%8f%90%e9%ab%98%e5%90%9e%e5%90%90%e9%87%8f/)
 
 -------
-    goroutine池
+    连接池
 * [使用golang协程池控制并发请求](http://xiaorui.cc/2019/05/24/%e4%bd%bf%e7%94%a8golang%e5%8d%8f%e7%a8%8b%e6%b1%a0%e6%8e%a7%e5%88%b6%e5%b9%b6%e5%8f%91%e8%af%b7%e6%b1%82/)
+* [golang通用自定义连接池的实现](http://xiaorui.cc/?p=5434)
 
 -------
     http
