@@ -45,6 +45,9 @@
 -------
     锁🔐
 * [golang多场景下RwMutex和mutex锁性能对比](http://xiaorui.cc/?p=5611)
+* [golang log日志里为什么需要加锁?](http://xiaorui.cc/?p=5195)
+* [通过golang goroutine stack分析死锁问题](http://xiaorui.cc/?p=5160)
+
 -------
     context
 * [深度解密Go语言之context](https://zhuanlan.zhihu.com/p/68792989)
@@ -60,6 +63,7 @@
     scheduler
 * [深度解密Go语言之 scheduler](https://zhuanlan.zhihu.com/p/80853548)
 * [调度器-draveness](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-goroutine/)
+* [golang密集场景下协程调度饥饿问题](http://xiaorui.cc/?p=5251)
 
 -------
     error
@@ -127,6 +131,7 @@
 * [完全兼容golang定时器的高性能时间轮实现(go-timewheel)](http://xiaorui.cc/2019/09/27/%e5%85%bc%e5%ae%b9golang-time%e5%ae%9a%e6%97%b6%e5%99%a8%e7%9a%84%e6%97%b6%e9%97%b4%e8%bd%ae%e5%ae%9e%e7%8e%b0/)
 * [源码分析go time.timer和ticker的stop问题](http://xiaorui.cc/2019/09/09/%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90go-time-timer%e5%92%8cticker%e7%9a%84stop%e9%97%ae%e9%a2%98/)
 * [分析golang time.After引起内存暴增OOM问题](http://xiaorui.cc/?p=5745)
+* [分析golang定时器CPU使用率高的现象](http://xiaorui.cc/?p=5117)
 
 -------
     函数
