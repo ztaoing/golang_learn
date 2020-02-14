@@ -35,7 +35,7 @@
 * [golang通用自定义连接池的实现](http://xiaorui.cc/?p=5434)
 * [解决golang redis连接池的io异常BUG?](http://xiaorui.cc/?p=5513)
 * [深入研究golang net/http连接池可用性](http://xiaorui.cc/?p=5056)
-
+* [golang grpc网关使用连接池提吞吐量](http://xiaorui.cc/2019/08/13/golang-grpc%e7%bd%91%e5%85%b3%e7%94%a8%e8%bf%9e%e6%8e%a5%e6%b1%a0%e6%8f%90%e9%ab%98%e5%90%9e%e5%90%90%e9%87%8f/)
 -------
     channel
 * [深度解密Go语言之channel ](https://zhuanlan.zhihu.com/p/74613114)
