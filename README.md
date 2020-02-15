@@ -16,6 +16,7 @@
     consul
 * [高可用分布式存储 etcd 的实现原理](https://draveness.me/etcd-introduction)
 * [源码分析golang consul分布式锁lock delay问题](http://xiaorui.cc/2019/05/19/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90golang-consul%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81lock-delay%E9%97%AE%E9%A2%98/)
+* [分布式一致性raft算法实现原理](http://xiaorui.cc/2016/07/08/%e6%8a%80%e6%9c%af%e5%88%86%e4%ba%ab-%e3%80%8a%e5%88%86%e5%b8%83%e5%bc%8f%e4%b8%80%e8%87%b4%e6%80%a7%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e5%8e%9f%e7%90%86%e3%80%8b/)
 
 -------
     内存分配
@@ -36,6 +37,7 @@
 * [解决golang redis连接池的io异常BUG?](http://xiaorui.cc/?p=5513)
 * [深入研究golang net/http连接池可用性](http://xiaorui.cc/?p=5056)
 * [golang grpc网关使用连接池提吞吐量](http://xiaorui.cc/2019/08/13/golang-grpc%e7%bd%91%e5%85%b3%e7%94%a8%e8%bf%9e%e6%8e%a5%e6%b1%a0%e6%8f%90%e9%ab%98%e5%90%9e%e5%90%90%e9%87%8f/)
+
 -------
     channel
 * [深度解密Go语言之channel ](https://zhuanlan.zhihu.com/p/74613114)
@@ -156,7 +158,7 @@
 -------
     MPG
 * [为什么 Go 模块在下游服务抖动恢复后，CPU 占用无法恢复(曹大)](https://xargin.com/cpu-idle-cannot-recover-after-peak-load/)
-
+* [disk io引起golang线程数暴涨的问题](http://xiaorui.cc/?p=5171)
 -------
     gomaxprocs
 * [golang gomaxprocs调高引起调度性能损耗](http://xiaorui.cc/2020/01/11/golang-gomaxprocs%e8%b0%83%e9%ab%98%e5%bc%95%e8%b5%b7%e8%b0%83%e5%ba%a6%e6%80%a7%e8%83%bd%e6%8d%9f%e8%80%97/)
