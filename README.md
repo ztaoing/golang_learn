@@ -143,10 +143,14 @@
 * [源码分析go time.timer和ticker的stop问题](http://xiaorui.cc/2019/09/09/%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90go-time-timer%e5%92%8cticker%e7%9a%84stop%e9%97%ae%e9%a2%98/)
 * [分析golang time.After引起内存暴增OOM问题](http://xiaorui.cc/?p=5745)
 * [分析golang定时器CPU使用率高的现象](http://xiaorui.cc/?p=5117)
+* [golang随机time.sleep的Duration问题](http://xiaorui.cc/?p=3034)
 
 -------
     函数
 * [函数调用-draveness](https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-function-call/)
+
+-------
+* [关于golang的panic recover异常错误处理](http://xiaorui.cc/?p=2909)
 
 -------
     array
@@ -200,6 +204,7 @@
 -------
     log
 * [Golang logrus的高级配置(hook, logrotate)]( http://xiaorui.cc/?p=4963)
+* [使用golang log库包实现日志文件输出](http://xiaorui.cc/?p=2972)
 
 -------
     crontab
@@ -213,3 +218,11 @@
 -------
     redis
 * [Golang使用redigo实现redis的分布式锁](http://xiaorui.cc/?p=3028)
+* [Golang使用redis protocol实现pubsub通信](http://xiaorui.cc/?p=4847)
+* [golang基于redis lua封装的优先级去重队列](http://xiaorui.cc/?p=4828)
+* [Golang基于redis实现的分布式信号量(semaphore)](http://xiaorui.cc/?p=4822)
+* [golang redigo lua解决性能问题]( http://xiaorui.cc/?p=4737)
+
+-------
+    粘包
+* [解决golang开发socket服务时粘包半包bug](http://xiaorui.cc/?p=2888)
