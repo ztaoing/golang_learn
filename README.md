@@ -17,7 +17,7 @@
 * [高可用分布式存储 etcd 的实现原理](https://draveness.me/etcd-introduction)
 * [源码分析golang consul分布式锁lock delay问题](http://xiaorui.cc/2019/05/19/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90golang-consul%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81lock-delay%E9%97%AE%E9%A2%98/)
 * [分布式一致性raft算法实现原理](http://xiaorui.cc/2016/07/08/%e6%8a%80%e6%9c%af%e5%88%86%e4%ba%ab-%e3%80%8a%e5%88%86%e5%b8%83%e5%bc%8f%e4%b8%80%e8%87%b4%e6%80%a7%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e5%8e%9f%e7%90%86%e3%80%8b/)
-
+* [Golang使用redigo实现redis的分布式锁](http://xiaorui.cc/?p=3028)
 -------
     内存分配
 * [图解Go语言内存分配](https://zhuanlan.zhihu.com/p/59125443)
@@ -78,6 +78,7 @@
     pprof
 * [深度解密Go语言之 pprof](https://zhuanlan.zhihu.com/p/91241270)
 * [golang pprof分析net/http的性能瓶颈](http://xiaorui.cc/?p=5577)
+* [通过火焰图排查golang json的性能问题](http://xiaorui.cc/?p=5108)
 
 -------
     内存重排
@@ -120,12 +121,15 @@
     sync
 * [Golang并发的次优选择：sync包](http://lessisbetter.site/2019/01/04/golang-pkg-sync/)
 * [golang新版如何优化sync.pool锁竞争消耗？](http://xiaorui.cc/?p=5878﻿)
+* [go sync.pool []byte导致grpc解包异常](http://xiaorui.cc/?p=5969)
+* [扩展go sync.map的length和delete方法](http://xiaorui.cc/?p=4972)
 
 -------
     select
 * [Golang并发模型：轻松入门select](http://lessisbetter.site/2018/12/13/golang-slect/)
 * [Golang并发模型：select进阶](http://lessisbetter.site/2018/12/17/golang-selete-advance/)
 * [select](https://draveness.me/golang/docs/part2-foundation/ch05-keyword/golang-select/)
+* [Golang利用select实现goroutine的超时控制](http://xiaorui.cc/?p=2997)
 
 -------
     make  new
@@ -159,6 +163,7 @@
     MPG
 * [为什么 Go 模块在下游服务抖动恢复后，CPU 占用无法恢复(曹大)](https://xargin.com/cpu-idle-cannot-recover-after-peak-load/)
 * [disk io引起golang线程数暴涨的问题](http://xiaorui.cc/?p=5171)
+
 -------
     gomaxprocs
 * [golang gomaxprocs调高引起调度性能损耗](http://xiaorui.cc/2020/01/11/golang-gomaxprocs%e8%b0%83%e9%ab%98%e5%bc%95%e8%b5%b7%e8%b0%83%e5%ba%a6%e6%80%a7%e8%83%bd%e6%8d%9f%e8%80%97/)
@@ -192,5 +197,18 @@
 * [关于golang udp的高性能优化](http://xiaorui.cc/?p=5684)
 
 -------
+    log
+* [Golang logrus的高级配置(hook, logrotate)]( http://xiaorui.cc/?p=4963)
+
+-------
     crontab
 * [开源golang兼容crontab的定时任务管理器](http://xiaorui.cc/?p=5625)
+
+-------
+    monkey补丁
+* [使用monkey补丁替换golang的标准库]( http://xiaorui.cc/?p=5128)
+* [通过火焰图排查golang json的性能问题](http://xiaorui.cc/?p=5108)
+
+-------
+    redis
+* [Golang使用redigo实现redis的分布式锁](http://xiaorui.cc/?p=3028)
