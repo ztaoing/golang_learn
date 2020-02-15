@@ -79,6 +79,7 @@
 * [深度解密Go语言之 pprof](https://zhuanlan.zhihu.com/p/91241270)
 * [golang pprof分析net/http的性能瓶颈](http://xiaorui.cc/?p=5577)
 * [通过火焰图排查golang json的性能问题](http://xiaorui.cc/?p=5108)
+* [Golang使用pprof监控性能及GC调优](http://xiaorui.cc/?p=3000)
 
 -------
     内存重排
