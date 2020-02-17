@@ -6,9 +6,10 @@
 * 《Go语言核心编程》-李文塔
 * 《Go编发编程实战》-郝林
 * 《Go语言编程》-许式伟
-* 《Go程序设计语言》-译本
+* 《Go程序设计语言》-译本 Go语言圣经
 * 《Go语言学习笔记》-雨痕
 *  [《Go 语言设计与实现》](https://draveness.me/golang/)
+*  [《Go语言高级编程》](https://chai2010.cn/advanced-go-programming-book/)- 柴树杉，曹春晖
 
 -------
     分布式锁：
@@ -19,10 +20,12 @@
 * [源码分析golang consul分布式锁lock delay问题](http://xiaorui.cc/2019/05/19/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90golang-consul%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81lock-delay%E9%97%AE%E9%A2%98/)
 * [分布式一致性raft算法实现原理](http://xiaorui.cc/2016/07/08/%e6%8a%80%e6%9c%af%e5%88%86%e4%ba%ab-%e3%80%8a%e5%88%86%e5%b8%83%e5%bc%8f%e4%b8%80%e8%87%b4%e6%80%a7%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e5%8e%9f%e7%90%86%e3%80%8b/)
 * [Golang使用redigo实现redis的分布式锁](http://xiaorui.cc/?p=3028)
+
 -------
     内存分配
 * [图解Go语言内存分配](https://zhuanlan.zhihu.com/p/59125443)
 * [strace分析追踪malloc申请内存过程](http://xiaorui.cc/?p=5334)
+
 -------
     内存泄漏
 * [一起 goroutine 泄漏问题的排查](https://zhuanlan.zhihu.com/p/100740270)
@@ -178,7 +181,7 @@
     runtime
 * [runtime.stack加锁引起高时延及阻塞](http://xiaorui.cc/2020/01/03/go-runtime-stack%e5%8a%a0%e9%94%81%e5%bc%95%e8%b5%b7%e9%ab%98%e6%97%b6%e5%bb%b6%e5%8f%8a%e9%98%bb%e5%a1%9e/)
 * [万字长文深入浅出 Golang Runtime](https://zhuanlan.zhihu.com/p/95056679)
-
+* [系统监控](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-sysmon/)
 -------
     grpc
     
