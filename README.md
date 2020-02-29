@@ -9,7 +9,7 @@
 * 《Go程序设计语言》-译本 Go语言圣经
 * 《Go语言学习笔记》-雨痕
 *  [《Go 语言设计与实现》](https://draveness.me/golang/)
-*  [《Go语言高级编程》](https://chai2010.cn/advanced-go-programming-book/)- 柴树杉，曹春晖
+*  [《Go语言高级编程》](https://chai2010.cn/advanced-go-programming-book/)- 柴树杉，曹春晖 
 
 -------
     分布式锁：
@@ -25,6 +25,9 @@
     内存分配
 * [图解Go语言内存分配](https://zhuanlan.zhihu.com/p/59125443)
 * [strace分析追踪malloc申请内存过程](http://xiaorui.cc/?p=5334)
+* [go内存分配那些事，就这么简单](https://www.cnblogs.com/shijingxiang/articles/11466957.html)
+* go内存分配器可视化指南(go语言中文网)
+* [TCMalloc:Thread-Caching Malloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html)
 
 -------
     内存泄漏
@@ -230,3 +233,20 @@
 -------
     粘包
 * [解决golang开发socket服务时粘包半包bug](http://xiaorui.cc/?p=2888)
+
+-------
+    汇编语言 《Go语言高级编程》
+* [3.1 快速入门]()
+* []()
+* []()
+* []()
+* []()
+* []()
+* []()
+* []()
+* []()
+* []()
+
+-------
+    编译原理
+* []()
