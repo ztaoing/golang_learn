@@ -10,7 +10,7 @@
 * 《Go语言学习笔记》-雨痕
 *  [《Go 语言设计与实现》](https://draveness.me/golang/)
 *  [《Go语言高级编程》](https://chai2010.cn/advanced-go-programming-book/)- 柴树杉，曹春晖 
-
+*  [《go语言101》]()
 -------
     分布式锁：
     etcd
@@ -29,6 +29,7 @@
 * go内存分配器可视化指南(go语言中文网)
 * [TCMalloc:Thread-Caching Malloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html)
 * [Golang源码探索(三) GC的实现原理](https://www.cnblogs.com/zkweb/p/7880099.html)
+
 -------
     内存泄漏
 * [一起 goroutine 泄漏问题的排查](https://zhuanlan.zhihu.com/p/100740270)
@@ -235,17 +236,6 @@
 * [解决golang开发socket服务时粘包半包bug](http://xiaorui.cc/?p=2888)
 
 -------
-    汇编语言 《Go语言高级编程》
-* [3.1 快速入门]()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
 
 -------
     编译原理
