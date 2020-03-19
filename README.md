@@ -43,7 +43,7 @@ etcd:
 * [源码分析golang consul分布式锁lock delay问题](http://xiaorui.cc/2019/05/19/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90golang-consul%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81lock-delay%E9%97%AE%E9%A2%98/)
 * [分布式一致性raft算法实现原理](http://xiaorui.cc/2016/07/08/%e6%8a%80%e6%9c%af%e5%88%86%e4%ba%ab-%e3%80%8a%e5%88%86%e5%b8%83%e5%bc%8f%e4%b8%80%e8%87%b4%e6%80%a7%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e5%8e%9f%e7%90%86%e3%80%8b/)
 * [Golang使用redigo实现redis的分布式锁](http://xiaorui.cc/?p=3028)
-
+* [etcd技术内幕]-百里~
 -------
     内存分配
 * [图解Go语言内存分配](https://zhuanlan.zhihu.com/p/59125443)
