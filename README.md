@@ -51,6 +51,8 @@ redis:
 * [Golang源码探索(三) GC的实现原理](https://www.cnblogs.com/zkweb/p/7880099.html)
 * [第九章 虚拟内存（深入理解计算机系统）]
 * [内存分配器](https://draveness.me/golang/)
+* [栈空间管理](https://draveness.me/golang/)
+
 -------
     内存泄漏
 * [一起 goroutine 泄漏问题的排查](https://zhuanlan.zhihu.com/p/100740270)
