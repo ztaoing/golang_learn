@@ -218,6 +218,7 @@ redis:
 -------
     http
 * [源码解析http shutdown优雅退出的原理](http://xiaorui.cc/?p=5803)
+* [深入理解Golang之http server](https://juejin.im/post/5dd11baff265da0c0c1fe813)
 
 -------
     Grpc protobuf
