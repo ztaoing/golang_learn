@@ -34,8 +34,6 @@ mysql :
 redis:
 
 -------
-    etcd:
-
     分布式锁：
     etcd
     redis redlock
