@@ -23,6 +23,12 @@ func main() {
 		value, ok := <-ch
 		fmt.Println(value, ok)
 	}
+	/*
+	//只有ch关闭的时候，循环在读完所有数据后才会退出，不然会继续等数据。
+	for val:=range <-ch{
+		fmt.Println(val)
+	}
+	*/
 }
 
 /**结果
