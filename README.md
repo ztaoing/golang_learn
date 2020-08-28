@@ -29,10 +29,27 @@ mysql :
 算法：
 * 数据结构与算法之美 （极客时间）
 * 
+-------
+    GO设计模式
+* [Go设计模式：Iterator](https://jiajunhuang.com/articles/2020_06_07-go_design_pattern_iter.md.html)
+* [Go设计模式：适配器模式](https://jiajunhuang.com/articles/2020_06_09-go_design_pattern_adapter.md.html)
+* [Go设计模式：模板模式](https://jiajunhuang.com/articles/2020_06_11-go_design_pattern_template.md.html)
+* [Go设计模式：简单工厂模式](https://jiajunhuang.com/articles/2020_06_13-go_design_pattern_factory.md.html)
+* [Go设计模式：单例模式、原型模式和Builder模式](https://jiajunhuang.com/articles/2020_06_20-go_design_pattern_singleton.md.html)
+* [Go设计模式：桥接模式和策略模式](https://jiajunhuang.com/articles/2020_06_21-go_design_pattern_bridge.md.html)
+* [Go设计模式：composite模式](https://jiajunhuang.com/articles/2020_07_02-go_design_pattern_composite.md.html)
+* [Go设计模式：装饰器模式](https://jiajunhuang.com/articles/2020_07_14-go_design_pattern_decorator.md.html)
+* [Go设计模式: 责任链模式](https://jiajunhuang.com/articles/2020_07_21-go_design_pattern_chain.md.html)
+* [Go设计模式：facade模式和观察者模式](https://jiajunhuang.com/articles/2020_07_23-go_design_pattern_facade.md.html)
 
 -------
+    K8s
+* 《kubernetes 权威指南第四版》
+* 《Docker+Kubernetes(k8s)微服务容器化实践》
+* 《Kubernetes（k8s）生产级实践指南 从部署到核心应用》
+-------
 redis:
-
+* [3w字深度好文|Redis](https://cloud.tencent.com/developer/article/1591602)
 -------
     分布式锁：
     etcd
@@ -64,6 +81,11 @@ redis:
 * [分析golang time.After引起内存暴增OOM问题](http://xiaorui.cc/?p=5745)
 * [探究golang的channel和map内存释放问题](http://xiaorui.cc/?p=5450)
 
+-------
+    内存对齐：
+* [golang是否有必要内存对齐](https://cloud.tencent.com/developer/article/1489459)
+* [golang 内存对齐]()
+* [在 Go 中恰到好处的内存对齐](https://zhuanlan.zhihu.com/p/53413177)
 -------
     连接池
 * [使用golang协程池控制并发请求](http://xiaorui.cc/2019/05/24/%e4%bd%bf%e7%94%a8golang%e5%8d%8f%e7%a8%8b%e6%b1%a0%e6%8e%a7%e5%88%b6%e5%b9%b6%e5%8f%91%e8%af%b7%e6%b1%82/)
