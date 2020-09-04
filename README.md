@@ -29,6 +29,11 @@ mysql :
 算法：
 * 数据结构与算法之美 （极客时间）
 * 
+
+-------
+    依赖注入；
+* [Facebook 在 Golang 依赖注入的实现](https://www.cyhone.com/articles/facebookgo-inject/)
+
 -------
     GO设计模式
 * [Go设计模式：Iterator](https://jiajunhuang.com/articles/2020_06_07-go_design_pattern_iter.md.html)
