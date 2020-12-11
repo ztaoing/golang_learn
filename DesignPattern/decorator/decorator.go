@@ -1,25 +1,46 @@
-package main
+package decorator
 
-import "fmt"
+//装饰模式：使用对象组合的方式，动态改变或增加对象行为
 
-//装饰器模式
-
-type Decoer func(i int, s string) bool
-
-func foo(i int, s string) bool {
-	fmt.Printf("=== foo ===\n")
-	return true
+type Component interface {
+	Calc() int
 }
 
-func withTx(fn Decoer) Decoer {
-	return func(i int, s string) bool {
-		fmt.Printf("=== start tx ===\n")
-		result := fn(i, s)
-		fmt.Printf("=== commit tx ===\n")
-		return result
+type ConcreteComponent struct{}
+
+func (*ConcreteComponent) Calc() int {
+	return 0
+}
+
+//warp mul
+func WarpMulDecorator(c Component, num int) Component {
+	return &MulDecorator{
+		Component: c,
+		num:       num,
 	}
 }
-func main() {
-	foo := withTx(foo)
-	foo(1, "hello")
+
+type MulDecorator struct {
+	Component
+	num int
+}
+
+func (m *MulDecorator) Calc() int {
+	return m.Component.Calc() * m.num
+}
+
+func WarpAddDecrator(c Component, num int) Component {
+	return &AddDecrator{
+		Component: c,
+		num:       num,
+	}
+}
+
+type AddDecrator struct {
+	Component
+	num int
+}
+
+func (d *AddDecrator) Calc() int {
+	return d.Component.Calc() + d.num
 }
