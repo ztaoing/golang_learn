@@ -15,7 +15,7 @@ func NewAPI() API {
 	}
 }
 
-//API是一个外观模式接口
+//API是一个外观模式 接口
 type API interface {
 	Test() string
 }
