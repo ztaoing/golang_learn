@@ -4,7 +4,7 @@
 * @Desc:
  */
 
-package main
+package reflects
 
 import (
 	"fmt"
