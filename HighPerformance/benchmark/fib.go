@@ -6,10 +6,8 @@
 
 package benchmark
 
-import "time"
-
 func fib(n int) int {
-	time.Sleep(time.Second * 3) //模拟耗时的准备工作
+	//time.Sleep(time.Second * 3) //模拟耗时的准备工作
 	if n == 0 || n == 1 {
 		return n
 	}
