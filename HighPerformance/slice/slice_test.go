@@ -1,7 +1,8 @@
 /**
 * @Author:zhoutao
 * @Date:2021/1/1 上午9:19
-* @Desc:
+* @Desc: slice and array
+* @Desc: https://github.com/golang/go/wiki/SliceTricks  slice的操作
  */
 
 package main
