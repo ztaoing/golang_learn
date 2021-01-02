@@ -11,7 +11,7 @@ package main
 /*
 //利用channel的缓存
 func main() {
-	var wg sync.WaitGroup
+	var wg pool.WaitGroup
 	//利用channel的缓冲区来阻塞goroutine
 	ch := make(chan struct{}, 3)
 

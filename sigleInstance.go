@@ -32,7 +32,7 @@ func GetInstances1() *singleton {
 	return instance
 }
 
-//sync.Once实现
+//pool.Once实现
 var once sync.Once
 
 func GetInstnce2() *singleton {
