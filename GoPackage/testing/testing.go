@@ -397,7 +397,7 @@ type common struct {
 	cleanupPc   []uintptr           // The stack trace at the point where Cleanup was called.
 
 	chatty     bool   // A copy of the chatty flag.
-	bench      bool   // Whether the current test is a benchmark.
+	bench      bool   // Whether the concurrent test is a benchmark.
 	finished   bool   // Test function has completed.
 	hasSub     int32  // Written atomically.
 	raceErrors int    // Number of races detected during test.
@@ -493,7 +493,7 @@ func (c *common) frameSkip(skip int) runtime.Frame {
 			if c.level > 1 {
 				frames = runtime.CallersFrames(c.creator)
 				parent := c.parent
-				// We're no longer looking at the current c after this point,
+				// We're no longer looking at the concurrent c after this point,
 				// so we should unlock its mu, unless it's the original receiver,
 				// in which case our caller doesn't expect us to do that.
 				if shouldUnlock {
@@ -683,7 +683,7 @@ func (c *common) Failed() bool {
 
 // FailNow marks the function as having failed and stops its execution
 // by calling runtime.Goexit (which then runs all deferred calls in the
-// current goroutine).
+// concurrent goroutine).
 // Execution will continue at the next test or benchmark.
 // FailNow must be called from the goroutine running the
 // test or benchmark function, not from other goroutines
@@ -938,7 +938,7 @@ func (c *common) runCleanup(ph panicHandling) (panicVal interface{}) {
 }
 
 // callerName gives the function name (qualified with a package path)
-// for the caller after skip frames (where 0 means the current function).
+// for the caller after skip frames (where 0 means the concurrent function).
 func callerName(skip int) string {
 	// Make room for the skip PC.
 	var pc [1]uintptr
