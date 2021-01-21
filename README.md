@@ -1,7 +1,15 @@
 # coder_learn
-# 只争朝夕，不负韶华!
+# 时间有长度，也有宽度!
 
 [go开发者成长之路](https://github.com/Alikhll/golang-developer-roadmap) 图谱
+-------
+Linux：
+* 《Linux内核》
+* 《性能之巅》
+* [调度系统设计精要](https://draveness.me/system-design-scheduler/)
+
+
+
 -------
 golang📚:
 * 《Go语言编程入门与实战技巧》-黄靖钧
@@ -15,6 +23,41 @@ golang📚:
 *  [《go语言101》]()
 * 《go语言高并发与微服务实战》
 * 《go语言编程之旅》
+
+📚:
+golang实现分布式缓存:
+    https://geektutu.com/post/geecache.html
+📚:
+golang实现rpc:
+    https://geektutu.com/post/geerpc-day1.html
+📚:
+golang实现redis:
+
+📚:
+golang实现orm:
+
+📚:
+golang实现web框架:
+
+📚:
+go发起http请求 HTTP1.1 + HTTP2.0:
+
+📚:
+golang fasthttp:
+
+📚:
+bigcache:
+
+📚:
+go-zero:
+
+📚:
+go-kit:
+
+📚:
+excelize: 
+https://github.com/360EntSecGroup-Skylar/excelize
+
 -------
 k8s📚:
 * 《kubernets网络权威指南》
@@ -35,9 +78,9 @@ mysql :
 * 深入浅出计算机组成原理（极客时间）
 * TCP/IP详解 卷1 （阅读中）
 -------
-算法：
+算法及设计模式：
 * 数据结构与算法之美 （极客时间）
-* 
+* golang-design-pattern ()
 -------
     容器
 * [nginx ingress高并发实践]
@@ -66,6 +109,14 @@ mysql :
 
 redis:
 * [3w字深度好文|Redis](https://cloud.tencent.com/developer/article/1591602)
+* [KV型内存数据库Redis](https://www.cnblogs.com/Finley/p/8504662.html)
+* [Redis集群](https://www.cnblogs.com/Finley/p/8595506.html)
+* [Redis持久化机制](https://www.cnblogs.com/Finley/p/9157904.html)
+* [Redis分布式锁](https://www.cnblogs.com/Finley/p/9164204.html)
+* [Redis 应用实战](https://www.cnblogs.com/Finley/p/10674101.html)
+* [Redis 主从复制与哨兵](https://www.cnblogs.com/Finley/p/10890708.html)
+* [Redis 缓存更新一致性]()
+* [Redis 内存压缩原理](https://www.cnblogs.com/Finley/p/13423846.html)
 -------
     分布式锁：
     etcd
@@ -76,7 +127,7 @@ redis:
 * [分布式一致性raft算法实现原理](http://xiaorui.cc/2016/07/08/%e6%8a%80%e6%9c%af%e5%88%86%e4%ba%ab-%e3%80%8a%e5%88%86%e5%b8%83%e5%bc%8f%e4%b8%80%e8%87%b4%e6%80%a7%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e5%8e%9f%e7%90%86%e3%80%8b/)
 * [Golang使用redigo实现redis的分布式锁](http://xiaorui.cc/?p=3028)
 * [etcd技术内幕]-百里~
-
+* [云原生基石-etcd]
 -------
     内存分配
 * [图解Go语言内存分配](https://zhuanlan.zhihu.com/p/59125443)
