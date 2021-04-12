@@ -8,6 +8,9 @@ package a
 
 import (
 	"math"
+	"sort"
+	"strconv"
+	"strings"
 )
 
 //leecode55题 https://leetcode-cn.com/problems/jump-game/solution/tan-xin-by-15176331678/
@@ -180,6 +183,9 @@ func missingNum2(nums []int) int {
 }
 
 //645题 寻找缺失和重复的元素
+
+//234. 回文单链表
+//回文链表的长度可能是奇数，也可能是偶数
 //解法1：将链表放入数组中
 //解法2：快慢指针，快指针一次走2步，慢指针一次走一步，快指针到达结尾时，满指针在中间节点处（两个或一个），然后将后半链表反转后再与链表前半部分比较
 func isPalindrome(head *ListNode) bool {
@@ -205,9 +211,13 @@ func isPalindrome2(head *ListNode) bool {
 }
 
 func traverse(right, left *ListNode) bool {
+	if right == nil {
+		return true
+	}
 	res := traverse(right.Next, left)
 	//后续遍历
 	res = res && (right.Val == left.Val)
+	//todo left被传递，但是没有发生改变
 	left = left.Next
 	return res
 }
@@ -473,3 +483,404 @@ func findLowestAncestor(root, p, q *TreeNode) *TreeNode {
 //倒着入栈，其实就是正着出栈
 
 //剑指 Offer 59 - I. 滑动窗口的最大值
+
+func maxSlidingWindow(nums []int, k int) []int {
+	// 窗口个数
+	res := make([]int, len(nums)-k+1)
+	//队列里存储的是下标
+	queue := make([]int, 0, k)
+
+	// 遍历数组中元素，right表示滑动窗口右边界
+	for right := 0; right < len(nums); right++ {
+		// 如果队列不为空且当前考察元素大于等于队尾元素，则将队尾元素移除。
+		// 直到，队列为空或当前考察元素小于新的队尾元素
+		for len(queue) != 0 && nums[right] >= nums[queue[len(queue)-1]] {
+			if len(queue) == 1 {
+				queue = []int{}
+			} else {
+				queue = queue[:len(queue)-2]
+			}
+
+		}
+
+		// 存储元素下标
+		queue = append(queue, right)
+
+		// 计算窗口左侧边界
+		left := right - k + 1
+		// 当队首元素的下标小于滑动窗口左侧边界left时
+		// 表示队首元素已经不再滑动窗口内，因此将其从队首移除
+		if queue[0] < left {
+			queue = queue[1:]
+		}
+
+		// 由于数组下标从0开始，因此当窗口右边界right+1大于等于窗口大小k时
+		// 意味着窗口形成。此时，队首元素就是该窗口内的最大值
+		if right+1 >= k {
+			res[left] = nums[queue[0]]
+		}
+	}
+	return res
+}
+
+//2sum
+//1. 两数之和
+//hash表存储
+func twoSum(nums []int, target int) []int {
+	hashTable := map[int]int{}
+	for i, v := range nums {
+		//是否存在hashtable中
+		if p, ok := hashTable[target-v]; ok {
+			return []int{p, i}
+		}
+		hashTable[v] = i
+	}
+	return nil
+}
+
+//如果给定的是有序数组
+func twoSum1(nums []int, target int) []int {
+	left, right := 0, nums[len(nums)-1]
+	for left < right {
+		sum := nums[left] + nums[right]
+		if sum == target {
+			return []int{left, right}
+		} else if sum < target {
+			left++
+		} else {
+			right--
+		}
+	}
+	return nil
+}
+
+//一个函数解决Nsum
+//返回所有符合条件的结果
+func twoSum2(nums []int, target int) []int {
+	//对slice排序
+	sort.Ints(nums)
+	res := [][]int{}
+	lo, hi := 0, len(res)-1
+	for lo < hi {
+		left, right := nums[lo], nums[hi]
+		sum := nums[lo] + nums[hi]
+		if sum == target {
+
+			res = append(res, []int{left, right})
+			for lo < hi && nums[lo] == left {
+				lo++
+			}
+			for lo < hi && nums[hi] == right {
+				hi--
+			}
+		} else if sum < target {
+			for lo < hi && nums[lo] == left {
+				lo++
+			}
+		} else {
+			for lo < hi && nums[hi] == right {
+				hi--
+			}
+		}
+	}
+	return nil
+}
+
+//todo 3sum
+
+//计算器
+func calculate(s string) int {
+	prn := getPrn(s)
+	v1, v2, val := 0, 0, 0
+	var stack []int
+	for i := 0; i < len(prn); i++ {
+		str := prn[i]
+		if len(stack) >= 2 {
+			v1, v2 = stack[len(stack)-2], stack[len(stack)-1]
+		}
+		switch str {
+		case "+":
+			val = v1 + v2
+			stack = stack[:len(stack)-2]
+			stack = append(stack, val)
+		case "-":
+			val = v1 - v2
+			stack = stack[:len(stack)-2]
+			stack = append(stack, val)
+		case "*":
+			val = v1 * v2
+			stack = stack[:len(stack)-2]
+			stack = append(stack, val)
+		case "/":
+			val = v1 / v2
+			stack = stack[:len(stack)-2]
+			stack = append(stack, val)
+		default:
+			val, _ = strconv.Atoi(str)
+			stack = append(stack, val)
+		}
+	}
+	if len(stack) != 1 {
+		// fmt.Println("Error ", stack)
+		return 0
+	} else {
+		return stack[0]
+	}
+}
+
+func getPrn(s string) (prn []string) {
+	in := strings.ReplaceAll(s, " ", "")
+	var op []string
+	val := ""
+	for i := 0; i < len(in); i++ {
+		c := string(in[i])
+		switch c {
+		case "*", "/":
+			prn = append(prn, val)
+			val = ""
+			for len(op) > 0 && (op[len(op)-1] == "*" || op[len(op)-1] == "/") {
+				prn = append(prn, op[len(op)-1])
+				op = op[:len(op)-1]
+			}
+			op = append(op, c)
+		case "+", "-":
+			prn = append(prn, val)
+			val = ""
+			for len(op) > 0 {
+				prn = append(prn, op[len(op)-1])
+				op = op[:len(op)-1]
+			}
+			op = append(op, c)
+		default:
+			val += c
+		}
+	}
+	if val != "" {
+		prn = append(prn, val)
+	}
+	for len(op) > 0 {
+		prn = append(prn, op[len(op)-1])
+		op = op[:len(op)-1]
+	}
+	return prn
+}
+
+//字符串转数字
+func Atoi(str string) int {
+	//去掉收尾空格
+	str = strings.TrimSpace(str)
+	result := 0
+	sign := 1
+
+	for i, v := range str {
+		if v >= '0' && v <= '9' {
+			result = result*10 + int(v-'0')
+		} else if v == '-' && i == 0 {
+			sign = -1
+		} else if v == '+' && i == 0 {
+			sign = 1
+		} else {
+			break
+		}
+		// 数值最大检测
+		if result > math.MaxInt32 {
+			if sign == -1 {
+				return math.MinInt32
+			}
+			return math.MaxInt32
+		}
+	}
+
+	return sign * result
+}
+
+//todo 摊烧饼
+
+//前缀和技巧解决子数组的问题
+//输入一个整数数组nums和一个整数K，算出nums中一共有几个和为K的子数组
+
+/**
+动态规划开始
+*/
+//300. 最长递增子序列
+// 子串是连续的，子序列是不连续的
+//给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+//子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
+//dp[i] ：表示以nums[i]结尾的最长上升子序列的长度
+//nums[5]= 3，因为是递增的，所以找到前面比3小的子序列，然后再把3接到最后，就可以形成一个新的递增子序列了
+func lengthOfLIS(nums []int) int {
+	if len(nums) < 1 {
+		return 0
+	}
+	dp := make([]int, len(nums))
+	result := 1
+	for i := 0; i < len(nums); i++ {
+		dp[i] = 1
+		//寻找比i小的子序列的最大长度
+		for j := 0; j < i; j++ {
+			//j是小于i的
+			if nums[j] < nums[i] {
+				//从零开始到i，这个区间内的最大值
+				dp[i] = max(dp[j]+1, dp[i])
+			}
+		}
+		result = max(result, dp[i])
+	}
+	return result
+}
+
+//最长递增子序列,二分搜索的解法
+func lengthOfLIS1(nums []int) int {
+	top := make([]int, len(nums))
+	//牌的堆数
+	piles := 0
+	for i := 0; i < len(nums); i++ {
+		//要处理的扑克牌
+		poker := nums[i]
+		left, right := 0, piles
+		for left < right {
+			mid := left + (right-left)/2
+			if top[mid] > poker {
+				right = mid
+			} else if top[mid] < poker {
+				left = mid + 1
+			} else {
+				right = mid
+			}
+		}
+		//没有找到合适的牌，新建一堆
+		if left == piles {
+			piles++
+		}
+		//把这张牌放到堆顶
+		top[left] = poker
+	}
+	return piles
+}
+
+// TODO 信封嵌套
+
+//剑指 Offer 42. 连续子数组的最大和
+//以nums[i]为结尾的"最大子数组的和"作为dp[i]
+//dp[i]有两种选择，要么与前面的相邻的子数组相连，形成一个求和更大的子数组；要么不与前面的子数组连接，自己作为一个子数组
+func maxSubArray(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	n := len(nums)
+	dp := make([]int, n)
+	//第一个元素前面没有子数组
+	dp[0] = nums[0]
+	//状态转移
+	for i := 0; i < n; i++ {
+		//获得以i结尾的最大值
+		dp[i] = max(dp[i-1]+nums[i], nums[i])
+	}
+	maxNum := nums[0]
+	//dp中最大的那个值
+	for i := 0; i < n; i++ {
+		maxNum = max(maxNum, dp[i])
+	}
+	return maxNum
+}
+
+//缩小dp
+func maxSubArray1(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	dp_0 := nums[0]
+	dp_1 := 0
+	res := dp_0
+	for i := 0; i < len(nums); i++ {
+		dp_1 = max(nums[i], nums[i]+dp_0)
+		dp_0 = dp_1
+		//todo 为甚还要一个res,只有dp_0不就可以了吗？
+		res = max(res, dp_1)
+	}
+	return res
+}
+
+//最优子结构
+//dp数组的遍历方向：正向---》，反向《---，从左到右斜着遍历、从下到上从左到右遍历
+
+//1143题：非常经典动态规划：最长公共子序列(编辑距离和这道题是一个套路)
+//求两个字符串的最长公共子序列
+//dp数组的定义：对于dp[2][4] =2 的含义是"ab" "babc",他们的最长公共子序列的长度是2
+func longestCommonSubsequence(text1, text2 string) int {
+	m, n := len(text1), len(text2)
+	dp := make([][]int, m+1)
+	for i := range dp {
+		dp[i] = make([]int, n+1)
+	}
+	for i, c1 := range text1 {
+		for j, c2 := range text2 {
+			//相等
+			if c1 == c2 {
+				//前边的最长子序列+1
+				dp[i+1][j+1] = dp[i][j] + 1
+			} else {
+				//不相等
+				//
+				dp[i+1][j+1] = max(dp[i][j+1], dp[i+1][j])
+			}
+		}
+	}
+	return dp[m][n]
+}
+
+//编辑距离
+//给两个字符串s1和s2，计算将s1转换成s2最少需要多少次操作
+//可以对一个字符串进行三种操作：插入一个字符、删除一个字符、替换一个字符
+//s1[i]==s2[2]的时候，不做任何操作，i和j同时向前移动
+//s1[i]！=s2[2]的时候，可以进行插入、删除、替换
+func minDistance(word1 string, word2 string) int {
+	n1, n2 := len(word1), len(word2)
+
+	dp := make([][]int, n1+1)
+	for i := range dp {
+		dp[i] = make([]int, n2+1)
+	}
+	for i := 0; i <= n1; i++ {
+		dp[i][0] = i
+	}
+	for i := 0; i <= n2; i++ {
+		dp[0][i] = i
+	}
+
+	for i := 1; i <= n1; i++ {
+		for j := 1; j <= n2; j++ {
+			//如果相等，不做任何操作
+			if word1[i-1] == word2[j-1] {
+				dp[i][j] = dp[i-1][j-1]
+			} else {
+				//求插入、删除、替换，中最小的
+				dp[i][j] = Min(
+					dp[i-1][j-1]+1, //插入
+					dp[i-1][j]+1,   //删除
+					dp[i][j-1]+1)   //替换
+			}
+		}
+	}
+
+	return dp[n1][n2]
+}
+
+func Min(args ...int) int {
+	min := args[0]
+	for _, item := range args {
+		if item < min {
+			min = item
+		}
+	}
+	return min
+}
+
+//TODO 延伸
+
+//5题：回文串:面试中常见
+
+//516题：最长回文子序列
+//输入一个字符串s，找出s中最长回文子序列的长度
+//在子串s[i...j]中，最长回文子序列的长度为dp[i][j]
+//"bbbab" 4
