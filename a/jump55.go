@@ -6,6 +6,10 @@
 
 package a
 
+import (
+	"math"
+)
+
 //leecode55题 https://leetcode-cn.com/problems/jump-game/solution/tan-xin-by-15176331678/
 
 func canJump(nums []int) bool {
@@ -269,3 +273,203 @@ func timeOf(pile int, speed int) int {
 }
 
 //42题：接雨水
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// 04.05. 合法二叉搜索树
+//递归调用  时间复杂度O（N）
+//空间复杂度O（N）递归函数在递归过程中需要为每一层递归函数分配栈空间，所以这里需要额外的空间且该空间取决于递归的深度，即二叉树的高度
+func isValidBst(root *TreeNode) bool {
+	return helper(root, math.MinInt32, math.MaxInt32)
+}
+
+func helper(root *TreeNode, lower int, upper int) bool {
+	if root == nil {
+		return false
+	}
+	if root.Val <= lower || root.Val >= upper {
+		return false
+	}
+	return helper(root.Left, lower, root.Val) && helper(root.Right, root.Val, upper)
+}
+
+//在中序遍历的时候实时检查当前节点的值是否大于前一个中序遍历到的节点的值即可。如果均大于说明这个序列是升序的，整棵树是二叉搜索树
+
+//在二叉搜索树中查找一个数字
+func isInBst(root *TreeNode, target int) bool {
+	if root == nil {
+		return false
+	}
+	//相等
+	if root.Val == target {
+		return true
+	}
+	//利用二分搜索的思想
+	if target < root.Val {
+		//在左子树
+		return isInBst(root.Left, target)
+	}
+	if target > root.Val {
+		return isInBst(root.Right, target)
+	}
+	return false
+}
+
+//在二叉搜索树中插入一个数
+func insertIntoBst(root *TreeNode, in int) *TreeNode {
+	if root == nil {
+		return &TreeNode{
+			Val: in,
+		}
+	}
+	//如果已经存在，则返回这个节点
+	if root.Val == in {
+		return root
+	}
+	//如果不存在
+	//在右子树
+	if root.Val < in {
+		root.Right = insertIntoBst(root.Right, in)
+	}
+	if root.Val > in {
+		root.Left = insertIntoBst(root.Left, in)
+	}
+	return root
+}
+
+//在二叉搜索树中删除一个数
+func deleteNode(root *TreeNode, key int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	//找到节点
+	if root.Val == key {
+		//只有一个非空子节点，让他的孩子接替自己
+		//以下两种情况，包括了两个子节点都为空的时候
+		if root.Left == nil {
+			return root.Right
+		}
+		if root.Right == nil {
+			return root.Left
+		}
+		//两个子节点都不为空
+		//在右子树中查找最小的数接替被删除的数
+		minNode := getMinNode(root.Right)
+		root.Val = minNode.Val
+		//从右子树中删除这个节点
+		root.Right = deleteNode(root.Right, minNode.Val)
+	} else if root.Val > key {
+		root.Left = deleteNode(root.Left, key)
+	} else if root.Val < key {
+		root.Right = deleteNode(root.Right, key)
+	}
+	return root
+}
+
+func getMinNode(root *TreeNode) (node *TreeNode) {
+	//遍历到左子树的叶子节点
+	for root.Left != nil {
+		node = root.Left
+	}
+	return node
+}
+
+//计算普通二叉树的节点数
+func countNums1(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	return 1 + countNums1(root.Left) + countNums1(root.Right)
+}
+
+//计算满二叉树的节点数
+func countNums2(root *TreeNode) int {
+	h := 0
+	for root != nil {
+		root = root.Left
+		h++
+	}
+	return int(math.Pow(float64(2), float64(h))) - 1
+}
+
+//计算完全二叉树的节点数：完全二叉树：每一层都是紧凑向左排列
+func countNums3(root *TreeNode) int {
+	left, right := root, root
+	//记录左子树和右子树的高度
+	lHigh, rHigh := 0, 0
+	for left == nil {
+		left = left.Left
+		lHigh++
+	}
+	for right == nil {
+		right = right.Right
+		rHigh++
+	}
+	//如果左右子树高度相同,说明是一颗满二叉树
+	if lHigh == rHigh {
+		return int(math.Pow(float64(2), float64(lHigh))) - 1
+	}
+	//如果高度不相同，则按照普通树的方法计算
+	//这两个递归只有一个会递归下去：完全二叉树必定有一个满二叉树：所以总的时间复杂度是：O（logN*logN）
+	return 1 + countNums3(root.Left) + countNums3(root.Right)
+}
+
+/**
+用各种遍历框架序列化和反序列化二叉树
+*/
+//剑指 Offer 07. 重建二叉树
+func buildTree(preOrder []int, inOrder []int) *TreeNode {
+	if len(preOrder) == 0 {
+		return nil
+	}
+	//构建根节点
+	root := TreeNode{
+		Val: preOrder[0],
+	}
+	//在中序排列中查找root节点的位置
+	i := 0
+	for ; len(inOrder) > i; i++ {
+		if inOrder[i] == preOrder[0] {
+			break
+		}
+	}
+	root.Left = buildTree(preOrder[1:len(inOrder[:i])+1], inOrder[:i])
+	root.Right = buildTree(preOrder[len(inOrder[:i])+1:], inOrder[i:])
+	return &root
+}
+
+//剑指 Offer 68 - II. 二叉树的最近公共祖先
+func findLowestAncestor(root, p, q *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	if p == root || q == root {
+		return root
+	}
+	//去左右子树查找
+	left := findLowestAncestor(root.Left, p, q)
+	right := findLowestAncestor(root.Right, p, q)
+	//p q分别在左右子树上
+	if left != nil && right != nil {
+		return root
+	}
+	//都不在这个课树上
+	if left == nil && right == nil {
+		return nil
+	}
+	//只有一个在这棵树上
+	if left == nil {
+		return right
+	}
+	return left
+}
+
+//496. 下一个更大元素
+//单调栈
+//倒着入栈，其实就是正着出栈
+
+//剑指 Offer 59 - I. 滑动窗口的最大值
