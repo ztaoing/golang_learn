@@ -921,5 +921,30 @@ func longestPalindromeSubseq(s string) int {
 //压缩后的一维数组就是dp[i][...]这一行
 //dp[j]原来是dp[i+1][j]：是外层for循环上一次算出来的值
 //dp[j-1]原来是dp[i][j-1]:是内层for循环上一次算出来的值
+//dp[i+1][j]也是内层for循环计算出来的值
 
 //5题：回文串:面试中常见
+func longestPalindromeSubseq1(s string) int {
+	n := len(s)
+	if n == 0 {
+		return 0
+	}
+	dp := make([]int, n)
+	for i := 0; i < n; i++ {
+		dp[i] = 1
+	}
+	for i := n - 2; i >= 0; i-- {
+		pre := 0
+		for j := i + 1; j < n; j++ {
+			temp := dp[j]
+			if s[i] == s[j] {
+				dp[j] = pre + 2
+			} else {
+				dp[j] = max(dp[j], dp[j-1])
+			}
+			//todo pre的更新为什么必须在这里
+			pre = temp
+		}
+	}
+	return dp[n-1]
+}
