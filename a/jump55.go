@@ -1219,18 +1219,172 @@ func change2(amount int, coins []int) int {
 
 //TODO 线性排列
 //198题： 打家劫舍
+//你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+//给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+//状态：每个屋子的索引就是状态
+//选择：取或者不取就是选择
+//dp(start)=x,表示从nums[start]开始做选择，可以获得的最多的金额为x
+func rob(nums []int) int {
+	n := len(nums)
+	if n == 0 {
+		return 0
+	}
+	//n+2
+	dp := make([]int, n+2)
+	for i := n - 1; i >= 0; i-- {
+		//不加当前dp[i+1]
+		//加当前nums[i] + dp[i+2]
+		dp[i] = max(dp[i+1], nums[i]+dp[i+2])
+	}
+	return dp[0]
+}
+
+//dp[i]只和dp[i+1] dp[i+2]有关
+func rob1(nums []int) int {
+	n := len(nums)
+	if n == 0 {
+		return 0
+	}
+	//dp[i+1],范围大，dp[3]:3->10
+	dp_i_0 := 0
+	//dp[i+2]，范围小,dp[5]:5->10
+	dp_i_1 := 0
+	//dp[i]
+	res := 0
+	//范围不断扩大
+	for i := n - 1; i >= 0; i-- {
+		res = max(dp_i_0, nums[i]+dp_i_1)
+		//当前大范围的结果，就是下一次的小范围的结果
+		dp_i_1 = dp_i_0
+		//更新大范围
+		dp_i_0 = res
+
+	}
+	return res
+}
 
 //TODO 环形对排列
 //213题：
+//你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。
+//同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+//给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，能够偷窃到的最高金额。
+
+//也是就说：第一个和最后一个是不能同时取的,即可以只取第一间房，不取最后一间房，或者不取第一间房，而是取最后一间房
+//所以穷举这三种情况下，哪一种更大
+func robRange(nums []int, start, end int) int {
+	n := len(nums)
+	if n == 0 {
+		return n
+	}
+	dp_i_1 := 0
+	dp_i_2 := 0
+	dp_i := 0
+	for i := end; i >= start; i-- {
+		dp_i = max(dp_i_1, nums[i]+dp_i_2)
+		//更新
+		dp_i_2 = dp_i_1
+		dp_i_1 = dp_i
+	}
+	return dp_i
+}
+func rob2(nums []int) int {
+	n := len(nums)
+	if n == 0 {
+		return 0
+	}
+	if n == 1 {
+		return nums[0]
+	}
+	return max(robRange(nums, 0, n-2), robRange(nums, 1, n-1))
+}
 
 //TODO 树型排列
 //337题：
+//在上次打劫完一条街道之后和一圈房屋后，小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为“根”。
+//除了“根”之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。
+//如果两个直接相连的房子在同一天晚上被打劫，房屋将自动报警。
+func rob3(root *TreeNode) int {
 
-//全排列
+	memo := map[*TreeNode]int{}
+
+	var helper func(root *TreeNode) int
+
+	helper = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		if _, ok := memo[root]; ok {
+			return memo[root]
+		}
+		robIncludeRoot := root.Val
+		//如果左子树不为空
+		if root.Left != nil {
+			//取左子树的左子节点和右子节点
+			robIncludeRoot += rob3(root.Left.Left) + rob3(root.Left.Right)
+		}
+		//如果右子树不为空
+		if root.Right != nil {
+			//取右子树的左子节点和右子节点
+			robIncludeRoot += rob3(root.Right.Left) + rob3(root.Right.Right)
+		}
+		//不取根节点，只取左子节点和右子节点
+		robExcludeRoot := rob3(root.Left) + rob3(root.Right)
+		res := 0
+		//哪个更大,就取哪一个
+		if robIncludeRoot > robExcludeRoot {
+			res = robIncludeRoot
+		} else {
+			res = robExcludeRoot
+		}
+		memo[root] = res
+		return res
+	}
+
+	return helper(root)
+}
+
+//回溯
 //46. 全排列
+//给定一个 没有重复 数字的序列，返回其所有可能的全排列。
+//前序遍历的代码在进入某一个节点之前的那个时间点执行，后续遍历的代码在离开某个节点之后的哪个时间点执行
+func permute(nums []int) [][]int {
+	res := [][]int{}
+	visited := make(map[int]bool)
+
+	var dfs func(path []int)
+	dfs = func(path []int) {
+		//结束条件
+		if len(nums) == len(path) {
+			temp := make([]int, len(path))
+			//这个 path 变量是一个地址引用，结束当前递归，将它加入 res，后续的递归分支还要继续进行搜索，
+			//还要继续传递这个 path，这个地址引用所指向的内存空间还要继续被操作，所以 res 中的 path 所引用的内容会被改变，
+			//这就不对，所以要拷贝一份内容，到一份新的数组里，然后放入 res，
+			//这样后续对 path 的操作，就不会影响已经放入 res 的内容。
+			copy(temp, path)
+			res = append(res, temp)
+			return
+		}
+		for _, v := range nums {
+			//如果已经存在
+			if visited[v] {
+				continue
+			}
+			//进入之前
+			path = append(path, v)
+			visited[v] = true
+			//进入
+			dfs(path)
+			//离开之后，移除
+			path = path[:len(path)-1]
+			visited[v] = false
+		}
+	}
+	dfs([]int{})
+	return res
+}
 
 //47. 全排列 II
-//给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
+//给定一个可 包含重复 数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
 
 //51. N 皇后
 //52. N皇后 II
