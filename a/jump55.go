@@ -1343,7 +1343,10 @@ func rob3(root *TreeNode) int {
 	return helper(root)
 }
 
-//回溯
+/**
+回溯:在选择列表中做选择-》递归-》撤销选择
+*/
+
 //46. 全排列
 //给定一个 没有重复 数字的序列，返回其所有可能的全排列。
 //前序遍历的代码在进入某一个节点之前的那个时间点执行，后续遍历的代码在离开某个节点之后的哪个时间点执行
@@ -1385,19 +1388,176 @@ func permute(nums []int) [][]int {
 
 //47. 全排列 II
 //给定一个可 包含重复 数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
+func permuteUnique(nums []int) [][]int {
+	res := [][]int{}
+	used := make([]bool, len(nums))
+	sort.Ints(nums)
+	helper2([]int{}, nums, used, &res)
+	return res
+}
 
-//51. N 皇后
-//52. N皇后 II
+func helper2(path, nums []int, used []bool, res *[][]int) {
+	//只有满足情况的才会加入到结果集中
+	if len(path) == len(nums) {
+		temp := make([]int, len(nums))
+		copy(temp, path)
+		*res = append(*res, temp)
+		return
+	}
+	for i := 0; i < len(nums); i++ {
+		//如果当前的选项nums[i]，与同一层的前一个选项nums[i-1]相同，且nums[i-1]存在，且没有被使用过，则忽略选项nums[i]
+		if i-1 >= 0 && nums[i-1] == nums[i] && !used[i-1] {
+			continue
+		}
+		//如果已经使用过
+		if used[i] {
+			continue
+		}
+		//与前一个不相同
+		//加入
+		path = append(path, nums[i])
+		used[i] = true
+
+		helper2(path, nums, used, res)
+		//移除
+		path = path[0 : len(path)-1]
+		used[i] = false
+	}
+}
+
+//51. TODO N 皇后
+//这个问题本质上和全排列的问题差不多+排除不合法的方式
+// 全局变量,保存结果
+
+// 是否能在 board[row][col] 位置放置皇后
+// 皇后不可以上下左右对角线同时存在
+// 行可以不用检测了，因为是从上向下
+func isValid(board [][]bool, row, col int) bool {
+	// 检查列是否有皇后冲突
+	for j := 0; j < len(board); j++ {
+		if board[row][j] == true {
+			return false
+		}
+	}
+	// 检查对角线: "\"
+	for i, j := row, col; i >= 0 && j >= 0; i, j = i-1, j-1 {
+		if board[i][j] == true {
+			return false
+		}
+	}
+	// 检查对角线: "/"
+	for i, j := row, col; i >= 0 && j < len(board); i, j = i-1, j+1 {
+		if board[i][j] == true {
+			return false
+		}
+	}
+
+	return true
+}
+
+//52. TODO N皇后 II
+
 //111. 二叉树的最小深度
+//深度优先搜索
+func minDepth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	if root.Left == nil && root.Right == nil {
+		return 1
+	}
+	minDps := 0
+	if root.Left != nil {
+		minDps = min(minDps, minDepth(root.Left))
+	}
+	if root.Right != nil {
+		minDps = min(minDps, minDepth(root.Right))
+	}
+	return minDps + 1
+}
 
-//双指针
+//广度优先搜索:最先到达的叶子节点就是最小深度:即找到叶子节点
+func minDepth1(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	q := []*TreeNode{root}
+	depth := 1
+
+	for len(q) != 0 {
+		size := len(q)
+		for i := 0; i < size; i++ {
+			//root节点
+			cur := q[0]
+			q = q[1:]
+			//root节点是叶子节点
+			if cur.Left == nil && cur.Right == nil {
+				return depth
+			}
+			if cur.Left != nil {
+				q = append(q, cur.Left)
+			}
+			if cur.Right != nil {
+				q = append(q, cur.Right)
+			}
+		}
+		depth++
+	}
+	return depth
+}
+
+/**
+双指针
+*/
 
 //141. 环形链表
 //给定一个链表，判断链表中是否有环。
+func hasCycle(head *ListNode) bool {
+	var fast *ListNode
+	var slow *ListNode
+	fast, slow = head, head
+	for fast != nil && fast.Next != nil {
+		//快指针前进两步
+		fast = fast.Next.Next
+		//慢指针走一步
+		slow = slow.Next
+		//如果存在环，必然会相遇
+		if fast == slow {
+			return true
+		}
+	}
+	return false
+}
 
 //142. 环形链表 II
+//给定一个链表，返回链表开始入环的第一个节点
+//空间复杂度为O(1)
+func InsertCycle(head *ListNode) *ListNode {
+	slow, fast := head, head
+	for fast != nil {
+		if fast.Next == nil {
+			return nil
+		}
 
-//已知链表中有环，返回这个环的起始位置
+		fast = fast.Next.Next
+		slow = slow.Next
+		//第一次相遇
+		if fast == slow {
+			//重头开始
+			slow = head
+			for {
+				//再次相遇
+				if fast == slow {
+					return slow
+				}
+				//以相同的步速前进
+				fast = fast.Next
+				slow = slow.Next
+			}
+		}
+	}
+	return nil
+}
 
 //寻找无环链表的重点
 
