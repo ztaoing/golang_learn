@@ -296,6 +296,26 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+//剑指 Offer 28. 对称的二叉树
+
+func isSymmetric(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	return recur(root.Left, root.Right)
+}
+func recur(L, R *TreeNode) bool {
+	if L == nil && R == nil {
+		return true
+	}
+	if L == nil || R == nil || L.Val != R.Val {
+		return false
+	}
+	//left的left与right的right比较
+	//left的right和right的left比较
+	return recur(L.Left, R.Right) && recur(L.Right, R.Left)
+}
+
 // 04.05. 合法二叉搜索树
 //递归调用  时间复杂度O（N）
 //空间复杂度O（N）递归函数在递归过程中需要为每一层递归函数分配栈空间，所以这里需要额外的空间且该空间取决于递归的深度，即二叉树的高度
@@ -1217,7 +1237,7 @@ func change2(amount int, coins []int) int {
 	return dp[amount]
 }
 
-//TODO 线性排列
+// 线性排列
 //198题： 打家劫舍
 //你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
 //给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
@@ -1263,7 +1283,7 @@ func rob1(nums []int) int {
 	return res
 }
 
-//TODO 环形对排列
+// 环形对排列
 //213题：
 //你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。
 //同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
@@ -1298,7 +1318,7 @@ func rob2(nums []int) int {
 	return max(robRange(nums, 0, n-2), robRange(nums, 1, n-1))
 }
 
-//TODO 树型排列
+// 树型排列
 //337题：
 //在上次打劫完一条街道之后和一圈房屋后，小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为“根”。
 //除了“根”之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。
@@ -1559,29 +1579,441 @@ func InsertCycle(head *ListNode) *ListNode {
 	return nil
 }
 
-//寻找无环链表的重点
+//寻找无环链表的中点
+func middleList(head *ListNode) *ListNode {
+	slow, fast := head, head
+	for fast != nil && fast.Next != nil {
+		fast = fast.Next.Next
+		slow = slow.Next
+	}
+	return slow
+}
 
 //寻找单链表的倒数第K个元素
+func kList(head *ListNode, k int) *ListNode {
+	slow, fast := head, head
+	//提前走
+	for i := 0; i < k; i++ {
+		fast = fast.Next
+	}
+	for fast != nil {
+		slow = slow.Next
+		fast = fast.Next
+	}
+	return slow
+}
 
-//707题。设计链表
+// 707题：设计链表
+/**
+在链表类中实现这些功能：
 
-//二分搜索：寻找左侧边界的二分搜索
+get(index)：获取链表中第 index 个节点的值。如果索引无效，则返回-1。
+addAtHead(val)：在链表的第一个元素之前添加一个值为 val 的节点。插入后，新节点将成为链表的第一个节点。
+addAtTail(val)：将值为 val 的节点追加到链表的最后一个元素。
+addAtIndex(index,val)：在链表中的第 index 个节点之前添加值为 val  的节点。如果 index 等于链表的长度，则该节点将附加到链表的末尾。如果 index 大于链表长度，则不会插入节点。如果index小于0，则在头部插入节点。
+deleteAtIndex(index)：如果索引 index 有效，则删除链表中的第 index 个节点。
+
+*/
+// 定义一个 链表结构
+type ListNode1 struct {
+	Val  int        `json:"val"`
+	Next *ListNode1 `json:"next"`
+}
+
+// 为了方便计算,我们可以定义一个header,存header节点
+// 定义一个tail 存 尾节点 (不需要遍历到结尾...)
+// 定义一个长度,记录链表长度 (不需要每次遍历计算)
+type MyLinkedList struct {
+	Header *ListNode1 `json:"header"`
+	Tail   *ListNode1 `json:"tail"`
+	Lens   int        `json:"lens"`
+}
+
+/** Initialize your data structure here. */
+func Constructor() MyLinkedList {
+	return MyLinkedList{
+		Header: nil,
+		Tail:   nil,
+		Lens:   0,
+	}
+}
+
+/** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+func (this *MyLinkedList) Get(index int) int {
+	// 如果获取的位置小于0或者等于链表长度,直接返回-1(注意链表下标从0开始,所以这地方可以等于)
+	if index < 0 || index >= this.Lens {
+		return -1
+	}
+
+	// 如果index等于0,直接返回头节点的值
+	if index == 0 {
+		return this.Header.Val
+	}
+
+	// 遍历一下,找到index节点的值
+	node := this.Header
+	for node.Next != nil {
+		// 因为0的情况一排除,所以直接先减掉
+		index--
+		// node指针往下移动一位
+		if node.Next != nil {
+			node = node.Next
+		}
+		// 当index递减等于0的时候, 返回其值就可以了
+		if index == 0 {
+			return node.Val
+		}
+	}
+	return -1
+}
+
+func (this *MyLinkedList) AddAtHead(val int) {
+	// 在头节点加入一个节点,那么这个节点就是以后的头节点了.. 而且这个节点的next指向以前的头节点...
+	this.Header = &ListNode1{
+		Val:  val,
+		Next: this.Header, //将原链表加在当前头节点后
+	}
+
+	// 如果当前链表为空,那么增加一个节点,这个节点既是头节点又是尾节点
+	if this.Lens == 0 {
+		this.Tail = this.Header
+	}
+	// 因为增加了节点,所以链表长度+1
+	this.Lens++
+}
+
+/** Append a node of value val to the last element of the linked list. */
+func (this *MyLinkedList) AddAtTail(val int) {
+	// 如果当前链表为空,那么增加尾部,也就是加个头部..
+	if this.Lens == 0 {
+		this.Tail = &ListNode1{
+			Val:  val,
+			Next: nil,
+		}
+		this.Header = this.Tail
+		this.Lens++
+		return
+	}
+	// 尾节点本来next等于nil,现在加一个,next等于这个节点
+	this.Tail.Next = &ListNode1{
+		Val:  val,
+		Next: nil,
+	}
+
+	// 所以以后新的尾节点就是之前的next节点了..
+	this.Tail = this.Tail.Next
+
+	// 新增节点,链表长度+1
+	this.Lens++
+}
+
+/** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+func (this *MyLinkedList) AddAtIndex(index int, val int) {
+
+	//   如果 index小于0，则在头部插入节点。
+	if index <= 0 {
+		this.AddAtHead(val)
+		return
+	}
+
+	//   如果 index 大于链表长度，则不会插入节点。
+	if index > this.Lens {
+		return
+	}
+
+	//   如果 index 等于链表的长度，则该节点将附加到链表的末尾。
+	if index == this.Lens {
+		this.AddAtTail(val)
+		return
+	}
+
+	node := this.Header
+	for node.Next != nil {
+		index--
+		// 当index == 0的时候,说明找到了这个节点,往这节点之前插入节点
+		if index == 0 {
+			newNode := &ListNode1{
+				Val:  val,
+				Next: node.Next,
+			}
+			node.Next = newNode
+			// 记得长度+1
+			this.Lens++
+			// 记得要返回..
+			return
+		}
+
+		node = node.Next
+	}
+
+}
+
+/** Delete the index-th node in the linked list, if the index is valid. */
+func (this *MyLinkedList) DeleteAtIndex(index int) {
+	// 如果index小于0或者大于等于长度,直接返回
+	if index < 0 || index >= this.Lens {
+		return
+	}
+
+	// 如果等于0,就是删除头节点,记得链表长度-1
+	if index == 0 {
+		this.Header = this.Header.Next
+		this.Lens--
+	}
+
+	node := this.Header
+	for node.Next != nil {
+		index--
+
+		if index == 0 {
+			// 如果node.Next.Next == nil 说明到最后一个节点了.相当于删除最后一个节点
+			if node.Next.Next == nil {
+				node.Next = nil
+				this.Tail = node
+				this.Lens--
+				return
+			}
+			// 其他情况就是删除中间一个节点(A->B->C),操作就是  A 直接指向 C 就行 (A->C)
+			node2 := node.Next.Next
+			node.Next = node2
+			this.Lens--
+			return
+		}
+		node = node.Next
+	}
+
+}
+
+//二分搜索：寻找左侧边界的二分搜索：在有序数组中，查找目标值的最左边界
+func left_bound(nums []int, target int) int {
+	left := 0
+	right := len(nums) - 1
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] < target {
+			left = mid + 1
+		} else if nums[mid] > target {
+			right = mid - 1
+		} else if nums[mid] == target {
+			//收缩右边界,在[left,right]中继续查找
+			right = mid - 1
+		}
+	}
+	if left >= len(nums) || nums[left] != target {
+		return -1
+	}
+	return left
+}
 
 //二分搜索：寻找右侧边界的二分搜索
+func right_bound(nums []int, target int) int {
+	left := 0
+	right := len(nums) - 1
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] < target {
+			left = mid + 1
+		} else if nums[mid] > target {
+			right = mid - 1
+		} else if nums[mid] == target {
+			//收缩左边界,在[left,right]中继续查找
+			left = mid + 1
+		}
+	}
+	if right < 0 || nums[right] != target {
+		return -1
+	}
 
-//滑动窗口：最小覆盖子串
+	return right
+}
 
-//字符串排列
+//76题：滑动窗口：最小覆盖子串
+//给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。如果 s 中不存在涵盖 t 所有字符的子串，则返回空字符串 "" 。
+//注意：如果 s 中存在这样的子串，我们保证它是唯一的答案。
 
-//找所有字母异位词
+func minWindow(s string, t string) string {
+	// 保存滑动窗口字符集
+	win := make(map[byte]int)
+	// 保存需要的字符集
+	need := make(map[byte]int)
+	//子串的字符
+	for i := 0; i < len(t); i++ {
+		need[t[i]]++
+	}
+	// 窗口
+	left := 0
+	right := 0
+	// match匹配次数
+	match := 0
+	start := 0
+	end := 0
+	min := math.MaxInt64
+	var c byte
+	for right < len(s) {
+		c = s[right]
+		right++
+		// 在need中不存在，添加到窗口字符集里面
+		if need[c] != 0 {
+			win[c]++
+			// 如果当前字符的数量匹配需要的字符的数量，则match值+1
+			if win[c] == need[c] {
+				match++
+			}
+		}
 
-//最长无重复子串
+		// t中的所有字符都已经覆盖了，当所有字符数量都匹配之后，开始缩紧窗口
+		for match == len(need) {
+			// 获取结果
+			if right-left < min {
+				min = right - left
+				start = left
+				end = right
+			}
+			c = s[left]
+			left++
+			// 左指针指向不在需要的字符集则直接跳过
+			if need[c] != 0 {
+				// 左指针指向字符数量和需要的字符相等时，右移之后match值就不匹配则减一
+				// 因为win里面的字符数可能比较多，如有10个A，但需要的字符数量可能为3
+				// 所以在压死骆驼的最后一根稻草时，match才减一，这时候才跳出循环
+				if win[c] == need[c] {
+					match--
+				}
+				win[c]--
+			}
+		}
+	}
+	if min == math.MaxInt64 {
+		return ""
+	}
+	return s[start:end]
+}
+
+//剑指 Offer 38. 字符串的排列：输入一个字符串，打印出该字符串中字符的所有排列。
+func permutation(s string) []string {
+	// 分别以某个数开头的数，以此轮一遍
+	// 深度遍历
+	if len(s) < 2 {
+		return []string{s}
+	}
+	sl := getByteList(s)
+	return dfs(sl, 0, nil)
+}
+
+// params：
+// s      原字符串
+// pos    当前在字符串中的索引位置
+// last   上一次的结果集
+func dfs(s []byte, pos int, last []string) (res []string) {
+	if pos == len(s)-1 {
+		// 元素够了
+		return append(last, string(s)) // append会自动拷贝
+	}
+
+	set := make(map[byte]bool) // 集合，防止重复元素
+	for i := pos; i < len(s); i++ {
+		if set[s[i]] {
+			continue
+		}
+		set[s[i]] = true
+
+		s[i], s[pos] = s[pos], s[i] // 固定i到pos位置
+
+		last = dfs(s, pos+1, last) // last中已经存了每次的结果
+		s[i], s[pos] = s[pos], s[i]
+	}
+
+	return last
+}
+
+// 获取字符数组
+func getByteList(s string) []byte {
+	res := make([]byte, len(s))
+	for i := 0; i < len(s); i++ {
+		res[i] = s[i]
+	}
+
+	return res
+}
+
+//438. 找到字符串中所有字母异位词
+//给定一个字符串 s 和一个非空字符串 p，找到 s 中所有是 p 的字母异位词的子串，返回这些子串的起始索引。
+//字符串只包含小写英文字母，并且字符串 s 和 p 的长度都不超过 20100。
+func FindAnagrams(s string, p string) []int {
+	res := make([]int, 0)
+	left := 0       //左指针
+	right := 0      //右指针
+	lenth := len(s) //字符串长度
+	aim := make(map[byte]int)
+	now := make(map[byte]int)
+	nownum := 0 //当前满足的种类
+
+	for i, _ := range p {
+		aim[p[i]] += 1 //记录所有的字符个数
+	}
+	aimnum := len(aim) //字符种类
+	for right <= lenth-1 {
+		for nownum != aimnum && right <= lenth-1 { //移动右指针
+			if aim[s[right]] != 0 && aim[s[right]] > now[s[right]] { //判断字符是否符合要求，且该种类字符数量尚未满足
+				now[s[right]] += 1
+				if now[s[right]] == aim[s[right]] {
+					nownum += 1
+				}
+
+			} else if aim[s[right]] != 0 && aim[s[right]] <= now[s[right]] { //如果该种类字符数量满足了，则只加个数，不加种类数
+				now[s[right]] += 1
+
+			}
+			right += 1
+
+		}
+
+		for nownum == aimnum && (right-left) <= lenth { //移动左指针
+			if right-left == len(p) { //当长度相等，且种类数相等时，一定满足条件
+				res = append(res, left)
+			}
+			if aim[s[left]] != 0 {
+				now[s[left]] -= 1
+				if now[s[left]] < aim[s[left]] {
+					nownum -= 1
+				}
+			}
+
+			left += 1
+		}
+	}
+	return res
+}
+
+//3题：最长无重复子串
+//给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+func lengthOfLongestSubstring(s string) int {
+	// 哈希集合，记录每个字符是否出现过
+	m := map[byte]int{}
+	n := len(s)
+	// 右指针，初始值为 -1，相当于我们在字符串的左边界的左侧，还没有开始移动
+	rk, ans := -1, 0
+	for i := 0; i < n; i++ {
+		if i != 0 {
+			// 左指针向右移动一格，移除一个字符
+			delete(m, s[i-1])
+		}
+		for rk+1 < n && m[s[rk+1]] == 0 {
+			// 不断地移动右指针
+			m[s[rk+1]]++
+			rk++
+		}
+		// 第 i 到 rk 个字符是一个极长的无重复字符子串
+		ans = max(ans, rk-i+1)
+	}
+	return ans
+}
 
 /**
 树的遍历
 */
 
-//二叉树的遍历
+//二叉树的遍历:输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
 
 //54. 螺旋矩阵
 
