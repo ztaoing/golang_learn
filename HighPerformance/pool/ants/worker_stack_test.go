@@ -44,6 +44,7 @@ func TestWorkerStack(t *testing.T) {
 		}
 	}
 	assert.EqualValues(t, 12, q.len(), "Len error")
+	// 回收一分钟之前的worker
 	q.retrieveExpiry(time.Second)
 	assert.EqualValues(t, 6, q.len(), "Len error")
 }

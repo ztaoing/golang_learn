@@ -42,6 +42,7 @@ func (wq *workerStack) detach() *goWorker {
 	return w
 }
 
+// 回收指定时间前的worker
 func (wq *workerStack) retrieveExpiry(duration time.Duration) []*goWorker {
 	n := wq.len()
 	if n == 0 {
@@ -49,6 +50,7 @@ func (wq *workerStack) retrieveExpiry(duration time.Duration) []*goWorker {
 	}
 
 	expiryTime := time.Now().Add(-duration)
+	// 找到过期的位置
 	index := wq.binarySearch(0, n-1, expiryTime)
 
 	wq.expiry = wq.expiry[:0]
@@ -71,6 +73,7 @@ func (wq *workerStack) binarySearch(l, r int, expiryTime time.Time) int {
 	var mid int
 	for l <= r {
 		mid = (l + r) / 2
+		//
 		if expiryTime.Before(wq.items[mid].recycleTime) {
 			r = mid - 1
 		} else {

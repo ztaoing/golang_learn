@@ -40,8 +40,10 @@ func demoFunc() {
 	time.Sleep(time.Duration(BenchParam) * time.Millisecond)
 }
 
+// 执行一段时间
 func demoPoolFunc(args interface{}) {
 	n := args.(int)
+
 	time.Sleep(time.Duration(n) * time.Millisecond)
 }
 

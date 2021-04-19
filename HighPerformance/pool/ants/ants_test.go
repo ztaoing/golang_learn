@@ -55,7 +55,7 @@ const (
 
 var curMem uint64
 
-// TestAntsPoolWaitToGetWorker is used to test waiting to get worker.
+// TestAntsPoolWaitToGetWorker 用来测试等待获取worker
 func TestAntsPoolWaitToGetWorker(t *testing.T) {
 	var wg sync.WaitGroup
 	p, _ := NewPool(AntsSize)
@@ -63,21 +63,32 @@ func TestAntsPoolWaitToGetWorker(t *testing.T) {
 
 	for i := 0; i < n; i++ {
 		wg.Add(1)
+		// 提交n个任务
 		_ = p.Submit(func() {
 			demoPoolFunc(Param)
 			wg.Done()
 		})
 	}
+
 	wg.Wait()
 	t.Logf("pool, running workers number:%d", p.Running())
 	mem := runtime.MemStats{}
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/**
+	=== RUN   TestAntsPoolWaitToGetWorker
+	    ants_test.go:74: pool, running workers number:1000
+	    ants_test.go:78: memory usage:2 MB
+	--- PASS: TestAntsPoolWaitToGetWorker (10.31s)
+	PASS
+	*/
 }
 
+// 预分配
 func TestAntsPoolWaitToGetWorkerPreMalloc(t *testing.T) {
 	var wg sync.WaitGroup
+	// 开启预分配
 	p, _ := NewPool(AntsSize, WithPreAlloc(true))
 	defer p.Release()
 
@@ -94,6 +105,13 @@ func TestAntsPoolWaitToGetWorkerPreMalloc(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/**
+	=== RUN   TestAntsPoolWaitToGetWorkerPreMalloc
+	    ants_test.go:103: pool, running workers number:1000
+	    ants_test.go:107: memory usage:2 MB
+	--- PASS: TestAntsPoolWaitToGetWorkerPreMalloc (10.26s)
+	PASS
+	*/
 }
 
 // TestAntsPoolWithFuncWaitToGetWorker is used to test waiting to get worker.
@@ -115,6 +133,13 @@ func TestAntsPoolWithFuncWaitToGetWorker(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/**
+	=== RUN   TestAntsPoolWithFuncWaitToGetWorker
+	    ants_test.go:131: pool with func, running workers number:1000
+	    ants_test.go:135: memory usage:1 MB
+	--- PASS: TestAntsPoolWithFuncWaitToGetWorker (10.29s)
+	PASS
+	*/
 }
 
 func TestAntsPoolWithFuncWaitToGetWorkerPreMalloc(t *testing.T) {
@@ -135,9 +160,16 @@ func TestAntsPoolWithFuncWaitToGetWorkerPreMalloc(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/**
+	=== RUN   TestAntsPoolWithFuncWaitToGetWorkerPreMalloc
+	    ants_test.go:158: pool with func, running workers number:1000
+	    ants_test.go:162: memory usage:1 MB
+	--- PASS: TestAntsPoolWithFuncWaitToGetWorkerPreMalloc (10.35s)
+	PASS
+	*/
 }
 
-// TestAntsPoolGetWorkerFromCache is used to test getting worker from sync.Pool.
+// TestAntsPoolGetWorkerFromCache 从sync.Pool中获取worker.
 func TestAntsPoolGetWorkerFromCache(t *testing.T) {
 	p, _ := NewPool(TestSize)
 	defer p.Release()
@@ -152,6 +184,13 @@ func TestAntsPoolGetWorkerFromCache(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/**
+	=== RUN   TestAntsPoolGetWorkerFromCache
+	    ants_test.go:182: pool, running workers number:1
+	    ants_test.go:186: memory usage:0 MB
+	--- PASS: TestAntsPoolGetWorkerFromCache (2.00s)
+	PASS
+	*/
 }
 
 // TestAntsPoolWithFuncGetWorkerFromCache is used to test getting worker from sync.Pool.
@@ -170,6 +209,13 @@ func TestAntsPoolWithFuncGetWorkerFromCache(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/**
+	=== RUN   TestAntsPoolWithFuncGetWorkerFromCache
+	    ants_test.go:207: pool with func, running workers number:1
+	    ants_test.go:211: memory usage:0 MB
+	--- PASS: TestAntsPoolWithFuncGetWorkerFromCache (2.00s)
+	PASS
+	*/
 }
 
 func TestAntsPoolWithFuncGetWorkerFromCachePreMalloc(t *testing.T) {
@@ -187,10 +233,17 @@ func TestAntsPoolWithFuncGetWorkerFromCachePreMalloc(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/**
+	=== RUN   TestAntsPoolWithFuncGetWorkerFromCachePreMalloc
+	    ants_test.go:231: pool with func, running workers number:1
+	    ants_test.go:235: memory usage:1 MB
+	--- PASS: TestAntsPoolWithFuncGetWorkerFromCachePreMalloc (2.00s)
+	PASS
+	*/
 }
 
 //-------------------------------------------------------------------------------------------
-// Contrast between goroutines without a pool and goroutines with ants pool.
+// 对比 在不使用pool和使用ants pool的两种情况
 //-------------------------------------------------------------------------------------------
 
 func TestNoPool(t *testing.T) {
@@ -208,6 +261,12 @@ func TestNoPool(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/*
+		=== RUN   TestNoPool
+		    ants_test.go:263: memory usage:16 MB
+		--- PASS: TestNoPool (0.17s)
+		PASS
+	*/
 }
 
 func TestAntsPool(t *testing.T) {
@@ -230,6 +289,15 @@ func TestAntsPool(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+	/**
+	=== RUN   TestAntsPool
+	    ants_test.go:284: pool, capacity:2147483647
+	    ants_test.go:285: pool, running workers number:13130
+	    ants_test.go:286: pool, free workers number:2147470517
+	    ants_test.go:291: memory usage:12 MB
+	--- PASS: TestAntsPool (0.18s)
+	PASS
+	*/
 }
 
 //-------------------------------------------------------------------------------------------
@@ -448,6 +516,7 @@ func TestNonblockingSubmitWithFunc(t *testing.T) {
 	assert.NoError(t, p.Invoke(nil), "nonblocking submit when pool is not full shouldn't return error")
 }
 
+// 设置了最大的阻塞值
 func TestMaxBlockingSubmitWithFunc(t *testing.T) {
 	poolSize := 10
 	p, err := NewPoolWithFunc(poolSize, longRunningPoolFunc, WithMaxBlockingTasks(1))
@@ -559,6 +628,7 @@ func TestInfinitePool(t *testing.T) {
 	}
 }
 
+// 测试覆盖率
 func TestRestCodeCoverage(t *testing.T) {
 	_, err := NewPool(-1, WithExpiryDuration(-1))
 	t.Log(err)
