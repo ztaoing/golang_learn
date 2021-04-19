@@ -6,10 +6,10 @@ import (
 )
 
 var (
-	// errQueueIsFull will be returned when the worker queue is full.
+	// errQueueIsFull 当前队列已满
 	errQueueIsFull = errors.New("the queue is full")
 
-	// errQueueIsReleased will be returned when trying to insert item to a released worker queue.
+	// 向已经释放的worker queue中插入元素的时候
 	errQueueIsReleased = errors.New("the queue length is zero")
 )
 
@@ -17,8 +17,8 @@ type workerArray interface {
 	len() int
 	isEmpty() bool
 	insert(worker *goWorker) error
-	detach() *goWorker //分离
-	retrieveExpiry(duration time.Duration) []*goWorker
+	detach() *goWorker                                 //取出一个任务
+	retrieveExpiry(duration time.Duration) []*goWorker //取回过期
 	reset()
 }
 
