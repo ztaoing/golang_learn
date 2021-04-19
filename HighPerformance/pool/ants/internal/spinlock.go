@@ -10,6 +10,7 @@ import (
 	"sync/atomic"
 )
 
+// 实现了locker接口
 type spinLock uint32
 
 func (sl *spinLock) Lock() {

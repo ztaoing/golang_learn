@@ -80,7 +80,7 @@ func (p *Pool) purgePeriodically() {
 		// Notify obsolete workers to stop.提醒过期的worker停止
 		// This notification must be outside the p.lock, since w.task may be blocking and may consume a lot of time if many workers
 		// are located on non-local CPUs.
-		// 此通知必须在p.lock之外，因为w.task可能正在阻塞，并且如果有很多worker，可能会花费大量时间位于非本地CPU上
+		// 此通知必须在p.lock之外，因为w.task可能正在阻塞，并且如果有很多worker位于非本地CPU上，可能会花费大量时间
 		for i := range expiredWorkers {
 			//清除任务
 			expiredWorkers[i].task <- nil
@@ -92,7 +92,7 @@ func (p *Pool) purgePeriodically() {
 		// then it ought to wakes all those invokers.
 		//可能存在所有worker都被清理过的情况（没有任何worker在运行） 尽管某些调用程序仍然卡在“ p.cond.Wait（）”中， 那么它应该唤醒所有这些调用者。
 		if p.Running() == 0 {
-			//唤醒所有的调用者
+			//唤醒所有的等待获取worker的goroutine
 			p.cond.Broadcast()
 		}
 	}
@@ -119,13 +119,14 @@ func NewPool(size int, options ...Option) (*Pool, error) {
 
 	p := &Pool{
 		capacity: int32(size),
-		lock:     internal.NewSpinLock(),
+		lock:     internal.NewSpinLock(), //锁
 		options:  opts,
 	}
-	// sync.pool
+	// sync.pool：当调用sync.Pool的get方法时，如果没有更多的空闲元素，就会调用这个New方法来创建一个
+	// 如果没有New方法时就会返回nil
 	p.workerCache.New = func() interface{} {
 		return &goWorker{
-			pool: p,
+			pool: p,                                //当前worker所属的pool
 			task: make(chan func(), workerChanCap), //任务的大小
 		}
 	}
@@ -230,7 +231,7 @@ func (p *Pool) decRunning() {
 func (p *Pool) retrieveWorker() (w *goWorker) {
 	// 获取一个worker
 	spawnWorker := func() {
-		// 从workerCache中获取一个可用的worker
+		// 从workerCache中获取一个可用的worker，如果没有就会使用预设的New创建一个
 		w = p.workerCache.Get().(*goWorker)
 		w.run()
 	}

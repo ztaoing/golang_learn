@@ -47,7 +47,7 @@ type PoolWithFunc struct {
 	// lock for synchronous operation.
 	lock sync.Locker
 
-	// cond for waiting to get a idle worker.
+	// cond 用来等待一个空闲worker的通知
 	cond *sync.Cond
 
 	// poolFunc 是用来处理任务的方法
@@ -77,8 +77,10 @@ func (p *PoolWithFunc) purgePeriodically() {
 		idleWorkers := p.workers
 		n := len(idleWorkers)
 		var i int
+		// 统计过期的worker的个数
 		for i = 0; i < n && currentTime.Sub(idleWorkers[i].recycleTime) > p.options.ExpiryDuration; i++ {
 		}
+		// 将idleWorkers中过期的worker加入到过期的expiredWorkers中
 		expiredWorkers = append(expiredWorkers[:0], idleWorkers[:i]...)
 		if i > 0 {
 			m := copy(idleWorkers, idleWorkers[i:])
