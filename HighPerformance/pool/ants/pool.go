@@ -230,19 +230,19 @@ func (p *Pool) decRunning() {
 func (p *Pool) retrieveWorker() (w *goWorker) {
 	// 获取一个worker
 	spawnWorker := func() {
-		// 从pool中获取一个可用的worker
+		// 从workerCache中获取一个可用的worker
 		w = p.workerCache.Get().(*goWorker)
 		w.run()
 	}
 
 	p.lock.Lock()
-
+	// 获取一个可用的worker
 	w = p.workers.detach()
 
 	if w != nil {
 		p.lock.Unlock()
 	} else if capacity := p.Cap(); capacity == -1 {
-		// 不限制大小的pool
+		// 如果没有获取到可用的worker，但是是一个不限制大小的pool
 		p.lock.Unlock()
 		spawnWorker()
 	} else if p.Running() < capacity {
@@ -268,15 +268,18 @@ func (p *Pool) retrieveWorker() (w *goWorker) {
 
 		p.blockingNum--
 		var nw int
+		// 当前运行的worker为0个
 		if nw = p.Running(); nw == 0 {
 			p.lock.Unlock()
 			if !p.IsClosed() {
+				// pool没有关闭的情况下，从workerCache获取一个
 				spawnWorker()
 			}
 			return
 		}
-
+		// 从workers中获取一个，但是没有获得到
 		if w = p.workers.detach(); w == nil {
+			// 运行的数量小于容量的时候
 			if nw < capacity {
 				p.lock.Unlock()
 				spawnWorker()
@@ -293,6 +296,7 @@ func (p *Pool) retrieveWorker() (w *goWorker) {
 
 // revertWorker 将worker归还到pool中，重复使用goroutine
 func (p *Pool) revertWorker(worker *goWorker) bool {
+	// pool不是无限容量的，并且已经运行的worker数量已经超过了pool的容量了或者pool已经关闭的情绪，就直接返回
 	if capacity := p.Cap(); (capacity > 0 && p.Running() > capacity) || p.IsClosed() {
 		return false
 	}
@@ -305,14 +309,14 @@ func (p *Pool) revertWorker(worker *goWorker) bool {
 		p.lock.Unlock()
 		return false
 	}
-
+	// 将worker插入workers中
 	err := p.workers.insert(worker)
 	if err != nil {
 		p.lock.Unlock()
 		return false
 	}
 
-	// 提醒： 卡在了'retrieveWorker()' 的调用者，现在有一个可用的worker了
+	// 归还完之后，提醒卡在了'retrieveWorker()' 的调用者，现在有一个可用的worker了
 	p.cond.Signal()
 	p.lock.Unlock()
 	return true
