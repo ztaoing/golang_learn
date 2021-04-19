@@ -32,23 +32,23 @@ import (
 )
 
 const (
-	// DefaultAntsPoolSize is the default capacity for a default goroutine pool.
+	// 默认的pool的大小
 	DefaultAntsPoolSize = math.MaxInt32
 
-	// DefaultCleanIntervalTime is the interval time to clean up goroutines.
+	// 默认清理goroutine的时间间隔
 	DefaultCleanIntervalTime = time.Second
 )
 
 const (
-	// OPENED represents that the pool is opened.
+	// OPENED 代表了pool是开启状态
 	OPENED = iota
 
-	// CLOSED represents that the pool is closed.
+	// CLOSED 代表了pool是关闭状态
 	CLOSED
 )
 
 var (
-	// Error types for the Ants API.
+	// 定义了错误的类型.
 	//---------------------------------------------------------------------------
 
 	// ErrInvalidPoolSize will be returned when setting a negative number as pool capacity, this error will be only used
@@ -72,25 +72,24 @@ var (
 
 	//---------------------------------------------------------------------------
 
-	// workerChanCap determines whether the channel of a worker should be a buffered channel
-	// to get the best performance. Inspired by fasthttp at
+	// workerChanCap 决定了一个worker的channel是否需要是一个带缓冲的channel，来达到更好的性能。
+	// 来自 fasthttp 的启发：
 	// https://github.com/valyala/fasthttp/blob/master/workerpool.go#L139
 	workerChanCap = func() int {
-		// Use blocking channel if GOMAXPROCS=1.
+		// Use blocking channel if . 当GOMAXPROCS=1的时候使用阻塞的channel
 		// This switches context from sender to receiver immediately,
-		// which results in higher performance (under go1.5 at least).
+		// which results in higher performance (最版本为 go1.5 ).
 		if runtime.GOMAXPROCS(0) == 1 {
 			return 0
 		}
 
-		// Use non-blocking workerChan if GOMAXPROCS>1,
-		// since otherwise the sender might be dragged down if the receiver is CPU-bound.
+		//  当GOMAXPROCS>1的时候，使用非阻塞的workerChan,因为如果接收方受CPU限制，则发送方可能会被拖延
 		return 1
 	}()
 
 	defaultLogger = Logger(log.New(os.Stderr, "", log.LstdFlags))
 
-	// Init a instance pool when importing ants.
+	// 当导入antis的时候，初始化一个pool的实例
 	defaultAntsPool, _ = NewPool(DefaultAntsPoolSize)
 )
 
@@ -100,32 +99,32 @@ type Logger interface {
 	Printf(format string, args ...interface{})
 }
 
-// Submit submits a task to pool.
+// Submit 提交一个任务到pool中
 func Submit(task func()) error {
 	return defaultAntsPool.Submit(task)
 }
 
-// Running returns the number of the currently running goroutines.
+// Running 返回当前运行goroutine的数量
 func Running() int {
 	return defaultAntsPool.Running()
 }
 
-// Cap returns the capacity of this default pool.
+// Cap 返回默认pool的容量
 func Cap() int {
 	return defaultAntsPool.Cap()
 }
 
-// Free returns the available goroutines to work.
+// Free 返回可用的goroutine的数量
 func Free() int {
 	return defaultAntsPool.Free()
 }
 
-// Release Closes the default pool.
+// Release 关闭默认的pool
 func Release() {
 	defaultAntsPool.Release()
 }
 
-// Reboot reboots the default pool.
+// Reboot 重启默认的pool
 func Reboot() {
 	defaultAntsPool.Reboot()
 }
