@@ -60,7 +60,7 @@ type Pool struct {
 	options *Options
 }
 
-// purgePeriodically 定期清除过期的workers，它会单独运行一个goroutine作为清理者as a scavenger.
+// purgePeriodically 定期清除过期的workers，它会单独运行一个goroutine作为清理者
 func (p *Pool) purgePeriodically() {
 	// 定期
 	heartbeat := time.NewTicker(p.options.ExpiryDuration)
@@ -257,6 +257,7 @@ func (p *Pool) retrieveWorker() (w *goWorker) {
 		}
 	Reentry:
 		if p.options.MaxBlockingTasks != 0 && p.blockingNum >= p.options.MaxBlockingTasks {
+			// MaxBlockingTasks已经设置并且不等于0 && 阻塞的个数 大于等于 允许的最大的阻塞数，就直接返回
 			p.lock.Unlock()
 			return
 		}
@@ -311,7 +312,7 @@ func (p *Pool) revertWorker(worker *goWorker) bool {
 		return false
 	}
 
-	// 提醒： 调用者卡在了'retrieveWorker()' of there is an available worker in the worker queue.
+	// 提醒： 卡在了'retrieveWorker()' 的调用者，现在有一个可用的worker了
 	p.cond.Signal()
 	p.lock.Unlock()
 	return true
