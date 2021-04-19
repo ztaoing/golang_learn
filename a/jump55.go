@@ -2013,18 +2013,203 @@ func lengthOfLongestSubstring(s string) int {
 树的遍历
 */
 
-//二叉树的遍历:输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+//剑指 Offer 33. 二叉搜索树的后序遍历序列:
+//输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。
+func recurTree(postOrder []int, start, end int) bool {
+	if start >= end {
+		return true
+	}
+	p := start
+	//左子树
+	for postOrder[p] < postOrder[end] {
+		p++
+	}
+	//P为左子树的个数
+	m := p
+	//右子树
+	for postOrder[p] > postOrder[end] {
+		p++
+	}
+	return p == end && recurTree(postOrder, start, m-1) && recurTree(postOrder, m, end-1)
+}
+func verifyPostorder(postOrder []int) bool {
+	return recurTree(postOrder, 0, len(postOrder)-1)
+}
 
-//54. 螺旋矩阵
+//54. 螺旋矩阵：给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
+func spiralOrder(matrix [][]int) []int {
+	if len(matrix) == 0 {
+		return []int{}
+	}
+	res := []int{}
+
+	top, bottom, left, right := 0, len(matrix)-1, 0, len(matrix[0])-1
+
+	for top < bottom && left < right {
+		//-->
+		for i := left; i < right; i++ {
+			//将行插入
+			res = append(res, matrix[top][i])
+		}
+		// |
+		// |
+		// 向下
+		for i := top; i < bottom; i++ {
+			//将右列插入
+			res = append(res, matrix[i][right])
+		}
+		//<--
+		for i := right; i > left; i-- {
+			//将底行插入
+			res = append(res, matrix[bottom][i])
+		}
+		//向上
+		for i := bottom; i > top; i-- {
+			//将左列插入
+			res = append(res, matrix[i][left])
+		}
+		//搜索范围
+		right--
+		top++
+		bottom--
+		left++
+	}
+	//只剩下一行
+	if top == bottom {
+		for i := left; i <= right; i++ {
+			res = append(res, matrix[top][i])
+		}
+	} else if left == right {
+		//只剩下一列
+		for i := top; i <= bottom; i++ {
+			res = append(res, matrix[i][left])
+		}
+	}
+	return res
+}
 
 //650. 只有两个键的键盘
+//素数分解
+func minSteps(n int) int {
+	res := 0
+	for i := 2; i <= n; i++ {
+		for n%i == 0 {
+			res += i
+			n /= i
+		}
+	}
+	return res
+}
 
 //24点游戏（679）
+//计算四个值:穷举
+func judgePoint24(nums []int) bool {
+	return judgePoint24_3(float64(nums[0])+float64(nums[1]), float64(nums[2]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[0])-float64(nums[1]), float64(nums[2]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[0])*float64(nums[1]), float64(nums[2]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[0])/float64(nums[1]), float64(nums[2]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[1])-float64(nums[0]), float64(nums[2]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[1])/float64(nums[0]), float64(nums[2]), float64(nums[3])) ||
+
+		judgePoint24_3(float64(nums[0])+float64(nums[2]), float64(nums[1]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[0])-float64(nums[2]), float64(nums[1]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[0])*float64(nums[2]), float64(nums[1]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[0])/float64(nums[2]), float64(nums[1]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[2])-float64(nums[0]), float64(nums[1]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[2])/float64(nums[0]), float64(nums[1]), float64(nums[3])) ||
+
+		judgePoint24_3(float64(nums[0])+float64(nums[3]), float64(nums[2]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[0])-float64(nums[3]), float64(nums[2]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[0])*float64(nums[3]), float64(nums[2]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[0])/float64(nums[3]), float64(nums[2]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[3])-float64(nums[0]), float64(nums[2]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[3])/float64(nums[0]), float64(nums[2]), float64(nums[1])) ||
+
+		judgePoint24_3(float64(nums[2])+float64(nums[3]), float64(nums[0]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[2])-float64(nums[3]), float64(nums[0]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[2])*float64(nums[3]), float64(nums[0]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[2])/float64(nums[3]), float64(nums[0]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[3])-float64(nums[2]), float64(nums[0]), float64(nums[1])) ||
+		judgePoint24_3(float64(nums[3])/float64(nums[2]), float64(nums[0]), float64(nums[1])) ||
+
+		judgePoint24_3(float64(nums[1])+float64(nums[2]), float64(nums[0]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[1])-float64(nums[2]), float64(nums[0]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[1])*float64(nums[2]), float64(nums[0]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[1])/float64(nums[2]), float64(nums[0]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[2])-float64(nums[1]), float64(nums[0]), float64(nums[3])) ||
+		judgePoint24_3(float64(nums[2])/float64(nums[1]), float64(nums[0]), float64(nums[3])) ||
+
+		judgePoint24_3(float64(nums[1])+float64(nums[3]), float64(nums[2]), float64(nums[0])) ||
+		judgePoint24_3(float64(nums[1])-float64(nums[3]), float64(nums[2]), float64(nums[0])) ||
+		judgePoint24_3(float64(nums[1])*float64(nums[3]), float64(nums[2]), float64(nums[0])) ||
+		judgePoint24_3(float64(nums[1])/float64(nums[3]), float64(nums[2]), float64(nums[0])) ||
+		judgePoint24_3(float64(nums[3])-float64(nums[1]), float64(nums[2]), float64(nums[0])) ||
+		judgePoint24_3(float64(nums[3])/float64(nums[1]), float64(nums[2]), float64(nums[0]))
+}
+
+//计算三个值
+func judgePoint24_3(a, b, c float64) bool {
+	return judgePoint24_2(a+b, c) ||
+		judgePoint24_2(a-b, c) ||
+		judgePoint24_2(a*b, c) ||
+		judgePoint24_2(a/b, c) ||
+		judgePoint24_2(b-a, c) ||
+		judgePoint24_2(b/a, c) ||
+
+		judgePoint24_2(a+c, b) ||
+		judgePoint24_2(a-c, b) ||
+		judgePoint24_2(a*c, b) ||
+		judgePoint24_2(a/c, b) ||
+		judgePoint24_2(c-a, b) ||
+		judgePoint24_2(c/a, b) ||
+
+		judgePoint24_2(c+b, a) ||
+		judgePoint24_2(c-b, a) ||
+		judgePoint24_2(c*b, a) ||
+		judgePoint24_2(c/b, a) ||
+		judgePoint24_2(b-c, a) ||
+		judgePoint24_2(b/c, a)
+}
+
+//计算两个值
+func judgePoint24_2(a, b float64) bool {
+	return (a+b < 24+1e-6 && a+b > 24-1e-6) ||
+		(a*b < 24+1e-6 && a*b > 24-1e-6) ||
+		(a-b < 24+1e-6 && a-b > 24-1e-6) ||
+		(b-a < 24+1e-6 && b-a > 24-1e-6) ||
+		(a/b < 24+1e-6 && a/b > 24-1e-6) ||
+		(b/a < 24+1e-6 && b/a > 24-1e-6)
+}
 
 //灯泡开关（319）
+func bulbSwitch(n int) int {
+	return sqrt(n)
+}
+func sqrt(x int) int {
+	var a int = x
+	for a*a > x {
+		a = (a + x/a) / 2
+	}
+	return a
+}
 
 //93. 复原 IP 地址
 
 //70. 爬楼梯
 
 //面试题 08.13. 堆箱子
+
+//剑指 Offer 65. 不用加减乘除做加法
+//两个整数做异或运算，得到不进位加法的运算结果
+//两个整数做与运算，然后左移一位，得到进位的运算结果
+//将上面得到的两个结果相加，即重复上述步骤直到进位的结果为0
+func add(a int, b int) int {
+	//直到进位为0
+	for b != 0 {
+		//carry 进位
+
+		sum, carry := a^b, (a&b)<<1
+		a, b = sum, carry
+	}
+	return a
+}
