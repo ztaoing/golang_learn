@@ -50,7 +50,7 @@ type Pool struct {
 	// cond 等待获取一个空闲的worker
 	cond *sync.Cond
 
-	// workerCache 加速了在function:retrieveWorker中获取一个可用的worker
+	// workerCache 加速获取一个可用的worker，
 	workerCache sync.Pool
 
 	// blockingNum 是已经在pool.Submit处被阻塞的goroutine的数量, 被pool.lock保护

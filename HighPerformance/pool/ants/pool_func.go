@@ -38,7 +38,7 @@ type PoolWithFunc struct {
 	// running is the number of the currently running goroutines.
 	running int32
 
-	// workers is a slice that store the available workers.
+	// workers 存储了可用的worker
 	workers []*goWorkerWithFunc
 
 	// state is used to notice the pool to closed itself.

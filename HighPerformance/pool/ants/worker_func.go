@@ -63,7 +63,7 @@ func (w *goWorkerWithFunc) run() {
 			if args == nil {
 				return
 			}
-			// 执行job
+			// 通过指定的方法处理job
 			w.pool.poolFunc(args)
 			// 归还
 			if ok := w.pool.revertWorker(w); !ok {
