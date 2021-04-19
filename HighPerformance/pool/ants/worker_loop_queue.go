@@ -8,7 +8,7 @@ type loopQueue struct {
 	expiry []*goWorker //到期的任务
 	head   int
 	tail   int
-	size   int //环形队列的容量
+	size   int //环形队列的容量,当容量为0时，即已经被释放
 	isFull bool
 }
 
