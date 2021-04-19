@@ -53,8 +53,11 @@ func (wq *workerStack) retrieveExpiry(duration time.Duration) []*goWorker {
 
 	wq.expiry = wq.expiry[:0]
 	if index != -1 {
+		// 将过期的任务加入到expiry中
 		wq.expiry = append(wq.expiry, wq.items[:index+1]...)
+		// 将没有过期的迁移
 		m := copy(wq.items, wq.items[index+1:])
+		// nil掉复制之前的item
 		for i := m; i < n; i++ {
 			wq.items[i] = nil
 		}
