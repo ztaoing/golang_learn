@@ -2,6 +2,7 @@ package ants
 
 import "time"
 
+// 是worker_array接口的一个实现
 type workerStack struct {
 	items  []*goWorker
 	expiry []*goWorker
@@ -62,6 +63,7 @@ func (wq *workerStack) retrieveExpiry(duration time.Duration) []*goWorker {
 	return wq.expiry
 }
 
+// 二分搜索
 func (wq *workerStack) binarySearch(l, r int, expiryTime time.Time) int {
 	var mid int
 	for l <= r {
