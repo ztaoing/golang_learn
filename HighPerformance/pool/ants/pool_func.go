@@ -30,8 +30,7 @@ import (
 	"github.com/panjf2000/ants/v2/internal"
 )
 
-// PoolWithFunc accepts the tasks from client,
-// it limits the total of goroutines to a given number by recycling goroutines.
+// PoolWithFunc 接收来自client的任务
 type PoolWithFunc struct {
 	// capacity of the pool.
 	capacity int32
@@ -51,7 +50,7 @@ type PoolWithFunc struct {
 	// cond for waiting to get a idle worker.
 	cond *sync.Cond
 
-	// poolFunc is the function for processing tasks.
+	// poolFunc 是用来处理任务的方法
 	poolFunc func(interface{})
 
 	// workerCache speeds up the obtainment of the an usable worker in function:retrieveWorker.
@@ -63,7 +62,7 @@ type PoolWithFunc struct {
 	options *Options
 }
 
-// purgePeriodically clears expired workers periodically which runs in an individual goroutine, as a scavenger.
+// purgePeriodically 定期清除过期的workers，它会单独运行一个goroutine作为清理者
 func (p *PoolWithFunc) purgePeriodically() {
 	heartbeat := time.NewTicker(p.options.ExpiryDuration)
 	defer heartbeat.Stop()
@@ -147,7 +146,7 @@ func NewPoolWithFunc(size int, pf func(interface{}), options ...Option) (*PoolWi
 	}
 	p.cond = sync.NewCond(p.lock)
 
-	// Start a goroutine to clean up expired workers periodically.
+	// 使用一个goroutine来清理过期的workers
 	go p.purgePeriodically()
 
 	return p, nil
@@ -155,7 +154,7 @@ func NewPoolWithFunc(size int, pf func(interface{}), options ...Option) (*PoolWi
 
 //---------------------------------------------------------------------------
 
-// Invoke submits a task to pool.
+// Invoke 提交一个任务到pool中
 func (p *PoolWithFunc) Invoke(args interface{}) error {
 	if p.IsClosed() {
 		return ErrPoolClosed
@@ -196,7 +195,7 @@ func (p *PoolWithFunc) IsClosed() bool {
 	return atomic.LoadInt32(&p.state) == CLOSED
 }
 
-// Release Closes this pool.
+// Release 关闭pool
 func (p *PoolWithFunc) Release() {
 	atomic.StoreInt32(&p.state, CLOSED)
 	p.lock.Lock()
@@ -206,12 +205,11 @@ func (p *PoolWithFunc) Release() {
 	}
 	p.workers = nil
 	p.lock.Unlock()
-	// There might be some callers waiting in retrieveWorker(), so we need to wake them up to prevent
-	// those callers blocking infinitely.
+	//  这里可能有一些调用者等待在retrieveWorker()，所以我们需要唤醒他，以防这些调用者永久的阻塞
 	p.cond.Broadcast()
 }
 
-// Reboot reboots a released pool.
+// Reboot 重启一个已经释放的pool
 func (p *PoolWithFunc) Reboot() {
 	if atomic.CompareAndSwapInt32(&p.state, CLOSED, OPENED) {
 		go p.purgePeriodically()
@@ -220,17 +218,17 @@ func (p *PoolWithFunc) Reboot() {
 
 //---------------------------------------------------------------------------
 
-// incRunning increases the number of the currently running goroutines.
+// incRunning 递增当前运行的goroutine的数量
 func (p *PoolWithFunc) incRunning() {
 	atomic.AddInt32(&p.running, 1)
 }
 
-// decRunning decreases the number of the currently running goroutines.
+// decRunning 递减当前运行的goroutine的数量
 func (p *PoolWithFunc) decRunning() {
 	atomic.AddInt32(&p.running, -1)
 }
 
-// retrieveWorker returns a available worker to run the tasks.
+// retrieveWorker 返回一个可用的worker来运行任务
 func (p *PoolWithFunc) retrieveWorker() (w *goWorkerWithFunc) {
 	spawnWorker := func() {
 		w = p.workerCache.Get().(*goWorkerWithFunc)
@@ -238,6 +236,7 @@ func (p *PoolWithFunc) retrieveWorker() (w *goWorkerWithFunc) {
 	}
 
 	p.lock.Lock()
+	//可使用的worker
 	idleWorkers := p.workers
 	n := len(idleWorkers) - 1
 	if n >= 0 {
@@ -246,6 +245,7 @@ func (p *PoolWithFunc) retrieveWorker() (w *goWorkerWithFunc) {
 		p.workers = idleWorkers[:n]
 		p.lock.Unlock()
 	} else if p.Running() < p.Cap() {
+		//当前运行的goroutine的数量少于容量
 		p.lock.Unlock()
 		spawnWorker()
 	} else {
@@ -255,28 +255,37 @@ func (p *PoolWithFunc) retrieveWorker() (w *goWorkerWithFunc) {
 		}
 	Reentry:
 		if p.options.MaxBlockingTasks != 0 && p.blockingNum >= p.options.MaxBlockingTasks {
+			// MaxBlockingTasks已经设置并且不等于0 && 阻塞的个数 大于等于 允许的最大的阻塞数，就直接返回
 			p.lock.Unlock()
 			return
 		}
+		// 加入等待队列
 		p.blockingNum++
 		p.cond.Wait()
 		p.blockingNum--
+		// 当前没有goroutine在运行
 		if p.Running() == 0 {
 			p.lock.Unlock()
+			// pool没有关闭
 			if !p.IsClosed() {
 				spawnWorker()
 			}
 			return
 		}
+		// 可使用的worker的数量
 		l := len(p.workers) - 1
+		// 没有可用的worker时
 		if l < 0 {
+			// 可以直接取用goroutine，因为容量没有被用完
 			if p.Running() < p.Cap() {
 				p.lock.Unlock()
 				spawnWorker()
 				return
 			}
+			// 再去尝试
 			goto Reentry
 		}
+		// 有可用的worker时：
 		w = p.workers[l]
 		p.workers[l] = nil
 		p.workers = p.workers[:l]
@@ -288,22 +297,25 @@ func (p *PoolWithFunc) retrieveWorker() (w *goWorkerWithFunc) {
 // revertWorker puts a worker back into free pool, recycling the goroutines.
 func (p *PoolWithFunc) revertWorker(worker *goWorkerWithFunc) bool {
 	if capacity := p.Cap(); (capacity > 0 && p.Running() > capacity) || p.IsClosed() {
+		// 运行的goroutine数超过了容量 或者 pool已经关闭了
 		return false
 	}
 	worker.recycleTime = time.Now()
 	p.lock.Lock()
 
-	// To avoid memory leaks, add a double check in the lock scope.
+	// 避免内存的泄漏，在锁范围内增加了一个双检测
 	// Issue: https://github.com/panjf2000/ants/issues/113
+	// 如果已经关闭
 	if p.IsClosed() {
 		p.lock.Unlock()
 		return false
 	}
-
+	// 将worker归还
 	p.workers = append(p.workers, worker)
 
-	// Notify the invoker stuck in 'retrieveWorker()' of there is an available worker in the worker queue.
+	// 提醒： 卡在了'retrieveWorker()' 的调用者，现在有一个可用的worker了
 	p.cond.Signal()
+
 	p.lock.Unlock()
 	return true
 }
