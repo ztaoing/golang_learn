@@ -17,7 +17,7 @@ type workerArray interface {
 	len() int
 	isEmpty() bool
 	insert(worker *goWorker) error
-	detach() *goWorker
+	detach() *goWorker //分离
 	retrieveExpiry(duration time.Duration) []*goWorker
 	reset()
 }
@@ -25,8 +25,8 @@ type workerArray interface {
 type arrayType int
 
 const (
-	stackType arrayType = 1 << iota
-	loopQueueType
+	stackType     arrayType = 1 << iota //栈
+	loopQueueType                       //队列
 )
 
 func newWorkerArray(aType arrayType, size int) workerArray {
