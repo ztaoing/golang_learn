@@ -2,7 +2,7 @@ package ants
 
 import "time"
 
-// 环形队列
+// 环形队列：是worker_array接口的一个实现
 type loopQueue struct {
 	items  []*goWorker
 	expiry []*goWorker //到期的任务
