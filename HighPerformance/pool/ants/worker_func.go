@@ -27,22 +27,17 @@ import (
 	"time"
 )
 
-// goWorkerWithFunc is the actual executor who runs the tasks,
-// it starts a goroutine that accepts tasks and
-// performs function calls.
 type goWorkerWithFunc struct {
-	// pool who owns this worker.
+	// 拥有当前worker的pool
 	pool *PoolWithFunc
 
-	// args is a job should be done.
+	// args 是需要执行的job
 	args chan interface{}
 
-	// recycleTime will be update when putting a worker back into queue.
+	// recycleTime 当worker归还到队列中时更新此事件
 	recycleTime time.Time
 }
 
-// run starts a goroutine to repeat the process
-// that performs the function calls.
 func (w *goWorkerWithFunc) run() {
 	w.pool.incRunning()
 	go func() {
@@ -59,7 +54,8 @@ func (w *goWorkerWithFunc) run() {
 					w.pool.options.Logger.Printf("worker with func exits from panic: %s\n", string(buf[:n]))
 				}
 			}
-			// Call Signal() here in case there are goroutines waiting for available workers.
+			// 没有发生panic：
+			// 调用 Signal()通知那些等待获取可用goroutine的被阻塞的调用者
 			w.pool.cond.Signal()
 		}()
 
@@ -67,7 +63,9 @@ func (w *goWorkerWithFunc) run() {
 			if args == nil {
 				return
 			}
+			// 执行job
 			w.pool.poolFunc(args)
+			// 归还
 			if ok := w.pool.revertWorker(w); !ok {
 				return
 			}
