@@ -2,7 +2,6 @@ package ants
 
 import "time"
 
-// Option represents the optional function.
 type Option func(opts *Options)
 
 func loadOptions(options ...Option) *Options {
@@ -13,77 +12,76 @@ func loadOptions(options ...Option) *Options {
 	return opts
 }
 
-// Options contains all options which will be applied when instantiating a ants pool.
+// pool配置
 type Options struct {
-	// ExpiryDuration is a period for the scavenger goroutine to clean up those expired workers,
-	// the scavenger scans all workers every `ExpiryDuration` and clean up those workers that haven't been
-	// used for more than `ExpiryDuration`.
+
+	// 用来清理过期的goroutine的过期时间，他会每一个ExpiryDuration扫描一遍所有的workers，然后清理那些超过ExpiryDuration，没有使用的worker
 	ExpiryDuration time.Duration
 
-	// PreAlloc indicates whether to make memory pre-allocation when initializing Pool.
+	// 是否在初始化pool的时候，预先申请内存
 	PreAlloc bool
 
-	// Max number of goroutine blocking on pool.Submit.
-	// 0 (default value) means no such limit.
+	// 允许阻塞在pool.Submit上的最大goroutine的数量
+	// 如果是0，则没有这个限制
 	MaxBlockingTasks int
 
-	// When Nonblocking is true, Pool.Submit will never be blocked.
-	// ErrPoolOverload will be returned when Pool.Submit cannot be done at once.
-	// When Nonblocking is true, MaxBlockingTasks is inoperative.
+	// 当为true的时候，Pool.Submit永远不会被阻塞
+	// 当Pool.Submit无法立刻完成的时候会返回ErrPoolOverload的错误
+	// 当为true的时候MaxBlockingTasks是不起作用的
 	Nonblocking bool
 
-	// PanicHandler is used to handle panics from each worker goroutine.
+	// PanicHandler是用来处理每一个goroutine的的panic的
 	// if nil, panics will be thrown out again from worker goroutines.
+	// 当为nil的时候，panic会从goroutine中被再次抛出来
 	PanicHandler func(interface{})
 
-	// Logger is the customized logger for logging info, if it is not set,
-	// default standard logger from log package is used.
+	// Logger是一个用来记录日志信息的定制组件，如果没有设置就会使用log包中的默认的日志组件
 	Logger Logger
 }
 
-// WithOptions accepts the whole options config.
+// WithOptions 入参是Options结构体
 func WithOptions(options Options) Option {
 	return func(opts *Options) {
 		*opts = options
 	}
 }
 
-// WithExpiryDuration sets up the interval time of cleaning up goroutines.
+// WithExpiryDuration 设置清理goroutine的间隔时间
 func WithExpiryDuration(expiryDuration time.Duration) Option {
 	return func(opts *Options) {
 		opts.ExpiryDuration = expiryDuration
 	}
 }
 
-// WithPreAlloc indicates whether it should malloc for workers.
+// WithPreAlloc 表示是否需要预分配内存
 func WithPreAlloc(preAlloc bool) Option {
 	return func(opts *Options) {
 		opts.PreAlloc = preAlloc
 	}
 }
 
-// WithMaxBlockingTasks sets up the maximum number of goroutines that are blocked when it reaches the capacity of pool.
+// WithMaxBlockingTasks 当达到pool的容量的时候，设置允许阻塞的最大值
 func WithMaxBlockingTasks(maxBlockingTasks int) Option {
 	return func(opts *Options) {
 		opts.MaxBlockingTasks = maxBlockingTasks
 	}
 }
 
-// WithNonblocking indicates that pool will return nil when there is no available workers.
+// WithNonblocking 非阻塞：当没有可用的worker的时候就直接返回nil
 func WithNonblocking(nonblocking bool) Option {
 	return func(opts *Options) {
 		opts.Nonblocking = nonblocking
 	}
 }
 
-// WithPanicHandler sets up panic handler.
+// WithPanicHandler 设置用户处理panic的handler
 func WithPanicHandler(panicHandler func(interface{})) Option {
 	return func(opts *Options) {
 		opts.PanicHandler = panicHandler
 	}
 }
 
-// WithLogger sets up a customized logger.
+// WithLogger 设置定制的日志组件
 func WithLogger(logger Logger) Option {
 	return func(opts *Options) {
 		opts.Logger = logger
