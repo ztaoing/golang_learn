@@ -234,6 +234,7 @@ func (p *PoolWithFunc) decRunning() {
 func (p *PoolWithFunc) retrieveWorker() (w *goWorkerWithFunc) {
 	spawnWorker := func() {
 		w = p.workerCache.Get().(*goWorkerWithFunc)
+		// 执行任务
 		w.run()
 	}
 

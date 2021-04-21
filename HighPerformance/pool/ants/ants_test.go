@@ -24,6 +24,7 @@ package ants
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"runtime"
 	"sync"
@@ -32,6 +33,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	_ "net/http/pprof"
 )
 
 const (
@@ -57,8 +59,9 @@ var curMem uint64
 
 // TestAntsPoolWaitToGetWorker 用来测试等待获取worker
 func TestAntsPoolWaitToGetWorker(t *testing.T) {
+	w := make(chan struct{})
 	var wg sync.WaitGroup
-	p, _ := NewPool(AntsSize)
+	p, _ := NewPool(6)
 	defer p.Release()
 
 	for i := 0; i < n; i++ {
@@ -76,6 +79,9 @@ func TestAntsPoolWaitToGetWorker(t *testing.T) {
 	runtime.ReadMemStats(&mem)
 	curMem = mem.TotalAlloc/MiB - curMem
 	t.Logf("memory usage:%d MB", curMem)
+
+	_ = http.ListenAndServe(":6060", nil)
+	<-w
 	/**
 	=== RUN   TestAntsPoolWaitToGetWorker
 	    ants_test.go:74: pool, running workers number:1000

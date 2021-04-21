@@ -29,18 +29,11 @@ import (
 
 // goWorker 是实际的执行任务的人，它使用一个goroutine接收任务，然后使用指定的方法处理这个任务
 type goWorker struct {
-	// 拥有当前worker的指针
-	pool *Pool
-
-	// 需要被执行的任务
-	task chan func()
-
-	// 回收时间  will be update when putting a worker back into queue.
-	recycleTime time.Time
+	pool        *Pool       // 拥有当前worker的指针
+	task        chan func() // 需要被执行的任务
+	recycleTime time.Time   // 回收时的​时间
 }
 
-// run starts a goroutine to repeat the process
-// that performs the function calls.
 // run 开启了一个goroutine执行指定的方法来处理任务
 func (w *goWorker) run() {
 	// 增加运行的goroutine数量
@@ -76,6 +69,7 @@ func (w *goWorker) run() {
 			}
 			// 执行每一个任务
 			f()
+			time.Sleep(10 * time.Second)
 			// 执行完，将worker归还到pool中
 			if ok := w.pool.revertWorker(w); !ok {
 				return

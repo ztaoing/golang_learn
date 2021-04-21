@@ -14,11 +14,17 @@ var (
 )
 
 type workerArray interface {
+	//pool中元素的个数
 	len() int
+	//pool是否为空
 	isEmpty() bool
+	//插入一个goWorker的指针到pool中
 	insert(worker *goWorker) error
-	detach() *goWorker                                 //取出一个任务
-	retrieveExpiry(duration time.Duration) []*goWorker //取回过期
+	//取出一个任务
+	detach() *goWorker
+	//取回过期
+	retrieveExpiry(duration time.Duration) []*goWorker
+	//重置整个pool
 	reset()
 }
 

@@ -239,8 +239,8 @@ func (p *Pool) retrieveWorker() (w *goWorker) {
 	p.lock.Lock()
 	// 获取一个可用的worker
 	w = p.workers.detach()
-
 	if w != nil {
+		// 获得到一个可用的worker
 		p.lock.Unlock()
 	} else if capacity := p.Cap(); capacity == -1 {
 		// 如果没有获取到可用的worker，但是是一个不限制大小的pool
@@ -278,7 +278,7 @@ func (p *Pool) retrieveWorker() (w *goWorker) {
 			}
 			return
 		}
-		// 从workers中获取一个，但是没有获得到
+		// 再次尝试从workers中获取一个，但是没有获得到
 		if w = p.workers.detach(); w == nil {
 			// 运行的数量小于容量的时候
 			if nw < capacity {

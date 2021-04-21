@@ -28,14 +28,9 @@ import (
 )
 
 type goWorkerWithFunc struct {
-	// 拥有当前worker的pool
-	pool *PoolWithFunc
-
-	// args 是需要执行的job
-	args chan interface{}
-
-	// recycleTime 当worker归还到队列中时更新此事件
-	recycleTime time.Time
+	pool        *PoolWithFunc    // 拥有当前worker的pool
+	args        chan interface{} // args 是需要执行的job
+	recycleTime time.Time        // recycleTime 当worker归还到队列中时更新此事件
 }
 
 func (w *goWorkerWithFunc) run() {

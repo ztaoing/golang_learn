@@ -4,12 +4,12 @@ import "time"
 
 // 环形队列：是worker_array接口的一个实现
 type loopQueue struct {
-	items  []*goWorker
+	items  []*goWorker //
 	expiry []*goWorker //到期的任务
-	head   int
-	tail   int
-	size   int //环形队列的容量,当容量为0时，即已经被释放
-	isFull bool
+	head   int         //头
+	tail   int         //尾
+	size   int         //环形队列的容量,当容量为0时，即已经被释放
+	isFull bool        //环形队列是否已满
 }
 
 func newWorkerLoopQueue(size int) *loopQueue {
@@ -51,7 +51,7 @@ func (wq *loopQueue) insert(worker *goWorker) error {
 	if wq.isFull {
 		return errQueueIsFull
 	}
-	// insert
+	// 将worker的指针保存起来
 	wq.items[wq.tail] = worker
 	wq.tail++
 	// 已满，将tail的索引更新为第一个索引
