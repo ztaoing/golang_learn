@@ -7,10 +7,12 @@
 package a
 
 import (
+	"fmt"
 	"math"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 //leecode55题 https://leetcode-cn.com/problems/jump-game/solution/tan-xin-by-15176331678/
@@ -2212,4 +2214,172 @@ func add(a int, b int) int {
 		a, b = sum, carry
 	}
 	return a
+}
+
+//有一道经典的使用 Channel 进行任务编排的题，你可以尝试做一下：有四个 goroutine，编号为 1、2、3、4。
+//每秒钟会有一个 goroutine 打印出它自己的编号，要求你编写一个程序，让输出的编号总是按照 1、2、3、4、1、2、3、4、……的顺序打印出来。
+
+type Token struct{}
+
+func newWorker(id int, ch chan Token, nextCh chan Token) {
+	for {
+		token := <-ch         // 取得令牌
+		fmt.Println((id + 1)) // id从1开始
+		time.Sleep(time.Second)
+		nextCh <- token
+	}
+}
+func main1() {
+	chs := []chan Token{make(chan Token), make(chan Token), make(chan Token), make(chan Token)}
+
+	// 创建4个worker
+	for i := 0; i < 4; i++ {
+		go newWorker(i, chs[i], chs[(i+1)%4])
+	}
+
+	//首先把令牌交给第一个worker
+	chs[0] <- struct{}{}
+
+	select {}
+}
+
+// 插入排序需要两个嵌套的循环，时间复杂度是O(n2)；
+//没有额外的存储空间，是原地排序算法；
+//不涉及相等元素位置交换，是稳定的排序算法。
+func insertionSort(nums []int) []int {
+	if len(nums) <= 1 {
+		return nums
+	}
+
+	for i := 0; i < len(nums); i++ {
+		// 每次从未排序区间取一个数据 value
+		value := nums[i]
+		// 在已排序区间找到插入位置
+		j := i - 1
+		for ; j >= 0; j-- {
+			// 如果比 value 大后移
+			if nums[j] > value {
+				nums[j+1] = nums[j]
+			} else {
+				break
+			}
+		}
+		// 插入数据 value
+		nums[j+1] = value
+	}
+
+	return nums
+}
+
+func mainInsert() {
+	nums := []int{4, 5, 6, 7, 8, 3, 2, 1}
+	nums = insertionSort(nums)
+	fmt.Println(nums)
+}
+
+// 冒泡排序
+//时间复杂度：O(n2)
+//空间复杂度：只涉及相邻元素的交换，是原地排序算法
+//算法稳定性：元素相等不会交换，是稳定的排序算法
+func bubbleSort(nums []int) []int {
+	if len(nums) <= 1 {
+		return nums
+	}
+
+	// 冒泡排序核心实现代码
+	for i := 0; i < len(nums); i++ {
+		flag := false
+		for j := 0; j < len(nums)-i-1; j++ {
+			if nums[j] > nums[j+1] {
+				nums[j], nums[j+1] = nums[j+1], nums[j]
+				flag = true
+			}
+		}
+		if !flag {
+			break
+		}
+	}
+
+	return nums
+}
+
+func mainbubble() {
+	nums := []int{4, 5, 6, 7, 8, 3, 2, 1}
+	nums = bubbleSort(nums)
+	fmt.Println(nums)
+}
+
+// 很显然，选择排序的时间复杂度也是 O(n2)
+//由于不涉及额外的存储空间，所以是原地排序；
+//由于涉及非相邻元素的位置交换，所以是不稳定的排序算法。
+func selectionSort(nums []int) {
+	if len(nums) <= 1 {
+		return
+	}
+	// 已排序区间初始化为空，未排序区间初始化待排序切片
+	for i := 0; i < len(nums); i++ {
+		// 未排序区间最小值初始化为第一个元素
+		min := i
+		// 从未排序区间第二个元素开始遍历，直到找到最小值
+		for j := i + 1; j < len(nums); j++ {
+			if nums[j] < nums[min] {
+				min = j
+			}
+		}
+		// 将最小值与未排序区间第一个元素互换位置（等价于放到已排序区间最后一个位置）
+		if min != i {
+			nums[i], nums[min] = nums[min], nums[i]
+		}
+	}
+}
+
+func mainselection() {
+	nums := []int{4, 5, 6, 7, 8, 3, 2, 1}
+	selectionSort(nums)
+	fmt.Println(nums)
+}
+
+// 快速排序入口函数
+// 快速排序是原地排序算法，时间复杂度和归并排序一样，也是 O(nlogn)
+// 但是快速排序也有其缺点，因为涉及到数据的交换，有可能破坏原来相等元素的位置排序，所以是不稳定的排序算法。
+func quickSort(nums []int, p int, r int) {
+	// 递归终止条件
+	if p >= r {
+		return
+	}
+	// 获取分区位置
+	q := partition(nums, p, r)
+	// 递归分区（排序是在定位 pivot 的过程中实现的）
+	quickSort(nums, p, q-1)
+	quickSort(nums, q+1, r)
+}
+
+// 定位 pivot
+func partition(nums []int, p int, r int) int {
+	// 以当前数据序列最后一个元素作为初始 pivot
+	pivot := nums[r]
+	// 初始化 i、j 下标
+	i := p
+	// 后移 j 下标的遍历过程
+	for j := p; j < r; j++ {
+		// 将比 pivot 小的数丢到 [p...i-1] 中，剩下的 [i...j] 区间都是比 pivot 大的
+		if nums[j] < pivot {
+			// 互换 i、j 下标对应数据
+			nums[i], nums[j] = nums[j], nums[i]
+			// 将 i 下标后移一位
+			i++
+		}
+	}
+
+	// 最后将 pivot 与 i 下标对应数据值互换
+	// 这样一来，pivot 就位于当前数据序列中间，i 也就是 pivot 值对应的下标
+	nums[i], nums[r] = pivot, nums[i]
+	// 返回 i 作为 pivot 分区位置
+	return i
+}
+
+func mainquick() {
+	nums := []int{4, 5, 6, 7, 8, 3, 2, 1}
+	quickSort(nums, 0, len(nums)-1)
+	fmt.Println(nums)
 }
