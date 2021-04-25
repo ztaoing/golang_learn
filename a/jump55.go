@@ -16,7 +16,12 @@ import (
 )
 
 //leecode55题 https://leetcode-cn.com/problems/jump-game/solution/tan-xin-by-15176331678/
-
+//给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。
+//数组中的每个元素代表你在该位置可以跳跃的最大长度。
+//判断你是否能够到达最后一个下标。
+// 输入：nums = [2,3,1,1,4]
+//输出：true
+//解释：可以先跳 1 步，从下标 0 到达下标 1, 然后再从下标 1 跳 3 步到达最后一个下标。
 func canJump(nums []int) bool {
 	if len(nums) == 0 {
 		return true
@@ -60,6 +65,16 @@ func canJump2(nums []int) bool {
 }
 
 //45题 https://leetcode-cn.com/problems/jump-game-ii/solution/
+// 给定一个非负整数数组，你最初位于数组的第一个位置。
+//数组中的每个元素代表你在该位置可以跳跃的最大长度。
+//你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+//假设你总是可以到达数组的最后一个位置。
+
+// 输入: [2,3,1,1,4]
+//输出: 2
+//解释: 跳到最后一个位置的最小跳跃数是 2。
+//     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+
 //跳到结尾的最少步数
 func canJumpMinSteps(nums []int) int {
 	l := len(nums) - 1
@@ -83,6 +98,13 @@ func canJumpMinSteps(nums []int) int {
 
 //25题 k个一组一反转链表
 //https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
+// 给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+//k 是一个正整数，它的值小于或等于链表的长度。
+//如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+//
+//进阶：
+//你可以设计一个只使用常数额外空间的算法来解决此问题吗？
+//你不能只是单纯的改变节点内部的值，而是需要实际进行节点交换。
 
 type ListNode struct {
 	Val  int
@@ -132,6 +154,13 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 }
 
 //有效括号 20题
+// 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+//
+//有效字符串需满足：
+//
+//左括号必须用相同类型的右括号闭合。
+//左括号必须以正确的顺序闭合。
+
 func isVliad(s string) bool {
 	n := len(s)
 	//如果不是偶数个，就说明有一个是单的
@@ -167,6 +196,11 @@ func isVliad(s string) bool {
 }
 
 //268题 丢失的数字
+// 给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。
+//进阶：
+//
+//你能否实现线性时间复杂度、仅使用额外常数空间的算法解决此问题?
+
 func missingNum(nums []int) int {
 	n := len(nums)
 	//求和 (首项+末项)*项数
@@ -190,7 +224,7 @@ func missingNum2(nums []int) int {
 	return res
 }
 
-//645题 寻找缺失和重复的元素
+//645题 todo 寻找缺失和重复的元素
 
 //234. 回文单链表
 //回文链表的长度可能是奇数，也可能是偶数
@@ -230,7 +264,7 @@ func traverse(right, left *ListNode) bool {
 	return res
 }
 
-//855题 考场入座
+//855题 todo 考场入座
 
 //并查集 主要解决图论中的【动态连通性】
 //使用森林来表示图的动态连通性，用数组来具体实现这个森林
@@ -291,6 +325,7 @@ func timeOf(pile int, speed int) int {
 }
 
 //42题：接雨水
+// 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
 
 type TreeNode struct {
 	Val   int
@@ -299,7 +334,8 @@ type TreeNode struct {
 }
 
 //剑指 Offer 28. 对称的二叉树
-
+// 请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
+//例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
 func isSymmetric(root *TreeNode) bool {
 	if root == nil {
 		return true
@@ -506,12 +542,11 @@ func findLowestAncestor(root, p, q *TreeNode) *TreeNode {
 	return left
 }
 
-//496. 下一个更大元素
+//496. todo 下一个更大元素
 //单调栈
 //倒着入栈，其实就是正着出栈
 
 //剑指 Offer 59 - I. 滑动窗口的最大值
-
 func maxSlidingWindow(nums []int, k int) []int {
 	// 窗口个数
 	res := make([]int, len(nums)-k+1)
@@ -693,7 +728,7 @@ func getPrn(s string) (prn []string) {
 	return prn
 }
 
-//字符串转数字
+// 字符串转数字
 func Atoi(str string) int {
 	//去掉收尾空格
 	str = strings.TrimSpace(str)
@@ -787,6 +822,7 @@ func lengthOfLIS1(nums []int) int {
 }
 
 // TODO 信封嵌套
+//565. 数组嵌套
 
 //剑指 Offer 42. 连续子数组的最大和
 //以nums[i]为结尾的"最大子数组的和"作为dp[i]
@@ -2195,11 +2231,11 @@ func sqrt(x int) int {
 	return a
 }
 
-//93. 复原 IP 地址
+//93. todo 复原 IP 地址
 
-//70. 爬楼梯
+//70. todo 爬楼梯
 
-//面试题 08.13. 堆箱子
+//面试题 todo 08.13. 堆箱子
 
 //剑指 Offer 65. 不用加减乘除做加法
 //两个整数做异或运算，得到不进位加法的运算结果
