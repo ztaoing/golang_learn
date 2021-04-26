@@ -25,29 +25,35 @@ func readConfig() *Config {
 	config := Config{}
 	typ := reflect.TypeOf(config)
 	fmt.Println("reflect.TypeOf:", typ)
-
+	// 返回指针指向的值
 	value := reflect.Indirect(reflect.ValueOf(&config))
-	fmt.Println("reflect.ValueOf", reflect.ValueOf(&config))
-	fmt.Println("reflect.Indirect", value)
+	fmt.Println("reflect.ValueOf:", reflect.ValueOf(&config))
+	fmt.Println("reflect.Indirect:", value)
 
-	fmt.Println("typ.NumField", typ.NumField())
+	fmt.Println("typ.NumField:", typ.NumField())
 	for i := 0; i < typ.NumField(); i++ {
 		f := typ.Field(i)
-		fmt.Println("typ.Field", f)
-
+		fmt.Println("typ.Field:", f)
+		// 属性名称
+		fieldName := f.Name
+		fmt.Println("typ.Field.Name:", f)
+		// tag json
 		if v, ok := f.Tag.Lookup("json"); ok {
-			fmt.Println("f.Tag.Lookup(\"json\")", v, "\n")
+			fmt.Println("f.Tag.Lookup(\"json\"):", v, "\n")
 			// the  upper key
 			key := fmt.Sprintf("CONFIG_%s", strings.ReplaceAll(strings.ToUpper(v), "-", "_"))
 			if env, exist := os.LookupEnv(key); exist {
 				value.FieldByName(f.Name).Set(reflect.ValueOf(env))
 			}
 		}
+		//获取字段值
+		fieldValue := reflect.ValueOf(&config).Elem().FieldByName(fieldName)
+		fmt.Println("typ.Field.Value:", fieldValue)
 	}
 	return &config
 }
 
-func mains() {
+func main() {
 	os.Setenv("CONFIG_SERVER_NAME", "global_server")
 	os.Setenv("CONFIG_SERVER_IP", "10.0.0.1")
 	os.Setenv("CONFIG_SERVER_URL", "go1234.cn")
