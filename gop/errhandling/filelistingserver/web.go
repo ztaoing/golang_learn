@@ -29,11 +29,14 @@ func errWrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
 		if err != nil {
 			// 记录日志
 			log.Printf("Error handling request : %s", err.Error())
+			// userError
 			// 如果error是一个userError的话,就返回 给用户展示的错误信息
 			if userErr, ok := err.(userError); ok {
 				http.Error(writer, userErr.Message(), http.StatusBadRequest)
 				return
 			}
+
+			// systemError
 			// 处理错误：打开文件有很多种不同的错误的方法，文件不存在、对文件没有权限、甚至是认识的错误
 			code := http.StatusOK
 			switch {
