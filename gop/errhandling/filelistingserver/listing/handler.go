@@ -24,6 +24,7 @@ func ListHandler(writer http.ResponseWriter, request *http.Request) error {
 	//找找url中是否有/list/
 	if strings.Index(request.URL.Path, prefix) != 0 {
 		// 给用户看的错误信息
+		// error 是一个接口，包含error()，userError实现了error()
 		return userError("path must start with " + prefix)
 	}
 
