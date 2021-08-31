@@ -32,5 +32,6 @@ func main() {
 	}
 	// 将套接字交给rpc处理
 	// rpc 解决了call id 和序列化和反序列化的问题
+	// go rpc默认使用的是gob序列化协议
 	rpc.ServeConn(conn)
 }
