@@ -23,6 +23,29 @@ func MyLogger() gin.HandlerFunc {
 		fmt.Println("状态:", status)
 	}
 }
+
+func TokenRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var token string
+		for k, v := range c.Request.Header {
+			if k == "X-T oken" {
+				token = v[0]
+			}
+		}
+		if token != "bobby" {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"msg": "未登录",
+			})
+			// 这里的return是起不到作用的,必须使用abort(),组织后续逻辑的执行
+			// 为什么连return都阻止不了后续逻辑的执行
+			// return
+			c.Abort()
+		}
+		// 已登录
+		c.Next()
+
+	}
+}
 func main() {
 	router := gin.New()
 	// 在分组使用中间件
