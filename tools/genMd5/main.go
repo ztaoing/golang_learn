@@ -35,7 +35,7 @@ func main() {
 	// 如果把salt保存到user的struct中，就会有侵入性，一般不这样做！：可以把密码、salt值、使用的加密算法都保存起来！
 	// 这是很多大型的框架内置的做法！
 
-	newPasswrod := fmt.Sprintf("$pbkdf2-sha512$%s$%s", salt, encodedPwd)
+	newPasswrod := fmt.Sprintf("$ps-sha512$%s$%s", salt, encodedPwd)
 	fmt.Println(newPasswrod)
 
 	// 从newPasswrod中解析出密码
