@@ -1,4 +1,4 @@
-package main
+package validatorTrans
 
 import (
 	"fmt"
@@ -119,8 +119,9 @@ func ValidateMobile(fl validator.FieldLevel) bool {
 	}
 	return true
 }
-func main() {
+
+/*func main() {
 	if err := InitTrans("zh"); err != nil {
 		panic(err)
 	}
-}
+}*/

@@ -1,5 +1,20 @@
 package main
 
+import (
+	"context"
+	"golang_learn/golang_learn/tools/proto"
+	validatorTrans "golang_learn/golang_learn/tools/validator"
+	"net/http"
+	"strings"
+
+	"google.golang.org/grpc/codes"
+
+	"google.golang.org/grpc/status"
+
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+)
+
 /**
   传统的非前后端分离的系统中，使用的cookie和session的方式！如果在微服务中使用这种方式:
 微服务是互相隔离的，数据库也是独立的。可以将session保存在redis集群中。
@@ -107,6 +122,107 @@ a、oauth2是一个授权框架，jwt是一个认证协议
 b、无论使用哪种方式切记用https来保证数据的安全性
 c、oauth2用子啊使用第三方账号登录的情况（比如使用微博、qq、github登录某个app），而jwt是用在前后端分离，需要简单的对后台api进行保护时使用！！！
 */
-func main() {
+// 这里需要设置
 
+func main() {
+	// 我们需要的就是验证用户
+	//生成token
+
+}
+
+type PassWordLoginForm struct {
+	Mobile    string `form:"mobile" json:"mobile" binding:"required,mobile"` //手机号码格式有规范可寻， 自定义validator
+	PassWord  string `form:"password" json:"password" binding:"required,min=3,max=20"`
+	Captcha   string `form:"captcha" json:"captcha" binding:"required,min=5,max=5"`
+	CaptchaId string `form:"captcha_id" json:"captcha_id" binding:"required"`
+}
+
+func removeTopStruct(fileds map[string]string) map[string]string {
+	rsp := map[string]string{}
+	for field, err := range fileds {
+		rsp[field[strings.Index(field, ".")+1:]] = err
+	}
+	return rsp
+}
+func HandleValidatorError(c *gin.Context, err error) {
+	errs, ok := err.(validator.ValidationErrors)
+	//TODO：err断言为validator.ValidationErrors失败
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"msg": err.Error(),
+		})
+	}
+	c.JSON(http.StatusBadRequest, gin.H{
+		"error": removeTopStruct(errs.Translate(validatorTrans.Trans)), //Translate 翻译
+	})
+}
+
+// user
+func PasswordLogin(c *gin.Context) {
+	passwordLoginLoginForm := PassWordLoginForm{}
+	//表单验证:对passwordLoginForm执行验证
+	if err := c.ShouldBind(&passwordLoginLoginForm); err != nil {
+		//表单验证不通过
+		HandleValidatorError(c, err)
+	}
+	//验证码
+	if store.Verify(passwordLoginLoginForm.CaptchaId, passwordLoginLoginForm.Captcha, false) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"capture": "验证码错误",
+		})
+	}
+	//登录逻辑
+	// 调用rpc 的user service 端接口，根据手机号获取用户信息
+	if rsp, err := userServiceClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
+		Mobile: passwordLoginLoginForm.Mobile,
+	}); err != nil {
+		//判断返回的状态码
+		if s, ok := status.FromError(err); ok {
+			/**
+			const (
+				// OK is returned on success.
+				OK Code = 0
+				Canceled Code = 1
+				Unknown Code = 2
+				InvalidArgument Code = 3
+				DeadlineExceeded Code = 4
+				NotFound Code = 5
+				AlreadyExists Code = 6
+				PermissionDenied Code = 7
+				ResourceExhausted Code = 8
+				FailedPrecondition Code = 9
+				Aborted Code = 10
+				OutOfRange Code = 11
+				Unimplemented Code = 12
+				Internal Code = 13
+				Unavailable Code = 14
+				DataLoss Code = 15
+				Unauthenticated Code = 16
+				_maxCode = 17
+			)
+			*/
+			switch s.Code() {
+			case codes.NotFound:
+				c.JSON(http.StatusBadRequest, map[string]string{
+					"mobile": "用户不存在",
+				})
+			default:
+				c.JSON(http.StatusInternalServerError, map[string]string{
+					"mobile": "登录失败",
+				})
+			}
+
+		}
+	} else {
+		// 校验获得到的用户密码
+
+	}
+
+}
+
+var userServiceClient proto.UserClient
+
+// 这里是
+func GetUserByMobile(ctx context.Context, mobileRequest *proto.MobileRequest) {
+	//根据
 }
