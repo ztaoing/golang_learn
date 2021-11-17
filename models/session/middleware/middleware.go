@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"errors"
-	"golang_learn/golang_learn/tools/config"
-	"golang_learn/golang_learn/tools/models"
+	"golang_learn/golang_learn/models/config"
+	"golang_learn/golang_learn/models/models"
 	"net/http"
 	"time"
 

@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"golang_learn/golang_learn/tools/proto"
-	validatorTrans "golang_learn/golang_learn/tools/validator"
+	"golang_learn/golang_learn/models/proto"
+	validatorTrans "golang_learn/golang_learn/models/validator"
 	"net/http"
 	"strings"
 
@@ -173,7 +173,7 @@ func PasswordLogin(c *gin.Context) {
 	}
 	//登录逻辑
 	// 调用rpc 的user service 端接口，根据手机号获取用户信息
-	if rsp, err := userServiceClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
+	if _, err := userServiceClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
 		Mobile: passwordLoginLoginForm.Mobile,
 	}); err != nil {
 		//判断返回的状态码
