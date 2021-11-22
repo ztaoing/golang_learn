@@ -86,10 +86,6 @@ func main() {
 
 
 	// 在非阻塞的情况下，ctx不会连接进行操作，它只控制设置的步骤
-	// In the blocking case, ctx can be used to cancel or expire the pending
-	// connection. Once this function returns, the cancellation and expiration of
-	// ctx will be noop. Users should call ClientConn.Close to terminate all the
-	// pending operations after this function returns.
 	// 在阻塞模式中,ctx 可以用来关闭连接和使没有处理的连接过期。一旦一个方法返回。取消ctx和过期就会被置空。
 	// 使用者需要在终止所有未执行的操作之后，调用ClientConn.Close方法来关闭连接
 
