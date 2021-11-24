@@ -85,8 +85,8 @@ func main() {
 	// 如果使用阻塞的dial，需要通过WithBlock()方法设置option
 
 
-	// 在非阻塞的情况下，ctx不会连接进行操作，它只控制设置的步骤
-	// 在阻塞模式中,ctx 可以用来关闭连接和使没有处理的连接过期。一旦一个方法返回。取消ctx和过期就会被置空。
+	// 在非阻塞的情况下，ctx不会对连接进行操作，它只控制设置的步骤
+	// 在阻塞模式中,ctx 可以用来关闭连接和使没有处理的连接过期。一旦一个方法返回。取消ctx和过期设置就会被置空。
 	// 使用者需要在终止所有未执行的操作之后，调用ClientConn.Close方法来关闭连接
 
 	// The target name syntax is defined in
@@ -103,10 +103,14 @@ func main() {
 			czData:            new(channelzData),
 			firstResolveEvent: grpcsync.NewEvent(),
 		}
-		// (*retryThrottler)(nil)
+
+		// 将retryThrottler配置置空?  重试节流器
+		// a:=(*retryThrottler)(nil) 等价于  var a *retryThrottler = nil
 		cc.retryThrottler.Store((*retryThrottler)(nil))
+
 		//UpdateConfigSelector更新config selector
 		cc.safeConfigSelector.UpdateConfigSelector(&defaultConfigSelector{nil})
+
 		// 为context添加cancel
 		cc.ctx, cc.cancel = context.WithCancel(context.Background())
 		// 应用自定义option
