@@ -46,3 +46,10 @@ nil for JSON null
 
 [go程序自己监控自己]
 
+[多路复用] channel.multiplex
+[atomic.Value为什么不加锁也能保证数据线程安全]
+
+[go中的零值，它有什么作用？] 官方：https://golang.org/ref/spec#the_zero_value
+布尔型为false；数字型为0；字符串型为""；指针、函数、接口、切片、通道和映射都为nil
+
+
