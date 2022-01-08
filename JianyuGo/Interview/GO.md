@@ -517,7 +517,50 @@ slice
     golang.org/pkg/reflect/#DeepEqual 
     该方法对go语言中的各种类型都进行了兼容处理和判定。
 
-4、单核CPU，开两个goroutine，其中一个死循环，会怎样？    
+4、单核CPU，开两个goroutine，其中一个死循环，会怎样？
+    
+    第一点：计算机只有一个单核CPU对go程序产生什么影响？
+    从单核CPU来看，最大的影响就是GMP模型中的P，因为P的数量默认是与CPU核数（GOMAXPROCS）保持一致
+    M必须与P绑定，然后不断在M上循环查找可运行的G来执行相应的任务。
+    
+    第二点：goroutine受限
+    goroutine的数量和运行模式都是受限的。有两个goroutine，一个在死循环，另外一个在正常运行
+    可以理解为 main goroutine+ 一个新的goroutine跑死循环。
+    需要注意的是，goroutine里跑着死循环，也就是时时刻刻在运行着业务逻辑，
+    这块需要与单核CPU关联起来，考虑是否会一直阻塞主，把整个go进程运行给hang住了
+    
+    注意：面试时，可以先举出这个场景，解释清楚后，再补充提问面试官是否是这类场景
+
+    第三点：go版本的问题
+    go的调度是会变动的，在不同的go版本中，结果可能会不一样
+
+    实战演练：
+    func main(){
+        // 模拟单核CPU
+        runtime.GOMAXPROCES(1)
+    
+        // 模拟死循环
+        go func(){
+            for {}
+        }
+        time.sleep(time.Millisecond)
+        fmt.Println("end")
+    }
+    
+    答案：
+    在go1.14之前，不会输出任何结果：
+        这个死循环的goroutine是无法被抢占的，这个死循环中没有设计主动放弃执行权或被动放弃的行为，所以会一直执行
+        那为什么main goroutine会无法运行呢？因为会优先调用休眠，但由于单核CPU，只有一个P。唯一的P又一直在运行，无法停止
+        导致main goroutine没有机会被调度，所以这个程序一直阻塞在了死循环中。
+    在go1.14及之后，能够正常输出结果
+        主要是因为在1.14实现了基于信号的抢占调度，
+    1、抢占阻塞在系统调用上的P
+    2、抢占运行时间过长的G（类似时间片？）
+    该方法会检测符合场景的P，当满足上述两个场景之一时，就会发送信号给M，M收到信号后将会休眠正在阻塞的goroutine
+    调用绑定的信号方法，并进行重新调度。
+
+    注意：在go语言中，sysmon会用于检测抢占。sysmon是go的runtime的系统检测器，
+        sysmon可进行forcegc、netpoll、retake等一系列操作。
     
 
 [数据结构]
