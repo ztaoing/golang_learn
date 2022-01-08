@@ -340,7 +340,7 @@ slice
             在存在syscall的情况下，线程经常被阻塞和解阻塞。这增加了额很多额外的性能开销。
 
     GMP: 为了解决GM模型的以上问题，在Go1.1时，增加了P。并实现了work stealing算法来解决一些新产生的问题。
-    
+        
 
         加入P之后，带来了什么改变呢？
         1、每个p有自己的本地队列，大幅度减轻了对全局队列的直接依赖，减少了锁竞争。而GM模型的性能开发大头就是锁竞争
@@ -356,8 +356,168 @@ slice
             3、M被系统调用阻塞后，我们是希望把它已有的未执行的任务分配给其他继续运行，而不是一阻塞就导致全部停止
         因此在M上使用本地队列是不合理的。所以引入了新组件P
         
+2、单机goroutine数量控制在多少合适，会影响GC和调度？
+    goroutine太多了会影响gc和调度吧，主要是怎么预算这个数时合理的呢？
     
+    go调度的流程：
+    1、当执行 go func()时，实际上就是创建一个全新的goroutine，即G
+    2、创建的G会被放入P的本地队列或全局队列中。需要注意一点，这里的P指的是创建G的P
+    3、唤醒或创建M以便执行G
+    4、不断进行时间循环
+    5、寻找 可用状态的G，然后执行任务
+    6、清除后，重新进入事件循环
+
+    本地队列数量有限制，不允许超过256个。
+    在创建G时，会优先选择P的本地队列，如果本地队列满了，则将P的本地队列的一半G移动到全局队列
     
+    在协程的运行过程中，真正干活的GPM又分别被什么约束？
+
+    M的限制：
+    首先要知道在协程的执行中，真正干活的是GPM中的哪一个？M
+    G是用户态上的东西，最终执行都需要映射，绑定到M上去执行。
+    M有没有限制？
+    在go语言中，M的默认数量限制时10000，如果超出则会报错：GO: runtime: program exceeds 10000-thread limit
+    通常只在goroutine出现阻塞的情况下，才会遇到这种情况，这可能也预示着你的程序有问题。
+    如果要设置固定数量的M：debug.SetMaxThreads 进行设置
+
+    G的限制：
+    没有限制，但是理论上会受到内存你的影响。 假设一个goroutine创建需要4K
+        4k*80000 = 320000k 0.3G内存
+        4k*1000000 = 400 0000k 4G内存
+    依次就可以大概计算出一台单机能够创建goroutine的大概数量级别。
+    goroutine创建所需申请的2-4K是需要连续的内存块.
+
+    P的限制：p的数量是否有限制？受什么影响？
+    有限制，P的数量受环境变量GOMAXPROCS的直接影响
+
+    在go语言中，通过设置GOMAXPROCS可以调整调度器中P的数量
+    另一点，与P相关的M，是需要绑定P才能进行具体的任务，因此p的多少会影响到Go程序的运行表现
+    
+    p的数量基本是受本机的核数影响。
+    p的数量是否影响goroutine的数量创建呢？
+    不影响，
+    
+    单机的goroutine数量只要控制在限额以下，就是合理的。
+    真实场景得看里面具体跑的是什么，跑的如果是资源怪兽，只运行几个goroutine都可以跑死
+    
+    因此想定义预算，就得看跑的是什么？
+    
+3、go结构体是否可以比较？为什么？
+    
+    在go中，结构体有时并不能直接比较，当其中包含：slice、map、function时，是不能比较的。若强行比较会导致出现报错
+    而指针引用，其虽然都是new(string)，从表面看是一个东西，单其具体返回的地址是不一样的。
+        package main
+
+            import "fmt"
+            
+            type Vertex struct {
+            Name1 string
+            Name2 string
+            }
+            
+            func main() {
+                v := Vertex{"脑子进了", "煎鱼"}
+                v.Name2 = "蒸鱼"
+                fmt.Println(v.Name2)
+            }
+        输出结果： 蒸鱼
+
+            type Value struct {
+            Name   string
+            Gender string
+        }
+        
+        func main() {
+            v1 := Value{Name: "煎鱼", Gender: "男"}
+            v2 := Value{Name: "煎鱼", Gender: "男"}
+            if v1 == v2 {
+            fmt.Println("脑子进煎鱼了")
+            return
+        }
+        
+            fmt.Println("脑子没进煎鱼")
+        }
+    输出结果：脑子进煎鱼了
+
+            type Value struct {
+            Name   string
+            Gender *string
+        }
+        
+        func main() {
+            v1 := Value{Name: "煎鱼", Gender: new(string)}
+            v2 := Value{Name: "煎鱼", Gender: new(string)}
+            if v1 == v2 {
+            fmt.Println("脑子进煎鱼了")
+            return
+        }
+        
+            fmt.Println("脑子没进煎鱼")
+        }
+        答案是：脑子没进煎鱼。
+
+                type Value struct {
+            Name   string
+            GoodAt []string
+        }
+        
+        func main() {
+            v1 := Value{Name: "煎鱼", GoodAt: []string{"炸", "煎", "蒸"}}
+            v2 := Value{Name: "煎鱼", GoodAt: []string{"炸", "煎", "蒸"}}
+            if v1 == v2 {
+            fmt.Println("脑子进煎鱼了")
+            return
+        }
+        
+            fmt.Println("脑子没进煎鱼")
+        }
+        答案：./main.go:15:8: invalid operation: v1 == v2 (struct containing []string cannot be compared)
+        type Value1 struct {
+        Name string
+        }
+        
+        type Value2 struct {
+        Name string
+        }
+        
+        func main() {
+            v1 := Value1{Name: "煎鱼"}
+            v2 := Value2{Name: "煎鱼"}
+            if v1 == v2 {
+            fmt.Println("脑子进煎鱼了")
+            return
+        }
+        
+            fmt.Println("脑子没进煎鱼")
+        }
+        报错：./main.go:18:8: invalid operation: v1 == v2 (mismatched types Value1 and Value2)
+
+    那是不是就完全没法比较了呢？并不，我们可以借助强制转换来实现：
+             if v1 == Value1(v2) {
+                fmt.Println("脑子进煎鱼了")
+                return
+        }
+
+    如果必须要比较，可以使用反射，reflect.DeepEqual()，其用来判定两个值是否深度一致。
+            func main() {
+            v1 := Value{Name: "煎鱼", GoodAt: []string{"炸", "煎", "蒸"}}
+            v2 := Value{Name: "煎鱼", GoodAt: []string{"炸", "煎", "蒸"}}
+            if reflect.DeepEqual(v1, v2) {
+                fmt.Println("脑子进煎鱼了")
+                return
+            }
+    
+              fmt.Println("脑子没进煎鱼")
+            }
+
+    1、相同的类型的值是深度相等的，不同类型的值永远不会深度相等
+    2、当数组值的对应元素深度相等时，数组值是深度相等的
+    3、当结构体值的对应字段都是深度相等的，则值是深度相等
+    4、当接口值的深度相等，则深度相等
+    golang.org/pkg/reflect/#DeepEqual 
+    该方法对go语言中的各种类型都进行了兼容处理和判定。
+
+4、单核CPU，开两个goroutine，其中一个死循环，会怎样？    
     
 
 [数据结构]
