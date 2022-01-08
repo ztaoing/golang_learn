@@ -562,5 +562,188 @@ slice
     注意：在go语言中，sysmon会用于检测抢占。sysmon是go的runtime的系统检测器，
         sysmon可进行forcegc、netpoll、retake等一系列操作。
     
+5、详解go程序的启动流程，g0，m0是什么？
 
+
+6、goroutine泄露的N种方法
+    
+     泄露的原因大多集中在：
+    1、goroutine内正在进行channel/mutex等读写操作，单由于逻辑问题，某些情况下回被一直阻塞。
+    2、goroutine内的业务逻辑进入死循环，资源一直无法释放
+    3、goroutine内的业务逻辑进入长时间等待，又不断有新增的goroutine进入等待
+    
+    1、channel使用不当：channel读写操作时的逻辑问题
+        a、发送不接收：
+        func main (){
+            for i:=0;i<4;i++{
+                queryAll()
+                fmt.printf("goroutines:%d\n,runtime.NumGoroutine())
+            }
+        }
+        func queryAll()int{
+            // 无缓冲
+            ch:=make(chan int)
+            // 发送三次
+            for i:=0;i<3;i++{
+                go func (){
+                    ch<-query()
+                }()
+            }
+            // 只接收一次
+          return <-ch
+        }
+
+        func query()int{
+            n:=rand.Intn(100)
+            time.Sleep(time.Duration(n)*time.millisecond)
+            return n
+        }
+    
+        输出结果： 每次向channel发送3次，但是接收端只接收一次,有两个没有接收
+         gorotines:3
+         gorotines:5
+         gorotines:7
+         gorotines:9
+            
+        b、接收不发送：没有发送端
+        func main(){
+            defer func(){
+                fmt.println("goroutines:",runtime.NumGoroutine())
+            }()
+            var ch chan struct{}
+            go func(){
+                ch<-struct{}{}
+            }()
+            time.Sleep(time.Second)
+        }
+        输出：
+            goroutines:2 
+
+        c、nil channel
+        func main(){
+            defer func(){
+                fmt.println("goroutines:",runtime.NumGoroutine())
+            }
+            var ch chan int
+            go func(){
+                <-ch
+            }
+         time.sleep(time.second)
+        }
+        输出结果： goroutines:2
+        注意：channel如果忘记初始化，无论读，还是写操作，都会造成阻塞
+        正确的姿势：
+        // 使用make函数进行初始化
+        ch:= make(ch chan,int)
+        go func(){
+            <-ch
+        }()
+        ch<-0
+
+        d、奇怪的慢等待:经典的事故场景
+        func main() {
+            for {
+                go func() {
+                    _, err := http.Get("https://www.xxx.com/")
+                    if err != nil {
+                        fmt.Printf("http.Get err: %v\n", err)
+                    }
+                    // do something...
+            }()
+
+            time.Sleep(time.Second * 1)
+            fmt.Println("goroutines: ", runtime.NumGoroutine())
+            
+            输出结果：
+                goroutines:  5
+                goroutines:  9
+                goroutines:  13
+                goroutines:  17
+                goroutines:  21
+                goroutines:  25
+                ...
+                在这个例子中，展示了一个 Go 语言中经典的事故场景。也就是一般我们会在应用程序中去调用第三方服务的接口。
+                但是第三方接口，有时候会很慢，久久不返回响应结果。恰好，Go 语言中默认的 http.Client 是没有设置超时时间的。
+                因此就会导致一直阻塞，一直阻塞就一直爽，Goroutine 自然也就持续暴涨，不断泄露，最终占满资源，导致事故。
+            在 Go 工程中，我们一般建议至少对 http.Client 设置超时时间：
+                    httpClient := http.Client{
+                        Timeout: time.Second * 15,
+                    }
+            并且要做限流、熔断等措施，以防突发流量造成依赖崩塌，依然吃 P0。
+        
+            e、互斥锁忘记解锁
+                    func main() {
+                            total := 0
+                            defer func() {
+                                time.Sleep(time.Second)
+                                fmt.Println("total: ", total)
+                                fmt.Println("goroutines: ", runtime.NumGoroutine())
+                        }()
+                        
+                            var mutex sync.Mutex
+                            for i := 0; i < 10; i++ {
+                                go func() {
+                                    mutex.Lock()
+                                    total += 1
+                                }()
+                            }
+                        }
+                    }
+             输出结果：
+             total:  1
+             goroutines:  10  
+    第一个互斥锁 sync.Mutex 加锁了，但是他可能在处理业务逻辑，又或是忘记 Unlock 了。
+    因此导致后面的所有 sync.Mutex 想加锁，却因未释放又都阻塞住了
+
+    我们建议如下写法：
+    var mutex sync.Mutex
+    for i := 0; i < 10; i++ {
+        go func() {
+            mutex.Lock()
+            defer mutex.Unlock()
+            total += 1
+    }()
+    }
+
+    f、同步锁使用不当
+        func handle(v int) {
+            var wg sync.WaitGroup
+            wg.Add(5)
+            for i := 0; i < v; i++ {
+                fmt.Println("脑子进煎鱼了")
+                wg.Done()
+            }
+            wg.Wait()
+    }
+    
+    func main() {
+        defer func() {
+        fmt.Println("goroutines: ", runtime.NumGoroutine())
+        }()
+        
+            go handle(3)
+            time.Sleep(time.Second)
+    }
+    由于 wg.Add 的数量与 wg.Done 数量并不匹配，因此在调用 wg.Wait 方法后一直阻塞等待。
+    
+    建议如下写法：
+      var wg sync.WaitGroup
+    for i := 0; i < v; i++ {
+        wg.Add(1)
+        defer wg.Done()
+        fmt.Println("脑子进煎鱼了")
+    }
+    wg.Wait()
+    
+    g、排查方法
+    我们可以调用 runtime.NumGoroutine 方法来获取 Goroutine 的运行数量，进行前后一比较，就能知道有没有泄露了。
+    但在业务服务的运行场景中，Goroutine 内导致的泄露，大多数处于生产、测试环境，因此更多的是使用 PProf：
+    import (
+    "net/http"
+     _ "net/http/pprof"
+    )
+    
+    http.ListenAndServe("localhost:6060", nil))
+    只要我们调用 http://localhost:6060/debug/pprof/goroutine?debug=1，PProf 会返回所有带有堆栈跟踪的 Goroutine 列表。
+    也可以利用 PProf 的其他特性进行综合查看和分析，这块参考我之前写的《Go 大杀器之性能剖析 PProf》，基本是全村最全的教程了。
 [数据结构]
