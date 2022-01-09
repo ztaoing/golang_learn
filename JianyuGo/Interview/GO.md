@@ -746,4 +746,140 @@ slice
     http.ListenAndServe("localhost:6060", nil))
     只要我们调用 http://localhost:6060/debug/pprof/goroutine?debug=1，PProf 会返回所有带有堆栈跟踪的 Goroutine 列表。
     也可以利用 PProf 的其他特性进行综合查看和分析，这块参考我之前写的《Go 大杀器之性能剖析 PProf》，基本是全村最全的教程了。
+
+7、go在什么时候会抢占P？
+    
+    goroutine早期是没有设计成抢占式的，早期的goroutine只有在读写、主动让出、锁等操作时才会触发调度切换
+    这样有一个严重的问题，就是在垃圾收集器进行STW时，如果有一个goroutine一直都在阻塞调用，垃圾回收器就会一直等待他...
+    这种情况就需要抢占式调度来解决问题。
+    
+    如果一个goroutine运行时间过久，就需要进行抢占来解决。
+    
+    go语言在1.12起开始实现抢占式调度器，并不断完善：
+    g0.x：基于单线程的调度器
+    g1.0：基于多线程的调度器
+    g1.1：基于任务窃取的调度器
+    g1.2-1.13：基于协作式的抢占调度器
+    g1.14：基于信号的抢占调度器
+    
+    调度器的新体感：非均匀存储器访问调度，但是非常复杂：NUMA-aware scheduler for GO
+    
+    为什么要抢占P？
+    答：如果不抢，就没有机会运行，会hang死，又或是资源分配不均了。出现这种情况，显然是不合理的。
+    
+    举个栗子：
+        func main(){
+            runtime.GOMAXPROCS(1)
+            go func(){
+                for{}
+            }
+            time.Sleep(time.Millisecond)
+            fmt.Println("end")
+        }
+    在老版本中，因为只有一个p，子goroutine在不断执行，并无法停止，导致main goroutine没有执行的机会。
+    
+    如果goroutine从阻塞状态恢复，该怎么继续运行呢？没了p怎么办？
+    该goroutine需要先检查所在M是否仍然绑定着P：
+    1、若有P，则可以调整状态，继续运行
+    2、没有p，M可以重新抢占P，再绑定P
+
+    抢占P，本身就是一个双向行为，你抢了我的P，我也可以抢占别人的P来运行。
+    
+    怎么抢占P？
+    具体的处理在runtime.retake方法：处理以下两种场景
+    1、抢占阻塞在系统调用上的P  
+    2、抢占运行时间过长的G
+    
+    以下主要这对抢占P的场景：
+        func retake(now int64) uint32 {
+                n := 0
+                // 防止发生变更，对所有 P 加锁，allpLock的所有P的锁
+                // 其会保护allp、idleMask、timerpMask的无P读取和大小变化，以及对allp的所有写入操作
+                lock(&allpLock)
+                
+                // 走入主逻辑，对所有 P 开始循环处理
+                for i := 0; i < len(allp); i++ {
+                _p_ := allp[i]
+                pd := &_p_.sysmontick
+                s := _p_.status
+                sysretake := false
+                ...
+                if s == _Psyscall {
+    
+                // 进入主逻辑：
+                // 场景1：会使用万能的for循环对所有的P进行一个个的处理。
+                // 判断是否超过 1 个 sysmon tick 周期(20us)的任务，则会从系统调用中抢占P，否则跳过
+                // 
+                    t := int64(_p_.syscalltick)
+                    if !sysretake && int64(pd.syscalltick) != t {
+                    pd.syscalltick = uint32(t)
+                    pd.syscallwhen = now
+                    continue
+                }
+                
+                ...
+                }
+                }
+                unlock(&allpLock)
+                return uint32(n)
+        }
+    
+        场景2：
+                func retake(now int64) uint32 {
+                        for i := 0; i < len(allp); i++ {
+                        ...
+                        if s == _Psyscall {
+                        // 从此处开始分析
+                        // runqempty(_p_) == true 方法会判断任务队列 P 是否为空，以此来检测有没有其他任务需要执行。
+                        // atomic.Load(&sched.nmspinning)+atomic.Load(&sched.npidle) > 0 会判断是否存在空闲 P 和正在进行调度窃取 G 的 P。
+                        // pd.syscallwhen+10*1000*1000 > now 会判断系统调用时间是否超过了 10ms。
+                    
+                        // 这里奇怪的是 runqempty 方法明明已经判断了没有其他任务，这就代表了没有任务需要执行，是不需要抢夺 P 的。
+                        // 但实际情况是，由于可能会阻止 sysmon 线程的深度睡眠，最终还是希望继续占有 P。
+                            if runqempty(_p_) &&
+                            atomic.Load(&sched.nmspinning)+atomic.Load(&sched.npidle) > 0 &&
+                            pd.syscallwhen+10*1000*1000 > now {
+                            continue
+                        }
+                        ...
+                        }
+                        }
+                        unlock(&allpLock)
+                        return uint32(n)
+                }
+
+            抢夺p的阶段：
+                    func retake(now int64) uint32 {
+                            for i := 0; i < len(allp); i++ {
+                            ...
+                            if s == _Psyscall {
+
+                            // 承接上半部分
+                            // 解锁相关属性：需要调用 unlock 方法解锁 allpLock，从而实现获取 sched.lock，以便继续下一步。
+                            // 减少闲置 M：需要在原子操作（CAS）之前减少闲置 M 的数量（假设有一个正在运行）。否则在发生抢夺 M 时可能会退出系统调用，递增 nmidle 并报告死锁事件。
+                           //  修改 P 状态：调用 atomic.Cas 方法将所抢夺的 P 状态设为 idle，以便于交于其他 M 使用。
+                           //  抢夺 P 和调控 M：调用 handoffp 方法从系统调用或锁定的 M 中抢夺 P，会由新的 M 接管这个 P。
+                            unlock(&allpLock)
+
+                            incidlelocked(-1)
+                            if atomic.Cas(&_p_.status, s, _Pidle) {
+                                if trace.enabled {
+                                traceGoSysBlock(_p_)
+                                traceProcStop(_p_)
+                            }
+                                n++
+                                _p_.syscalltick++
+                                handoffp(_p_)
+                            }
+                                incidlelocked(1)
+                                lock(&allpLock)
+                            }
+                            }
+                            unlock(&allpLock)
+                            return uint32(n)
+            }
+
+8、诱发goroutine挂起的27个原因？
+    
+    
 [数据结构]
