@@ -971,6 +971,71 @@ slice
     waitReasonPreempted：发生循环调用抢占时，会会休眠等待调度。
     waitReasonDebugCall：调用 GODEBUG 时，会触发。
 [数据结构]
-1、go interface的一个坑及原理分析
+1、go interface的一个坑及原理分析：本文是go比较有名的一个坑。因为在线上真实出现过这个坑。写给不了解的嗯在使用
+    if err !=nil 的时候提高警惕
     
+    go语言的interface{}在使用过程中有一个特别坑的特性，当你比较一个interface{}类型是否是nil的时候，这是需要特别注意的问题
     
+    例子一：
+        func main(){
+            var v interface{}
+            v = (*int)(nil)
+            fmt.println(v==nil)
+        }
+        结果：false ,为什么不是true，命名已经强行设置为nil了。
+
+    例子二：
+        func main (){
+            var data *byte
+            var in interface{}
+            
+            fmt.println(data,data==nil) // nil true
+            fmt.println(in,in==nil)     // nil true 
+
+            in = data
+            fmt.println(in,in==nil)     // nil false
+        }
+      为什么刚刚声明的data和in变量，输出结果是nil，判断结果也是true
+      为什么把data变量赋值给变量in之后，输出结果依然是nil，但是判断确实false？
+        
+    原因：
+        interface的判断与想象中不一样的根本原因是，interface不是一个指针类型，虽然看一起来像，但是确实不是！
+        
+        interface有两类数据结构：
+                            1、runtime.iface ：表示包含方法的接口
+                            2、runtime.eface ：表示不包含任何方法的空接口，也成为empty interface。
+        type iface struct{
+            tab *itab  //类型
+            data unsafe.Pointer //值
+        }
+        type eface struct{
+            _type *_type  //类型
+            data unsafe.Pointer //值
+        }
+        注：必须类型和值同时为nil的情况下，interface的nil判断才会是true
+
+    解决方法：
+        在不改变类型的情况下，方法之一就是利用反射
+        
+        func main(){
+            var data *byte
+            var in interface{}
+            
+            in = data
+            fmt.Println(IsNil(in))
+        
+        }
+    // 利用反射来做nil判断，在反射中会有针对interface类型的特殊处理
+        func IsNil(in interface{})bool{
+            vi:=reflect.ValueOf(i)
+            if vi.Kind()==reflect.Ptr{
+                return vi.IsNil()
+            }
+            return false
+        }
+        
+        其他方法：改变原有的程序逻辑，例如：
+        1、对值进行nil判断的，再返回给interface设置
+        2、返回具体的值类型，而不是返回interface
+    
+2、     
