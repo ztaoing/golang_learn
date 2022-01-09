@@ -880,6 +880,97 @@ slice
             }
 
 8、诱发goroutine挂起的27个原因？
+    goroutine一泄漏就看到他，这个是什么？runtime.gopark(),这个函数到底是什么？作用是？
     
+    runtime.gopark是什么？
+    最快的办法就是看源码，其实现细节在src/runtime/proc.go文件中。
     
+    func gopark(unlockf func(*g, unsafe.Pointer) bool, lock unsafe.Pointer, reason waitReason, traceEv byte, traceskip int) {
+       // 调用acquirem，
+            1、湖区当前goroutine锁绑定的m，设置各类所需数据；
+            2、调用releasem()将当前goroutine和其m的绑定关系解除
+        mp := acquirem()
+        gp := mp.curg
+        status := readgstatus(gp)
+        mp.waitlock = lock
+        mp.waitunlockf = unlockf
+        gp.waitreason = reason
+        mp.waittraceev = traceEv
+        mp.waittraceskip = traceskip
+        releasem(mp)
+        // 调用park_m函数
+            1、将当前goroutine的状态从_Grunning 切换为 _Gwaiting等待状态，
+            2、删除m和当前goroutine m->curg（简称gp）之间的关联
+        // 调用mcall()，仅仅会在需要进行goroutine切换时会被调用：
+            1、切换当前线程的堆栈，从g的堆栈切换到g0的堆栈并调用fn(g)函数
+            2、将g的当前PC/SP保存在g-sched中，以便后续调用goready()时可以恢复运行现场
+        mcall(park_m)
+    }
+    注：该函数的关键作用是将当前的goroutine让如等待状态，这意味着goroutine被暂时搁置，也就是被运行时调度器暂停了。
+    
+    缘由：
+    之所以goroutine泄漏，你会看到大量的runtime.gopark()，也就是大量的goroutine被暂停了，进入到休眠状态
+    直至满足条件后再被runtime.goready函数唤醒，该函数沪江已经转呗就绪的goroutine切换状态，再加入运行队列。
+    等待调度器的新一轮调度。
+
+    goroutine一共有9中状态：
+    _Gidle：刚刚被分配，还没有进行初始化。
+    _Grunnable：已经在运行队列中，还没有执行用户代码。
+    _Grunning：不在运行队列里中，已经可以执行用户代码，此时已经分配了 M 和 P。
+    _Gsyscall：正在执行系统调用，此时分配了 M。
+    _Gwaiting：在运行时被阻止，没有执行用户代码，也不在运行队列中，此时它正在某处阻塞等待中。
+    _Gmoribund_unused：尚未使用，但是在 gdb 中进行了硬编码。
+    _Gdead：尚未使用，这个状态可能是刚退出或是刚被初始化，此时它并没有执行用户代码，有可能有也有可能没有分配堆栈。
+    _Genqueue_unused：尚未使用。
+    _Gcopystack：正在复制堆栈，并没有执行用户代码，也不在运行队列中。
+
+9、gopark 的 27 个诱发原因  
+    
+    第一类：
+    waitReasonZero：无正式解释，从使用情况来看。主要在 sleep 和 lock 的 2 个场景中使用。
+    waitReasonGCAssistMarking：GC 辅助标记阶段会使得阻塞等待。
+    waitReasonIOWait：IO 阻塞等待时，例如：网络请求等。
+
+    第二部分：
+    waitReasonChanReceiveNilChan：对未初始化的 channel 进行读
+    waitReasonChanSendNilChan：对未初始化的 channel 进行写
+    
+    第三部分
+    waitReasonDumpingHeap：对 Go Heap 堆 dump 时，这个的使用场景仅在 runtime.debug 时，也就是常见的 pprof 这一类采集时阻塞。
+    waitReasonGarbageCollection：在垃圾回收时，主要场景是 GC 标记终止（GC Mark Termination）阶段时触发。
+    waitReasonGarbageCollectionScan：在垃圾回收扫描时，主要场景是 GC 标记（GC Mark）扫描 Root 阶段时触发。
+
+    第四部分
+    waitReasonPanicWait：在 main goroutine 发生 panic 时，会触发。
+    waitReasonSelect：在调用关键字 select 时会触发。
+    waitReasonSelectNoCases：在调用关键字 select 时，若一个 case 都没有，会直接触发。
+
+    第五部分
+    waitReasonGCAssistWait：GC 辅助标记阶段中的结束行为，会触发。
+    waitReasonGCSweepWait：GC 清扫阶段中的结束行为，会触发。
+    waitReasonGCScavengeWait：GC scavenge 阶段的结束行为，会触发。GC Scavenge 主要是新空间的垃圾回收，是一种经常运行、快速的 GC，负责从新空间中清理较小的对象。
+
+    第六部分
+    waitReasonChanReceive：在 channel 进行读操作，会触发。
+    waitReasonChanSend：在 channel 进行写操作，会触发。
+    waitReasonFinalizerWait：在 finalizer 结束的阶段，会触发。在 Go 程序中，可以通过调用 runtime.SetFinalizer 函数来为一个对象设置一个终结者函数。这个行为对应着结束阶段造成的回收。
+
+    第七部分
+    waitReasonForceGCIdle：强制 GC（空闲时间）结束时，会触发。
+    waitReasonSemacquire：信号量处理结束时，会触发。
+    waitReasonSleep：经典的 sleep 行为，会触发。
+
+    第八部分
+    waitReasonSyncCondWait：结合 sync.Cond 用法能知道，是在调用 sync.Wait 方法时所触发。
+    waitReasonTimerGoroutineIdle：与 Timer 相关，在没有定时器需要执行任务时，会触发。
+    waitReasonTraceReaderBlocked：与 Trace 相关，ReadTrace会返回二进制跟踪数据，将会阻塞直到数据可用。
+
+    第九部分
+    waitReasonWaitForGCCycle：等待 GC 周期，会休眠造成阻塞。
+    waitReasonGCWorkerIdle：GC Worker 空闲时，会休眠造成阻塞。
+    waitReasonPreempted：发生循环调用抢占时，会会休眠等待调度。
+    waitReasonDebugCall：调用 GODEBUG 时，会触发。
 [数据结构]
+1、go interface的一个坑及原理分析
+    
+    
