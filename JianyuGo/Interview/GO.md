@@ -1004,13 +1004,69 @@ slice
         interface有两类数据结构：
                             1、runtime.iface ：表示包含方法的接口
                             2、runtime.eface ：表示不包含任何方法的空接口，也成为empty interface。
+        // 为什么iface能藏住那么多的方法集呢？
         type iface struct{
             tab *itab  //类型
-            data unsafe.Pointer //值
+            data unsafe.Pointer //值信息指针
         }
+        type itab struct {
+            inter *interfacetype  // 接口的类型信息
+            _type *_type          // 具体类型
+            hash  uint32          //注： _type.hash的副本，用于目标类型和接口变量的类型对比判断
+            _     [4]byte       
+            fun   [1]uintptr      //注： 底层数组，存储接口的方法集的具体实现地址，其中包含一组函数指针，实现了接口方法的动态分配，且每次在接口发生变更时都会更新
+                                    // 问：长度为1的uintptr是如何存储定义的所有方法的？
+        }
+
+        接下来进一步展开interfacetype:
+        type nameOff int32
+        type typeOff int32
+        
+        type imethod struct {
+        name nameOff
+        ityp typeOff
+        }
+        
+        type interfacetype struct {
+        typ     _type  // 接口的具体类型信息
+        pkgpath name   // 接口的package名信息
+        mhdr    []imethod // 接口所定义的函数列表
+        }
+        除了interfacetype，还有各种类型的type：
+        例如：maptype、arraytype、chantype、slicetype 等，都是针对具体的类型做的具体类型定义：
+        type arraytype struct {
+            typ   _type
+            elem  *_type
+            slice *_type
+            len   uintptr
+            }
+            
+            type chantype struct {
+            typ  _type
+            elem *_type
+            dir  uintptr
+            }
+            ...
+        
+    
         type eface struct{
             _type *_type  //类型
-            data unsafe.Pointer //值
+            data unsafe.Pointer //值信息指针
+        }
+        
+        //类型信息所需要的信息都会存储在这里
+        type _type struct {
+            size       uintptr  //类型的大小
+            ptrdata    uintptr  //包含所有指针的内存前缀的大小
+            hash       uint32   //类型的hash值。此处提前计算好，可以避免在哈希表中计算
+            tflag      tflag    //额外的类型信息标志，此处为类型的flag标志，用于反射
+            align      uint8    //对应变量与该类型的内存对齐大小
+            fieldAlign uint8    //对应类型的结构体的内存对齐大小
+            kind       uint8    //类型的枚举值。包含go语言中的所有类型：kindBool、kindInt、kindIn8等
+            equal func(unsafe.Pointer, unsafe.Pointer) bool  // 用于比较此对象的回调函数
+            gcdata    *byte  // 存储垃圾收集器的GC类型数据
+            str       nameOff
+            ptrToThis typeOff
         }
         注：必须类型和值同时为nil的情况下，interface的nil判断才会是true
 
@@ -1038,4 +1094,214 @@ slice
         1、对值进行nil判断的，再返回给interface设置
         2、返回具体的值类型，而不是返回interface
     
-2、     
+2、类型的断言
+    
+    var i interface{} = "煎鱼"
+    
+    //进行变量断言，若不判断容易出现panic
+        s:=i.(string)
+    // 进行安全断言
+        s,ok:=i.(string)
+
+    在switch case中，还有另外一种写法：
+    var i interface{} = "煎鱼"
+    
+    //进行switch断言
+    switch i.(type){
+        case string:
+            // do something
+        case int :
+            // do something
+        case float64:
+            // do something
+    }
+    采取的是 变量.(type)的调用方式。
+    在go语言的背后，类型断言其实是在编译器翻译后，根据iface和eface分别对应了下述方法：
+    // 主要是根据接口的类型信息进行新一轮判断和识别：主要核心在于getitab方法
+    func assertI2I2(inter *interfacetype, i iface) (r iface, b bool) {
+            tab := i.tab
+            if tab == nil {
+            return
+            }
+            if tab.inter != inter {
+            // 主要核心在于getitab方法
+            // getitab 方法的主要作用是获取 itab 元素，若不存在则新增
+            tab = getitab(inter, tab._type, true)
+            if tab == nil {
+            return
+            }
+            }
+            r.tab = tab
+            r.data = i.data
+            b = true
+            return
+    }
+    func assertI2I(inter *interfacetype, i iface) (r iface)
+    
+    func assertE2I2(inter *interfacetype, e eface) (r iface, b bool)
+    func assertE2I(inter *interfacetype, e eface) (r iface)
+        
+    类型转换：
+    func main() {
+        x := "煎鱼"
+        var v interface{} = x
+        fmt.Println(v)
+    }
+    // 查看汇编代码：
+    0x0021 00033 (main.go:9) LEAQ go.string."煎鱼"(SB), AX
+    0x0028 00040 (main.go:9) MOVQ AX, (SP)
+    0x002c 00044 (main.go:9) MOVQ $6, 8(SP)
+    0x0035 00053 (main.go:9) PCDATA $1, $0
+    // 主要对应了 runtime.convTstring 方法。同时很显然其是根据类型来区分来方法：
+    0x0035 00053 (main.go:9) CALL runtime.convTstring(SB)
+    0x003a 00058 (main.go:9) MOVQ 16(SP), AX
+    0x003f 00063 (main.go:10) XORPS X0, X0
+    
+    func convTstring(val string) (x unsafe.Pointer) {
+        if val == "" {
+             x = unsafe.Pointer(&zeroVal[0])
+        } else {
+             x = mallocgc(unsafe.Sizeof(val), stringType, true)
+             *(*string)(x) = val
+        }
+        return
+    }
+    
+    func convT16(val uint16) (x unsafe.Pointer)
+    func convT32(val uint32) (x unsafe.Pointer)
+    func convT64(val uint64) (x unsafe.Pointer)
+    func convTstring(val string) (x unsafe.Pointer)
+    func convTslice(val []byte) (x unsafe.Pointer)
+    func convT2Enoptr(t *_type, elem unsafe.Pointer) (e eface)
+    func convT2I(tab *itab, elem unsafe.Pointer) (i iface)
+
+    动态分派:
+    前面有提到接口中的 fun [1]uintptr 属性会可以存储接口的方法集，但不知道为什么。
+    接下来我们将进行具体的分析，演示代码：
+
+    type Human interface {
+        Say(s string) error
+        Eat(s string) error
+        Walk(s string) error
+    }
+    
+    type TestA string
+    
+    func (t TestA) Say(s string) error {
+        fmt.Printf("煎鱼：%s\n", s)
+        return nil
+    }
+    func (t TestA) Eat(s string) error {
+        fmt.Printf("煎鱼：%s\n", s)
+        return nil
+    }
+    
+    func (t TestA) Walk(s string) error {
+    fmt.Printf("煎鱼：%s\n", s)
+    return nil
+    }
+    
+    func main() {
+        var h Human
+        var t TestA
+        h = t
+        _ = h.Eat("烤羊排")
+        _ = h.Say("炸鸡翅")
+        _ = h.Walk("去炸鸡翅")
+    }
+    存储方式:
+    执行: go build -gcflags '-l' -o awesomeProject .
+    编译后，再次执行 :go tool objdump -s "main" awesomeProject。
+        // 首个方法的地址
+        LEAQ go.itab.main.TestA,main.Human(SB), AX 
+        TESTB AL, 0(AX)     
+        MOVQ 0x10(SP), AX    
+        MOVQ AX, 0x28(SP)    
+        // 32
+        MOVQ go.itab.main.TestA,main.Human+32(SB), CX
+        MOVQ AX, 0(SP)     
+        LEAQ go.string.*+3048(SB), DX   
+        MOVQ DX, 0x8(SP)    
+        MOVQ $0x9, 0x10(SP)    
+        CALL CX      
+        //24
+        MOVQ go.itab.main.TestA,main.Human+24(SB), AX
+        MOVQ 0x28(SP), CX    
+        MOVQ CX, 0(SP)     
+        LEAQ go.string.*+3057(SB), DX   
+        MOVQ DX, 0x8(SP)    
+        MOVQ $0x9, 0x10(SP)    
+        CALL AX      
+        //40
+        MOVQ go.itab.main.TestA,main.Human+40(SB), AX
+        MOVQ 0x28(SP), CX    
+        MOVQ CX, 0(SP)     
+        LEAQ go.string.*+4973(SB), CX   
+        MOVQ CX, 0x8(SP)    
+        MOVQ $0xc, 0x10(SP)    
+        CALL AX   
+        
+        结合来看，虽然 fun 属性的类型是 [1]uintptr，只有一个元素，
+        但其实就是存放了接口方法集的 "首个方法的地址信息",
+        接着根据顺序往后计算并获取就好了。也就是说其实存在一定规律的。在存入方法时就决定了，所以获取也能明确。
+
+        我们进一步展开，看看 itab hash table 是如何获取和新增的。
+        getitab 方法的主要作用是获取 itab 元素，若不存在则新增。源码如下：
+        func getitab(inter *interfacetype, typ *_type, canfail bool) *itab {
+            // 省略一些边界、异常处理
+            var m *itab
+            //调用 atomic.Loadp 方法加载并查找现有的 itab hash table，看看是否是否可以找到所需的 itab 元素。
+            // 若没有找到，则调用 lock 方法对 itabLock 上锁，并进行重试（再一次查找）。
+            // 若找到，则跳到 finish 标识的收尾步骤。
+            // 若没有找到，则新生成一个 itab 元素，并调用 itabAdd 方法新增到全局的 hash table 中。
+            t := (*itabTableType)(atomic.Loadp(unsafe.Pointer(&itabTable)))
+            if m = t.find(inter, typ); m != nil {
+                goto finish
+            }
+            
+            lock(&itabLock)
+            if m = itabTable.find(inter, typ); m != nil {
+            unlock(&itabLock)
+            goto finish
+            }
+            
+            m = (*itab)(persistentalloc(unsafe.Sizeof(itab{})+uintptr(len(inter.mhdr)-1)*sys.PtrSize, 0, &memstats.other_sys))
+            m.inter = inter
+            m._type = typ
+            m.hash = 0
+            m.init()
+            itabAdd(m)
+            unlock(&itabLock)
+            finish:
+            if m.fun[0] != 0 {
+            // 返回 fun 属性的首位地址，继续后续业务逻辑。
+            return m
+        }
+            
+            panic(&TypeAssertionError{concrete: typ, asserted: &inter.typ, missingMethod: m.init()})
+            }
+
+    新增 itab 元素:
+        itabAdd 方法的主要作用是将所生成好的 itab 元素新增到 itab hash table 中。源码如下：
+
+        func itabAdd(m *itab) {
+            // 省略一些边界、异常处理
+            t := itabTable
+          检查 itab hash table 的容量情况，查看容量情况是否已经满足大于或等于 75%。
+            if t.count >= 3*(t.size/4) { // 75% load factor
+                // 若满足扩容策略，则调用 mallocgc 方法申请内存，按既有 size 大小扩容双倍容量。
+                t2 := (*itabTableType)(mallocgc((2+2*t.size)*sys.PtrSize, nil, true))
+                t2.size = t.size * 2
+                iterate_itabs(t2.add)
+                if t2.count != t.count {
+                throw("mismatched count during itab table copy")
+            }
+            
+            atomicstorep(unsafe.Pointer(&itabTable), unsafe.Pointer(t2))
+            t = itabTable
+            }
+            // 若不满足扩容策略，则直接新增 itab 元素到 hash table 中。
+            t.add(m)
+        }
+      
+        
