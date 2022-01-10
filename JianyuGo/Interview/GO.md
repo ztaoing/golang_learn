@@ -1387,3 +1387,394 @@ slice
     f1引用了返回值
     f2引用了局部变量，跟返回值没关系
     f3值传递，跟返回值没关系
+
+4、为什么go map和slice是非线性安全的？
+    
+    slice： 我们使用多个 goroutine 对类型为 slice 的变量进行操作，看看结果会变的怎么样。
+    
+    func main() {
+        var s []string
+        for i := 0; i < 9999; i++ {
+            go func() {
+                 s = append(s, "脑子进煎鱼了")
+            }()
+        }
+        
+        fmt.Printf("进了 %d 只煎鱼", len(s))
+    }
+    输出结果：
+            // 第一次执行
+            进了 5790 只煎鱼
+            // 第二次执行
+            进了 7370 只煎鱼
+            // 第三次执行
+            进了 6792 只煎鱼
+    你会发现无论你执行多少次，每次输出的值大概率都不会一样。也就是追加进 slice 的值，出现了覆盖的情况。
+    因此在循环中所追加的数量，与最终的值并不相等。且这种情况，是不会报错的，是一个出现率不算高的隐式问题。
+    注：这个产生的主要原因是程序逻辑本身就有问题，同时读取到"相同索引位"，自然也就会产生覆盖的写入了
+        
+    map：同样针对 map 也如法炮制一下。重复针对类型为 map 的变量进行写入。
+    func main() {
+        s := make(map[string]string)
+        for i := 0; i < 99; i++ {
+            go func() {
+            s["煎鱼"] = "吸鱼"
+            }()
+        }
+        
+        fmt.Printf("进了 %d 只煎鱼", len(s))
+    }
+    输出结果：
+    fatal error: concurrent map writes
+
+    goroutine 18 [running]:
+    runtime.throw(0x10cb861, 0x15)
+    /usr/local/Cellar/go/1.16.2/libexec/src/runtime/panic.go:1117 +0x72 fp=0xc00002e738 sp=0xc00002e708 pc=0x1032472
+    runtime.mapassign_faststr(0x10b3360, 0xc0000a2180, 0x10c91da, 0x6, 0x0)
+    /usr/local/Cellar/go/1.16.2/libexec/src/runtime/map_faststr.go:211 +0x3f1 fp=0xc00002e7a0 sp=0xc00002e738 pc=0x1011a71
+    main.main.func1(0xc0000a2180)
+    /Users/eddycjy/go-application/awesomeProject/main.go:9 +0x4c fp=0xc00002e7d8 sp=0xc00002e7a0 pc=0x10a474c
+    runtime.goexit()
+    /usr/local/Cellar/go/1.16.2/libexec/src/runtime/asm_amd64.s:1371 +0x1 fp=0xc00002e7e0 sp=0xc00002e7d8 pc=0x1063fe1
+    created by main.main
+    /Users/eddycjy/go-application/awesomeProject/main.go:8 +0x55
+    
+    程序运行会直接报错。并且是 Go 源码调用 throw 方法所导致的致命错误，也就是说 Go 进程会中断。
+    不得不说，这个并发写 map 导致的 fatal error: concurrent map writes 错误提示。我有一个朋友，已经看过少说几十次了，不同组，不同人...
+    
+    如何支持并发读写：
+    对 map 上锁：实际上我们仍然存在并发读写 map 的诉求（程序逻辑决定）
+    像是一般写爬虫任务时，基本会用到多个 goroutine，获取到数据后再写入到 map 或者 slice 中去。
+    Go 官方在 Go maps in action 中提供了一种简单又便利的方式来实现：
+    
+    var counter = struct{
+        sync.RWMutex
+        m map[string]int
+    }{m: make(map[string]int)}
+    这条语句声明了一个变量，它是一个匿名结构（struct）体，包含一个原生和一个嵌入读写锁 sync.RWMutex。
+    
+    要想从变量中中读出数据，则调用读锁：
+    counter.RLock()
+    n := counter.m["煎鱼"]
+    counter.RUnlock()
+    fmt.Println("煎鱼:", n)
+    
+    要往变量中写数据，则调用写锁：
+    counter.Lock()
+    counter.m["煎鱼"]++
+    counter.Unlock()
+    这就是一个最常见的 Map 支持并发读写的方式了。
+
+    sync.Map:其是专门为 append-only 场景设计的，也就是适合读多写少的场景
+    
+    虽然有了 Map+Mutex 的极简方案，但是也仍然存在一定问题。那就是在 map 的数据量非常大时，
+    只有一把锁（Mutex）就非常可怕了，一把锁会导致大量的争夺锁，导致各种冲突和性能低下。
+    常见的解决方案是分片化，将一个大 map 分成多个区间，各区间使用多个锁，这样子锁的粒度就大大降低了。不过该方案实现起来很复杂，很容易出错。
+    因此 Go 团队到此时为止暂无推荐，而是采取了其他方案。
+    该方案就是在 Go1.9 起支持的 sync.Map，其支持并发读写 map，起到一个补充的作用。
+
+    Go 语言的 sync.Map 支持并发读写 map，采取了 “空间换时间” 的机制，
+    冗余了两个数据结构，分别是：read 和 dirty，减少加锁对性能的影响：
+    type Map struct {
+        mu Mutex
+        read atomic.Value // readOnly
+        dirty map[interface{}]*entry
+        misses int
+    }
+
+    注：其是专门为 append-only 场景设计的，也就是适合读多写少的场景。这是他的优点之一。
+    若出现写多/并发多的场景，会导致 read map 缓存失效，需要加锁，冲突变多，性能急剧下降。这是他的重大缺点。
+    
+    提供了以下常用方法：
+    //Delete：删除某一个键的值。
+    func (m *Map) Delete(key interface{})
+    //Load：返回存储在 map 中的键的值，如果没有值，则返回 nil。ok 结果表示是否在 map 中找到了值。
+    func (m *Map) Load(key interface{}) (value interface{}, ok bool)
+    //LoadAndDelete：删除一个键的值，如果有的话返回之前的值。
+    func (m *Map) LoadAndDelete(key interface{}) (value interface{}, loaded bool)
+    //LoadOrStore：如果存在的话，则返回键的现有值。否则，它存储并返回给定的值。如果值被加载，加载的结果为 true，如果被存储，则为 false。
+    func (m *Map) LoadOrStore(key, value interface{}) (actual interface{}, loaded bool)
+    //Range：递归调用，对 map 中存在的每个键和值依次调用闭包函数 f。如果 f 返回 false 就停止迭代。
+    func (m *Map) Range(f func(key, value interface{}) bool)
+    //Store：存储并设置一个键的值。
+    func (m *Map) Store(key, value interface{})
+    
+        var m sync.Map
+
+        func main() {
+        //写入
+        data := []string{"煎鱼", "咸鱼", "烤鱼", "蒸鱼"}
+        for i := 0; i < 4; i++ {
+            go func(i int) {
+                m.Store(i, data[i])
+            }(i)
+        }
+        time.Sleep(time.Second)
+        
+        //读取
+        v, ok := m.Load(0)
+        fmt.Printf("Load: %v, %v\n", v, ok) //Load: 煎鱼, true
+        
+        //删除
+        m.Delete(1)
+        
+        //读或写
+        v, ok = m.LoadOrStore(1, "吸鱼")
+        fmt.Printf("LoadOrStore: %v, %v\n", v, ok) //LoadOrStore: 吸鱼, false
+        
+        //遍历
+        m.Range(func(key, value interface{}) bool {
+            fmt.Printf("Range: %v, %v\n", key, value)
+            return true
+        })
+       // Range: 0, 煎鱼
+       // Range: 1, 吸鱼
+       // Range: 3, 蒸鱼
+       // Range: 2, 烤鱼
+        }
+    
+    Go Slice 的话，主要还是索引位覆写问题，这个就不需要纠结了，势必是程序逻辑在编写上有明显缺陷，自行改之就好。
+    但 Go map 就不大一样了，很多人以为是默认支持的，一个不小心就翻车，这么的常见。那凭什么 Go 官方还不支持，难不成太复杂了，性能太差了，到底是为什么？
+    
+    原因如下:
+    1、典型使用场景：map 的典型使用场景是不需要从多个 goroutine 中进行安全访问。
+    2、非典型场景（需要原子操作）：map 可能是一些更大的数据结构或已经同步的计算的一部分。
+    3、性能场景考虑：若是只是为少数程序增加安全性，导致 map 所有的操作都要处理 mutex，将会降低大多数程序的性能。
+    
+    汇总来讲：就是 Go 官方在经过了长时间的讨论后，认为 Go map 更应适配典型使用场景，而不是为了小部分情况，
+    导致大部分程序付出代价（性能），决定了不支持。
+
+5、go sync.map和原生map谁的性能更高，为什么？
+    
+    map 的两种目前在业界使用的最多的并发支持的模式。分别是：
+    1、原生 map + 互斥锁或读写锁 mutex。
+    2、标准库 sync.Map（Go1.9及以后）。
+    
+    这两种到底怎么选，谁的性能更加的好？
+    我们先会了解清楚什么场景下，Go map 的多种类型怎么用，谁的性能最好！
+    
+    在 Go 官方文档中明确指出 Map 类型的一些建议：
+    1、多个 goroutine 的并发使用是安全的，不需要额外的锁定或协调控制
+    2、大多数代码应该使用原生的 map，而不是单独的锁定或协调控制，以获得更好的类型安全性和维护性。
+
+    同时 Map 类型，还针对以下场景进行了性能优化：
+    1、当一个给定的键的条目只被写入一次但被多次读取时。例如在仅会增长的缓存中，就会有这种业务场景。
+    2、当多个 goroutines 读取、写入和覆盖不相干的键集合的条目时。
+    
+    这两种情况与 Go map 搭配单独的 Mutex 或 RWMutex 相比较，使用 Map 类型可以大大减少锁的争夺。
+    性能测试：
+    
+    // 代表互斥锁
+    type FooMap struct {
+        sync.Mutex
+        data map[int]int
+    }
+    
+    // 代表读写锁
+    type BarRwMap struct {
+        sync.RWMutex
+        data map[int]int
+    }
+    
+    var fooMap *FooMap
+    var barRwMap *BarRwMap
+    var syncMap *sync.Map
+    
+    // 初始化基本数据结构
+    func init() {
+        fooMap = &FooMap{data: make(map[int]int, 100)}
+        barRwMap = &BarRwMap{data: make(map[int]int, 100)}
+        syncMap = &sync.Map{}
+    }
+
+    在配套方法上，常见的增删改查动作我们都编写了相应的方法。用于后续的压测（只展示部分代码）：
+    func builtinRwMapStore(k, v int) {
+        barRwMap.Lock()
+        defer barRwMap.Unlock()
+        barRwMap.data[k] = v
+    }
+    
+    func builtinRwMapLookup(k int) int {
+        barRwMap.RLock()
+        defer barRwMap.RUnlock()
+        if v, ok := barRwMap.data[k]; !ok {
+             return -1
+        } else {
+            return v
+        }
+    }
+    
+    func builtinRwMapDelete(k int) {
+        barRwMap.Lock()
+        defer barRwMap.Unlock()
+        if _, ok := barRwMap.data[k]; !ok {
+            return
+        } else {
+            delete(barRwMap.data, k)
+        }
+    }
+
+    压测方法基本代码如下：
+    这块主要就是增删改查的代码和压测方法的准备，压测代码直接复用的是大白大佬的 go19-examples/benchmark-for-map 项目。
+    func BenchmarkBuiltinRwMapDeleteParalell(b *testing.B) {
+        b.RunParallel(func(pb *testing.PB) {
+        r := rand.New(rand.NewSource(time.Now().Unix()))
+        for pb.Next() {
+            k := r.Intn(100000000)
+            builtinRwMapDelete(k)
+        }
+        })
+    }
+    压测结果：
+    在写入元素上：最慢的是 sync.map 类型，其次是原生 map+互斥锁（Mutex），最快的是原生 map+读写锁（RwMutex）。
+    总体的排序（从慢到快）为：SyncMapStore < MapStore < RwMapStore。
+    
+    在查找元素上：最慢的是原生 map+互斥锁，其次是原生 map+读写锁。最快的是 sync.map 类型。
+    总体的排序为：MapLookup < RwMapLookup < SyncMapLookup。
+
+    在删除元素上，最慢的是原生 map+读写锁，其次是原生 map+互斥锁，最快的是 sync.map 类型。
+    总体的排序为：RwMapDelete < MapDelete < SyncMapDelete。
+
+    根据上述的压测结果，我们可以得出 sync.Map 类型：
+    1、在读和删场景上的性能是最佳的，领先一倍有多。
+    2、在写入场景上的性能非常差，落后原生 map+锁整整有一倍之多。
+    
+    因此在实际的业务场景中。假设是读多写少的场景，会更建议使用 sync.Map 类型。
+    但若是那种写多的场景，例如多 goroutine 批量的循环写入，那就建议另辟途径了，性能不忍直视（无性能要求另当别论）。
+
+    sync.Map 剖析：
+    为什么 sync.Map 类型的测试结果这么的 “偏科”，为什么读操作性能这么高，写操作性能低的可怕，他是怎么设计的？
+    sync.Map 类型的底层数据结构如下：
+    type Map struct {
+        mu Mutex //互斥锁，用于保护 read 和 dirty。
+        read atomic.Value // readOnly 只读数据，支持并发读取（atomic.Value 类型）。如果涉及到更新操作，则只需要加锁来保证数据安全。
+                          //read 实际存储的是 readOnly 结构体，内部也是一个原生 map，amended 属性用于标记 read 和 dirty 的数据是否一致。
+        dirty map[interface{}]*entry //dirty：读写数据，是一个原生 map，也就是非线程安全。操作 dirty 需要加锁来保证数据安全。
+        misses int  //misses：统计有多少次读取 read 没有命中。每次 read 中读取失败后，misses 的计数值都会加 1。
+    }
+    
+    // Map.read 属性实际存储的是 readOnly。
+    type readOnly struct {
+        m       map[interface{}]*entry
+        amended bool  //amended 属性用于标记 read 和 dirty 的数据是否一致。
+    }
+    
+    在 read 和 dirty 中，都有涉及到的结构体：
+    type entry struct {
+        p unsafe.Pointer // *interface{} 其包含一个指针 p, 用于指向用户存储的元素（key）所指向的 value 值。
+    }
+    在此建议你必须搞懂 read、dirty、entry，再往下看，食用效果会更佳，后续会围绕着这几个概念流转。
+
+    查找过程:
+    划重点，sync.Map 类型本质上是有两个 “map”。一个叫 read、一个叫 dirty，长的也差不多
+    当我们从 sync.Map 类型中读取数据时，其会先查看 read 中是否包含所需的元素：
+    1、若有，则通过 atomic 原子操作读取数据并返回。
+    2、若无，则会判断 read.readOnly 中的 amended 属性，他会告诉程序 dirty 是否包含 read.readOnly.m 中没有的数据；
+            因此若存在，也就是 amended 为 true，将会进一步到 dirty 中查找数据。
+    注：sync.Map 的读操作性能如此之高的原因，就在于存在 read 这一巧妙的设计，其"作为一个缓存层"，提供了快路径（fast path）的查找。
+    同时其结合 amended 属性，配套解决了每次读取都涉及锁的问题，实现了读这一个使用场景的高性能。
+
+    写入过程：
+    我们直接关注 sync.Map 类型的 Store 方法，该方法的作用是新增或更新一个元素
+    func (m *Map) Store(key, value interface{}) {
+        read, _ := m.read.Load().(readOnly)
+        if e, ok := read.m[key]; ok && e.tryStore(&value) {
+            return
+        }
+        ...
+    }
+    调用 Load 方法检查 m.read 中是否存在这个元素。若存在，且没有被标记为删除状态，则尝试存储。
+    若该元素不存在或已经被标记为删除状态，则继续走到下面流程：
+    func (m *Map) Store(key, value interface{}) {
+    ...
+    m.mu.Lock()
+        read, _ = m.read.Load().(readOnly)
+        if e, ok := read.m[key]; ok {
+            if e.unexpungeLocked() {
+            m.dirty[key] = e
+        }
+        e.storeLocked(&value)
+        } else if e, ok := m.dirty[key]; ok {
+             e.storeLocked(&value)
+        } else {
+        if !read.amended {
+            m.dirtyLocked()
+            m.read.Store(readOnly{m: read.m, amended: true})
+        }
+        m.dirty[key] = newEntry(value)
+        }
+    m.mu.Unlock()
+    }
+    
+    由于已经走到了 dirty 的流程，因此开头就直接调用了 Lock 方法上互斥锁，保证数据安全，也是凸显性能变差的第一幕。
+    其分为以下三个处理分支：
+    
+    1、若发现 read 中存在该元素，但已经被标记为已删除（expunged），则说明 dirty 不等于 nil（dirty 中肯定不存在该元素）。其将会执行如下操作。
+        将元素状态从已删除（expunged）更改为 nil。
+        将元素插入 dirty 中。
+    2、若发现 read 中不存在该元素，但 dirty 中存在该元素，则直接写入更新 entry 的指向。
+    3、若发现 read 和 dirty 都不存在该元素，则从 read 中复制未被标记删除的数据，并向 dirty 中插入该元素，赋予元素值 entry 的指向。
+    
+    写入过程的整体流程就是：
+    1、查 read，read 上没有，或者已标记删除状态。
+    2、上互斥锁（Mutex）。
+    3、操作 dirty，根据各种数据情况和状态进行处理。
+    4、回到最初的话题，为什么他写入性能差那么多。究其原因：
+    5、写入一定要会经过 read，无论如何都比别人多一层，后续还要查数据情况和状态，性能开销相较更大。
+    （第三个处理分支）当初始化或者 dirty 被提升后，会从 read 中复制全量的数据，若 read 中数据量大，则会影响性能。
+    可得知 sync.Map 类型不适合写多的场景，读多写少是比较好的
+    若有大数据量的场景，则需要考虑 read 复制数据时的偶然性能抖动是否能够接受。
+
+    删除过程：只是标记为删除
+    写入过程，理论上和删除不会差太远。怎么 sync.Map 类型的删除的性能似乎还行，这里面有什么猫腻？
+    func (m *Map) LoadAndDelete(key interface{}) (value interface{}, loaded bool) {
+        read, _ := m.read.Load().(readOnly)
+        e, ok := read.m[key]
+        ...
+        if ok {
+            return e.delete()
+        }
+    }
+    删除是标准的开场，依然先到 read 检查该元素是否存在。：
+    1、若存在，则调用 delete 标记为 expunged（删除状态），非常高效。可以明确在 read 中的元素，被删除，性能是非常好的。
+    2、若不存在，也就是走到 dirty 流程中：
+        func (m *Map) LoadAndDelete(key interface{}) (value interface{}, loaded bool) {
+            ...
+            if !ok && read.amended {
+                m.mu.Lock()
+                read, _ = m.read.Load().(readOnly)
+                e, ok = read.m[key]
+    
+                if !ok && read.amended {
+                e, ok = m.dirty[key]
+                delete(m.dirty, key)
+                m.missLocked()
+                }
+                m.mu.Unlock()
+            }
+            ...
+            return nil, false
+        }
+        若 read 中不存在该元素，dirty 不为空，read 与 dirty 不一致（利用 amended 判别），则表明要操作 dirty，上互斥锁。
+        再重复进行双重检查，若 read 仍然不存在该元素。则调用 delete 方法从 dirty 中标记该元素的删除。
+        需要注意，出现频率较高的 delete 方法：
+        func (e *entry) delete() (value interface{}, ok bool) {
+            for {
+                p := atomic.LoadPointer(&e.p)
+                if p == nil || p == expunged {
+                return nil, false
+            }
+            if atomic.CompareAndSwapPointer(&e.p, p, nil) {
+                 return *(*interface{})(p), true
+            }
+            }
+        }
+    该方法都是将 entry.p 置为 nil，并且标记为 expunged（删除状态），而不是真真正正的删除。
+
+    注：不要误用 sync.Map，前段时间从字节大佬分享的案例来看，他们将一个连接作为 key 放了进去，
+        于是和这个连接相关的，例如：buffer 的内存就永远无法释放了...
+
+    我们针对 sync.Map 的性能差异，进行了深入的源码剖析，了解到了其背后快、慢的原因，实现了知其然知其所以然。
+
+5、为什么go map的负载因子是6.5？
+    
