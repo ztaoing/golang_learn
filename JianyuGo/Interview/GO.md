@@ -1304,4 +1304,86 @@ slice
             t.add(m)
         }
       
+      
+3、 go defer万恶的闭包问题
+
+    func main() {
+        var whatever [6]struct{}
+        for i := range whatever {
+            defer func() {
+                fmt.Println(i)
+            }()
+        }
+    }
+    请自己先想一下输出的结果答案是什么。
+    这段程序的输出结果是：
+                    5
+                    5
+                    5
+                    5
+                    5
+                    5
+    为什么全是 5，为什么不是 0, 1, 2, 3, 4, 5 这样的输出结果呢？
+    其根本原因是闭包所导致的，有两点原因：
+    1、在 for 循环结束后，局部变量 i 的值已经是 5 了，并且 defer的闭包是直接引用变量的 i
+    2、结合defer 关键字的特性，可得知会在 main 方法主体结束后再执行。
+    
+    既然了解了为什么，我们再变形一下。再看看另外一种情况，代码如下：
+    func main() {
+        var whatever [6]struct{}
+        for i := range whatever {
+            defer func(i int) {
+                fmt.Println(i)
+            }(i)
+        }
+    }
+    与第一个案例不同，我们这回把变量 i 传了进去。那么他的输出结果是什么呢？
+    这段程序的输出结果是：
+                    5
+                    4
+                    3
+                    2
+                    1
+                    0
+    为什么是 5, 4, 3, 2, 1, 0 呢，为什么不是 0, 1, 2, 3, 4, 5？
+    其根本原因在于两点：
+    1、在 for 循环时，局部变量 i 已经传入进 defer func 中 ，属于值传递。其值在 defer 语句声明时的时候就已经确定下来了。
+    2、结合 defer 关键字的特性，是按先进后出的顺序来执行的
+    
+    下一个疑问：
+    func f1() (r int) {
+        defer func() {
+            r++
+        }()
+        return 0
+    }
         
+        func f2() (r int) {
+        t := 5
+        defer func() {
+            t = t + 5
+        }()
+        return t
+    }
+        
+        func f3() (r int) {
+            defer func(r int) {
+                r = r + 5
+            }(r)
+        return 1
+    }
+    
+    主函数：
+    func main() {
+        println(f1())
+        println(f2())
+        println(f3())
+    }
+    这段程序的输出结果是：
+                    1
+                    5
+                    1
+    为什么是 1, 5, 1 呢，而不是 0, 10, 5，又或是其他答案？
+    f1引用了返回值
+    f2引用了局部变量，跟返回值没关系
+    f3值传递，跟返回值没关系
