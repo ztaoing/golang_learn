@@ -1424,7 +1424,7 @@ slice
         
         fmt.Printf("进了 %d 只煎鱼", len(s))
     }
-    输出结果：
+    输出结果： 在go1.6起会进行原生map的并发检测
     fatal error: concurrent map writes
 
     goroutine 18 [running]:

@@ -52,4 +52,53 @@ nil for JSON null
 [go中的零值，它有什么作用？] 官方：https://golang.org/ref/spec#the_zero_value
 布尔型为false；数字型为0；字符串型为""；指针、函数、接口、切片、通道和映射都为nil
 
+[go是如何实现启动参数的加载的？]
+go汇编为了简化汇编代码的编写，引入了PC\FP\SP\SB色哥伪寄存器。
+四个伪寄存器加上其他的通用寄存器就是go汇编语言对CPU的重新抽象。该抽象的结构也适用于非x86类型的体系结构
+
+go可以利用os.Args解析程序启动时的命令行参数，他的实现过程是怎样的？
+    func main(){
+        for i,v:=range os.Args{
+            fmt.Printf("arg[%d]:%v\n,i,v)
+        }
+    }
+    输出：
+        $ go build main.go
+        $ ./main foo bar sss ddd
+        arg[0]: ./main
+        arg[1]: foo
+        arg[2]: bar
+        arg[3]: sss
+        arg[4]: ddd
+
+[select机制] 
+每个case 上的操作例如方法的结果给channel， 每次循环，所有的方法都会执行，但是只会选择其中一个case，其他的case的操作就被丢失了
+    
+这个问题很常见：最多的就是time.After导致内存泄漏问题，网上有很多的文章解释原因，如何避免，其实最根本原因是select这个机制导致的
+
+以下代码会内存泄漏：
+    func main(){
+        ch:= make(chan int ,10)
+        go func(){
+            var i = 1
+            for {
+                i++
+                ch<-i
+            }
+        }()
+        for {
+            select{
+                case x:=<-ch:
+                    println(x)
+                case <-time.After(30*time.Second):
+                    println(time.now().Unix())
+            }
+        }
+
+    }
+    为什么会内存泄漏？
+    答： 每次循环都会执行time.After(30*time.Second)，导致堆内存不断升高，最后泄漏。哪怕没有选择这个case
+        time.After(30*time.Second)也会执行。
+    
+
 
