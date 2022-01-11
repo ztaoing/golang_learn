@@ -1778,3 +1778,43 @@ slice
 
 5、为什么go map的负载因子是6.5？
     
+    map中最中重要的一个基本单本是hmap：
+        type hmap struct {
+        count     int    // map 的大小，也就是 len() 的值，代指 map 中的键值对个数。
+        flags     uint8  // 状态标识，主要是 goroutine 写入和扩容机制的相关状态控制。并发读写的判断条件之一就是该值。
+        B         uint8  // 桶，最大可容纳的元素数量，值为 负载因子（默认 6.5） * 2 ^ B，是 2 的指数。其值就是 6.5
+        noverflow uint16 // 溢出桶的数量。
+        hash0     uint32 // 哈希因子。
+        buckets    unsafe.Pointer // 保存当前桶数据的指针地址（指向一段连续的内存地址，主要存储键值对数据）。
+        oldbuckets unsafe.Pointer // 保存旧桶的指针地址。
+        nevacuate  uintptr        // 迁移进度。
+        extra *mapextra // 原有 buckets 满载后，会发生扩容动作，在 Go 的机制中使用了增量扩容，如下为细项：
+        }
+        
+        type mapextra struct {
+        overflow    *[]*bmap  // 为 hmap.buckets （当前）溢出桶的指针地址。
+        oldoverflow *[]*bmap  // 为 hmap.oldbuckets （旧）溢出桶的指针地址。
+        nextOverflow *bmap    // 为空闲溢出桶的指针地址。
+        }
+    我们关注到 hmap 的 B 字段，其值就是 6.5，他就是我们在苦苦寻找的 6.5，但他又是什么呢？
+        什么是负载因子?
+        B 值，这里就涉及到一个概念：负载因子（load factor），用于衡量当前哈希表中"空间占用率"的核心指标，
+        也就是每个 bucket 桶存储的"平均元素个数"。
+    
+        另外负载因子与扩容、迁移等重新散列（rehash）行为有直接关系：
+        1、在程序运行时，会不断地进行插入、删除等，会导致 bucket 不均，内存利用率低，需要迁移。
+        2、在程序运行时，出现负载因子过大，需要做扩容，解决 bucket 过大的问题
+        
+        负载因子是哈希表中的一个重要指标，在各种版本的哈希表实现中都有类似的东西，
+        主要目的是为了"平衡 buckets 的存储空间大小和查找元素时的性能高低"。
+        
+        在接触各种哈希表时都可以关注一下，做不同的对比，看看各家的考量。
+        
+        为什么是 6.5：为什么 Go 语言中哈希表的负载因子是 6.5，为什么不是 8 ，也不是 1。这里面有可靠的数据支撑吗？
+        实际上这是 Go 官方的经过认真的测试得出的数字，一起来看看官方的这份测试报告。
+        
+        原因：Go 官方发现：负载因子太大了，会有很多溢出的桶。太小了，就会浪费很多空间（too large and we have lots of overflow buckets, too small and we waste a lot of space）。
+        根据这份测试结果和讨论，Go 官方把 Go 中的 map 的负载因子硬编码为 6.5，这就是 6.5 的选择缘由。
+        
+        这意味着在 Go 语言中，当 B（bucket）平均每个存储的元素大于或等于 6.5 时，就会触发扩容行为，
+        这是作为我们用户对这个数值最近的接触。
