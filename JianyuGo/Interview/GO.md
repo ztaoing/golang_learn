@@ -1818,3 +1818,109 @@ slice
         
         这意味着在 Go 语言中，当 B（bucket）平均每个存储的元素大于或等于 6.5 时，就会触发扩容行为，
         这是作为我们用户对这个数值最近的接触。
+
+[怎么避免内存逃逸?]
+    在 runtime/stub.go:133 有个noescape函数。noescape可以在逃逸分析中隐藏一个指针。
+    让这个指针在逃逸分析中不会被检查为逃逸。
+
+    // noescape hides a pointer from escape analysis.  noescape is
+    // the identity function but escape analysis doesn't think the
+    // output depends on the input.  noescape is inlined and currently
+    // compiles down to zero instructions.
+    // USE CAREFULLY!
+    //go:nosplit
+    
+    func noescape(p unsafe.Pointer) unsafe.Pointer {
+         x := uintptr(p)
+    return unsafe.Pointer(x ^ 0)
+    }
+    
+    举例：
+    使用 go build -gcflags=-m查看逃逸分析情况：
+    
+    package main
+    
+    import (
+    "unsafe"
+    )
+    
+    type A struct {
+    S *string
+    }
+    
+    func (f *A) String() string {
+    return *f.S
+    }
+    
+    type ATrick struct {
+    S unsafe.Pointer
+    }
+    
+    func (f *ATrick) String() string {
+    return *(*string)(f.S)
+    }
+    
+    func NewA(s string) A {
+    return A{S: &s}
+    }
+    
+    func NewATrick(s string) ATrick {
+    return ATrick{S: noescape(unsafe.Pointer(&s))}
+    }
+    
+    func noescape(p unsafe.Pointer) unsafe.Pointer {
+    x := uintptr(p)
+    return unsafe.Pointer(x ^ 0)
+    }
+    
+    func main() {
+    s := "hello"
+    f1 := NewA(s)
+    f2 := NewATrick(s)
+    s1 := f1.String()
+    s2 := f2.String()
+    _ = s1 + s2
+    }
+
+    执行go build -gcflags=-m main.go：
+    
+    $go build -gcflags=-m main.go
+    # command-line-arguments
+    ./main.go:11:6: can inline (*A).String
+    ./main.go:19:6: can inline (*ATrick).String
+    ./main.go:23:6: can inline NewA
+    ./main.go:31:6: can inline noescape
+    ./main.go:27:6: can inline NewATrick
+    ./main.go:28:29: inlining call to noescape
+    ./main.go:36:6: can inline main
+    ./main.go:38:14: inlining call to NewA
+    ./main.go:39:19: inlining call to NewATrick
+    ./main.go:39:19: inlining call to noescape
+    ./main.go:40:17: inlining call to (*A).String
+    ./main.go:41:17: inlining call to (*ATrick).String
+    /var/folders/45/qx9lfw2s2zzgvhzg3mtzkwzc0000gn/T/go-build763863171/b001/_gomod_.go:6:6: can inline init.0
+    ./main.go:11:7: leaking param: f to result ~r0 level=2
+    ./main.go:19:7: leaking param: f to result ~r0 level=2
+    ./main.go:24:16: &s escapes to heap  // 这个是NewA中的逃逸
+    ./main.go:23:13: moved to heap: s
+    ./main.go:27:18: NewATrick s does not escape //NewATrick里的s却没有逃逸
+    ./main.go:28:45: NewATrick &s does not escape
+    ./main.go:31:15: noescape p does not escape
+    ./main.go:38:14: main &s does not escape
+    ./main.go:39:19: main &s does not escape
+    ./main.go:40:10: main f1 does not escape
+    ./main.go:41:10: main f2 does not escape
+    ./main.go:42:9: main s1 + s2 does not escape
+
+分析：
+
+    1、上段代码对A和ATrick同样的功能有两种实现：他们包含一个 string ，
+        然后用 String() 方法返回这个字符串。但是从逃逸分析看ATrick 版本没有逃逸。
+    2、noescape() 函数的作用是遮蔽输入和输出的依赖关系。
+        使编译器不认为 p 会通过 x 逃逸， 因为 uintptr() 产生的引用是编译器无法理解的。
+    3、内置的 uintptr 类型是一个真正的指针类型，但是在编译器层面，
+        它只是一个存储一个 指针地址 的 int 类型。代码的最后一行返回 unsafe.Pointer 也是一个 int。
+    4、noescape() 在 runtime 包中使用 unsafe.Pointer 的地方被大量使用。
+        如果作者清楚被 unsafe.Pointer 引用的数据肯定不会被逃逸，但编译器却不知道的情况下，这是很有用的。
+    5、面试中秀一秀是可以的，如果在实际项目中如果使用这种unsafe包大概率会被同事打死。
+        不建议使用！  毕竟包的名字就叫做 unsafe, 而且源码中的注释也写明了 USE CAREFULLY!。
