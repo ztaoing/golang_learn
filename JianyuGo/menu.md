@@ -476,10 +476,13 @@ Go中不允许这么使用是处于安全考虑，毕竟强制转型会引起各
         }
 
 [go网络编程和tcp抓包实操] network-》getTCPPackage
-[go中如何强制关闭tcp连接]
+[go中如何强制关闭tcp连接] network-》getTCPPackage
 
-[连接一个ip不存在的主机时，握手过程是怎样的？]
-
+[连接一个ip不存在的主机时，握手过程是怎样的？]network-》ConnIP
+    连接一个ip不存在的主机时，握手过程是怎样的？
+    连接一个IP地址存在但是端口不存在的主机时，握手过程是怎样的？
 [context使用不当引发的一个bug]
 
 [怎么使用 direct io？]
+
+[透过内存看slice和array的异同]
