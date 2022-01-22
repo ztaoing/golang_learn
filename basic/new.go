@@ -7,7 +7,7 @@ import "fmt"
 */
 func main() {
 	list := new([]int)
-	//first argument to append must be slice; have *[]int
+	//first argument to append must be slice.md; have *[]int
 	list = append(list, 1)
 	fmt.Println(list)
 }

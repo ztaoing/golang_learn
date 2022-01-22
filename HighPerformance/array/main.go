@@ -23,7 +23,7 @@ func foo2(a []int) {
 func main() {
 	// array
 	a := [2]int{1, 2}
-	// slice
+	// slice.md
 	a1 := []int{1, 2}
 	// foo
 	foo(a)
