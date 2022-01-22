@@ -485,6 +485,6 @@ Go中不允许这么使用是处于安全考虑，毕竟强制转型会引起各
 
 [怎么使用 direct io？]io-》io.md
 
-[从CPU角度理解go中的结构体内存对齐]
+[从CPU角度理解go中的结构体内存对齐]memory-》align
 
 [透过内存看slice和array的异同]
