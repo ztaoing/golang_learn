@@ -11,6 +11,16 @@ import (
 
 // 原子操作由底层硬件支持，对于一个变量更新的保护，原子操作通常会更有效率，并且更能利用计算机多核的优势，
 // 如果要更新的是一个复合对象，则应当使用atomic.Value封装好的实现。
+
+// atomic.Value保证任意值的读写安全
+
+/**
+值得一提的是如果你想要并发安全的设置一个结构体的多个字段，除了把结构体转换为指针，通过StorePointer设置外，
+还可以使用atomic包后来引入的atomic.Value，它在底层为我们完成了从具体指针类型到unsafe.Pointer之间的转换。
+
+有了atomic.Value后，它使得我们可以不依赖于不保证兼容性的unsafe.Pointer类型，
+同时又能将任意数据类型的读写操作封装成原子性操作（中间状态对外不可见）。
+*/
 func main() {
 	/**
 	atomic.Value类型提供了两个读写方法：
@@ -140,6 +150,7 @@ func main() {
 
 
 
+	//由于Load()返回的是一个interface{}类型，所以在使用前我们记得要先转换成具体类型的值，再使用。
 
 	func (v *Value) Load() (x interface{}) {
 	  // 原值
@@ -163,7 +174,35 @@ func main() {
 	  return
 	}
 
+		下面是一个简单的例子演示atomic.Value的用法。
+	type Rectangle struct {
+	 length int
+	 width  int
+	}
 
+	var rect atomic.Value
+
+	func update(width, length int) {
+	 rectLocal := new(Rectangle)
+	 rectLocal.width = width
+	 rectLocal.length = length
+	 rect.Store(rectLocal)
+	}
+
+	func main() {
+	 wg := sync.WaitGroup{}
+	 wg.Add(10)
+	 // 10 个协程并发更新
+	 for i := 0; i < 10; i++ {
+	  go func() {
+	   defer wg.Done()
+	   update(i, i+5)
+	  }()
+	 }
+	 wg.Wait()
+	 _r := rect.Load().(*Rectangle)
+	 fmt.Printf("rect.width=%d\nrect.length=%d\n", _r.width, _r.length)
+	}
 
 
 
