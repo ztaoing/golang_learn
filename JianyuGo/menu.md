@@ -506,3 +506,5 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 
 
 [透过内存看slice和array的异同]
+
+[i/o timeout net/http的坑] network->timeout
