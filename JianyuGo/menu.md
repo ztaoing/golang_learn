@@ -510,3 +510,5 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 [i/o timeout net/http的坑] network->timeout
 
 [go切片导致内存泄漏] memory->slice
+
+[go程序错误处理的一些建议]
