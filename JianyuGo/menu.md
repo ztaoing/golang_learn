@@ -508,20 +508,33 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 [透过内存看slice和array的异同]
 
 [i/o timeout net/http的坑] network->timeout
+[go的io库如何选择]network->io库
+[Go语言常用文件操作汇总]network->func
 
 [go切片导致内存泄漏] memory->slice
 
 [go程序错误处理的一些建议]errors
+[对go错误处理的4个误解]errors
 
 [go什么时候会触发gc]gc
 
-[go语言中的零值，他有什么用？]
+[go语言中的零值，他有什么用？]zero
+[两个nil比较结果是什么？]zero
 
-[go map的赋值和扩容]
+[go map的初始化、访问、赋值、扩容、缩容]memory->map
+[go 的负载因子为什么是6.5]
 
 [内联函数和编译器对go代码的优化]compile
 
 [终于识破这个go编译器把戏]compile
+
+[单元测试] unitTest
+
+[文件存储] stroge
+
+[go官方限流器的详解]
+
+
 
 
 

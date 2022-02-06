@@ -7,15 +7,15 @@ import (
 )
 
 func main() {
-	// 1、open a tcp session to server建立到8000端口的连接
+	// 1、openClose a tcp session to server建立到8000端口的连接
 	conn, err := net.Dial("tcp", "localhost:8000")
 	if err != nil {
-		log.Fatalf("error to open tcp connection:%s", err)
+		log.Fatalf("error to openClose tcp connection:%s", err)
 	}
 	defer conn.Close()
 
 	// 2、向server写入数据
-	log.Printf("tcp session open")
+	log.Printf("tcp session openClose")
 	b := []byte("hi gopher?")
 	_, err = conn.Write(b)
 	if err != nil {

@@ -22,7 +22,7 @@ func main() {
 
 		// 负责接收和发送的goroutine
 		go func() {
-			log.Println("tcp session open")
+			log.Println("tcp session openClose")
 			defer c.Close()
 
 			for {

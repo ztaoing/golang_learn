@@ -6,15 +6,15 @@ import (
 )
 
 func main() {
-	// Part 1: open a TCP session to server
+	// Part 1: openClose a TCP session to server
 	c, err := net.Dial("tcp", "localhost:8000")
 	if err != nil {
-		log.Fatalf("Error to open TCP connection: %s", err)
+		log.Fatalf("Error to openClose TCP connection: %s", err)
 	}
 	defer c.Close()
 
 	// Part2: write some data to server
-	log.Printf("TCP session open")
+	log.Printf("TCP session openClose")
 	b := []byte("Hi, gopher?")
 	_, err = c.Write(b)
 	if err != nil {

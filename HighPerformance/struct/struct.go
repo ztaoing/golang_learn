@@ -52,7 +52,7 @@ type Door struct {
 }
 
 func (d Door) Open() {
-	fmt.Println("open the door")
+	fmt.Println("openClose the door")
 }
 
 func (d Door) Close() {

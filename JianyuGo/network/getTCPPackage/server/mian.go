@@ -41,7 +41,7 @@ func main() {
 		}
 		// 3、创建一个goroutine来读取和写入
 		go func() {
-			log.Printf("TCP session open")
+			log.Printf("TCP session openClose")
 			defer conn.Close()
 
 			for {

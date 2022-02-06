@@ -81,7 +81,7 @@ func main() {
 */
 
 // 调整系统资源上限：有些场景下，即使我们有效的限制了协成的并发数量，但是仍旧出现了某一类资源不足的问题：
-// 1 ： too many open files
+// 1 ： too many openClose files
 // 2 :  out of memory
 
 // ulimit -a :
