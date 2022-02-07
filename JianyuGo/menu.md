@@ -511,26 +511,37 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 [go的io库如何选择]network->io库
 [Go语言常用文件操作汇总]network->func
 
-[go切片导致内存泄漏] memory->slice
+
 
 [go程序错误处理的一些建议]errors
 [对go错误处理的4个误解]errors
+[go的panic的三种诞生方式]
 
 [go什么时候会触发gc]gc
 
 [go语言中的零值，他有什么用？]zero
 [两个nil比较结果是什么？]zero
 
+[go切片导致内存泄漏] memory->slice
 [go map的初始化、访问、赋值、扩容、缩容]memory->map
-[go 的负载因子为什么是6.5]
+[go 的负载因子为什么是6.5]memory->map
+
 
 [内联函数和编译器对go代码的优化]compile
-
 [终于识破这个go编译器把戏]compile
 
 [单元测试] unitTest
 
 [文件存储] stroge
+[Go 存储基础 — “文件”被偷偷修改？来，给它装个监控！] stroge-->fsnofify
+
+
+[你考虑过defer close的风险吗？]
+[会诱发goroutine挂起的27个原因]
+
+[go官方信号量库]
+[go精妙的互斥锁设计]
+
 
 [go官方限流器的详解]
 
