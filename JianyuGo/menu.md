@@ -515,7 +515,9 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 
 [go程序错误处理的一些建议]errors
 [对go错误处理的4个误解]errors
-[go的panic的三种诞生方式]
+[go的panic的三种诞生方式]errors
+[go的panic的秘密都在这里]errors
+[你考虑过defer close的风险吗？]errors
 
 [go什么时候会触发gc]gc
 
@@ -536,7 +538,7 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 [Go 存储基础 — “文件”被偷偷修改？来，给它装个监控！] stroge-->fsnofify
 
 
-[你考虑过defer close的风险吗？]
+
 [会诱发goroutine挂起的27个原因]
 
 [go官方信号量库]
