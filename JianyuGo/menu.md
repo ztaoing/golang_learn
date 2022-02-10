@@ -120,6 +120,8 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 [go map的初始化、访问、赋值、扩容、缩容]memory->map
 [go 的负载因子为什么是6.5]memory->map
 
+[面试官：context携带的数据是线程安全的吗？]contexts
+
 
 [内联函数和编译器对go代码的优化]compile
 [终于识破这个go编译器把戏]compile
