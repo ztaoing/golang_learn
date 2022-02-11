@@ -77,7 +77,13 @@ nil for JSON null
 
 [怎么使用 direct io？]io-》io.md
 
+---
+
 [从CPU角度理解go中的结构体内存对齐]memory-》align
+[详解 Go 内存对齐]
+
+---
+
 
 [go五种原子性操作的用法详解] memory-》atomic-》cas +atomicMutex
 原子性：外界不会看到只执行到一半的状态！
@@ -105,6 +111,7 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 
 ---
 [go精妙的互斥锁设计]lock
+[golang的位运算]lock
 
 
 ---
@@ -133,12 +140,18 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 
 
 [面试官：context携带的数据是线程安全的吗？]contexts
+[Context 是怎么在 Go 语言中发挥关键作用的]
+
+---
+
+[读者提问：反射是如何获取结构体成员信息的？]reflecter
 
 ---
 
 
 [内联函数和编译器对go代码的优化]compile
 [终于识破这个go编译器把戏]compile
+[翻译了一篇关于Go编译器的文章]
 
 ---
 
@@ -157,14 +170,21 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 
 [go官方信号量库]Semaphore
 
+---
 
+[详解并发编程包之 Go errgroup]
+[Go 并发编程 — 结构体多字段的原子操作]
 
+---
 
 [go官方限流器的详解]limiter
 [常用限流算法的应用场景和实现原理]limiter
 
 
 [go-monitor：服务质量统计分析警告工具]monitor
+
+[Goroutine 一泄露就看到他，这是个什么？]
+
 
 
 

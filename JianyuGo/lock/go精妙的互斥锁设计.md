@@ -187,7 +187,7 @@ runtime_canSpin()函数的实现如下:
     
     //go:linkname sync_runtime_canSpin sync.runtime_canSpin
     func sync_runtime_canSpin(i int) bool {
-      // active_spin = 4
+      // active_spin = 4 自旋的次数
         if i >= active_spin || ncpu <= 1 || gomaxprocs <= int32(sched.npidle+sched.nmspinning)+1 {
             return false
         }
@@ -206,13 +206,13 @@ runtime_canSpin()函数的实现如下:
 
 [runtime_doSpin()]
 
-前面说到，自旋行为就是让当前goroutine并不挂起，占用cpu资源。
+前面说到，自旋行为就是让当前goroutine并不挂起，占用cpu资源（我们乐观地认为：当前正在持有锁的goroutine能在较短的时间内归还锁）。
 
 我们看一下runtime_doSpin()的实现。
 
     //go:linkname sync_runtime_doSpin sync.runtime_doSpin
     func sync_runtime_doSpin() {
-        procyield(active_spin_cnt)  // active_spin_cnt = 30
+        procyield(active_spin_cnt)  // active_spin_cnt = 30 次
     }
 
 runtime_doSpin调用了procyield，其实现如下（以amd64为例）
@@ -326,7 +326,9 @@ runtime_doSpin调用了procyield，其实现如下（以amd64为例）
 
 这里需要理解一下runtime_SemacquireMutex(s *uint32, lifo bool, skipframes int) 函数，
 它是用于同步库的sleep原语，它的实现是位于src/runtime/sema.go中的semacquire1函数，
-与它类似的还有runtime_Semacquire(s *uint32) 函数。两个睡眠原语需要等到 *s>0 （本场景中 m.sema>0 ），
+与它类似的还有runtime_Semacquire(s *uint32) 函数。
+
+两个睡眠原语需要等到 *s>0 （本场景中 m.sema>0 ），
 然后原子递减 *s。SemacquireMutex用于分析竞争的互斥对象，
 如果lifo（本场景中queueLifo）为true，则将等待者排在等待队列的队头。
 skipframes是从SemacquireMutex的调用方开始计数，表示在跟踪期间要忽略的帧数。
