@@ -80,7 +80,7 @@ nil for JSON null
 ---
 
 [从CPU角度理解go中的结构体内存对齐]memory-》align
-[详解 Go 内存对齐]
+[详解 Go 内存对齐]memory-》align
 
 ---
 
@@ -151,7 +151,7 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 
 [内联函数和编译器对go代码的优化]compile
 [终于识破这个go编译器把戏]compile
-[翻译了一篇关于Go编译器的文章]
+[翻译了一篇关于Go编译器的文章]compile
 
 ---
 
