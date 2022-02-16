@@ -195,7 +195,7 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 ---
 [Go 的相对路径问题]path
 
-
+[面试官：你能聊聊string和[]byte的转换吗？] bytes
 
 
 
