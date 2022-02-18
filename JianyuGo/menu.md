@@ -11,6 +11,7 @@
     
 
 * 动手实现一个localcache：高效的并发访问；减少GC
+  
     1、高效并发访问：【减小锁的粒度】
                 本地缓存的本地实现可以使用map[string]interface{}+sync.RWMutex组合
                 使用sync.RWMutex对读进行了优化，但是当并发量上来以后，哈市编程了串行读，等待锁的goroutine
@@ -19,9 +20,9 @@
                
                 分片数量的选择，分片并不是越多越好，根据经验，我们的分片数可以选择N的2次幂，
                 分片时为了提高效率可以使用位运算代替取余操作。
-   2、 减少GC：
-                BigCache如何加速并发访问以及避免高额的GC开销： https://pengrl.com/p/35302/
-  [Go 缓冲系列之-free-cache] https://mp.weixin.qq.com/s/VmPIW6HhVrDyeADiRmkC_Q
+   2、 减少GC：BigCache如何加速并发访问以及避免高额的GC开销： https://pengrl.com/p/35302/
+
+[Go 缓冲系列之-free-cache] https://mp.weixin.qq.com/s/VmPIW6HhVrDyeADiRmkC_Q （也是使用减小锁的粒度、go 1.5版本之后，如果你使用的map的key和value中都不包含指针，那么GC会忽略这个map。）
     
 
 [runtime]
@@ -51,8 +52,7 @@ nil for JSON null
 【编译】总结两个go程序编译的重要知识
 *交叉编译，条件编译
 
-[go程序自己监控自己]
-[想要4个9？本文告诉你监控告警如何做] https://mp.weixin.qq.com/s/qaNWBlDGgE2hNnu6SV4EBg
+
 
 [多路复用] channel--》multiplex
 [atomic.Value为什么不加锁也能保证数据线程安全]
@@ -82,6 +82,7 @@ nil for JSON null
 
 [go网络编程和tcp抓包实操] network-》getTCPPackage
 [go中如何强制关闭tcp连接] network-》getTCPPackage
+
 [网友很强大，发现了Go并发下载的Bug] https://mp.weixin.qq.com/s/Kd4np83CKEOLQ3K0eWxlKg
 
 [连接一个ip不存在的主机时，握手过程是怎样的？]network-》ConnIP
@@ -96,7 +97,7 @@ nil for JSON null
 
 [详解 Go 内存对齐]memory-》align
 
-[Go程序内存分配过多？试试本文的方法] https://mp.weixin.qq.com/s/zBHPYJWnGf67Ex8i4cV8Eg
+[Go程序内存分配过多？] https://mp.weixin.qq.com/s/zBHPYJWnGf67Ex8i4cV8Eg
 
 [Go 编程怎么也有踩内存？]  https://mp.weixin.qq.com/s/tXAP8_U63QLNj1h0ZMvXPw
 
@@ -307,6 +308,9 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 [注释竟然还有特殊用途？一文解惑 //go:linkname 指令] https://mp.weixin.qq.com/s/_d1Q0Sx_KPrzEd4psPccMg
 
 [我无语了，Go 中 +-*/ 四个运算符竟然可以连着用] https://mp.weixin.qq.com/s/8GRq6At23fMho3BKkylcGw
+
+[go程序自己监控自己]
+[想要4个9？本文告诉你监控告警如何做] https://mp.weixin.qq.com/s/qaNWBlDGgE2hNnu6SV4EBg
 
 
 ---
