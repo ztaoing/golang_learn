@@ -97,9 +97,9 @@ nil for JSON null
 
 [详解 Go 内存对齐]memory-》align
 
-[Go程序内存分配过多？] https://mp.weixin.qq.com/s/zBHPYJWnGf67Ex8i4cV8Eg
+[Go程序内存分配过多？] https://mp.weixin.qq.com/s/zBHPYJWnGf67Ex8i4cV8Eg (如何优化内存)
 
-[Go 编程怎么也有踩内存？]  https://mp.weixin.qq.com/s/tXAP8_U63QLNj1h0ZMvXPw
+[Go 编程怎么也有踩内存？]  https://mp.weixin.qq.com/s/tXAP8_U63QLNj1h0ZMvXPw (由小结构 向大的结构转换，导致内存占用变大，变大后的结构占用了后边结构的内存，导致后边结构的前边的内存的内容被覆盖了)
 
 [Go 内存泄露之痛，这篇把 Go timer.After 问题根因讲透了！] https://mp.weixin.qq.com/s/KSBdPkkvonSES9Z9iggElg
 
