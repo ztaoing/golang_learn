@@ -70,32 +70,34 @@ nil for JSON null
 
     
 
-[在go容器里设置gomaxprocs的正确姿势：]dockers
+[在go容器里设置gomaxprocs的正确姿势：]dockers  https://mp.weixin.qq.com/s/kbZsJncgVZv30_TwVrLyLQ
 
 ---
 
-[unsafe包]unsafe
+[unsafe包]unsafe https://mp.weixin.qq.com/s/dulgHWM-mjrYIdD9nHZyYg
 [详解 Go 团队不建议用的 unsafe.Pointer] https://mp.weixin.qq.com/s/8qtHdw2JiRQ1cXlzbJ0ANA
 
 ---
 
 
-[go网络编程和tcp抓包实操] network-》getTCPPackage
-[go中如何强制关闭tcp连接] network-》getTCPPackage
+[go网络编程和tcp抓包实操] network-》getTCPPackage https://mp.weixin.qq.com/s/Ou7YSLR1seHfS27rAgdbQQ
+
+[go中如何强制关闭tcp连接] network-》getTCPPackage  https://mp.weixin.qq.com/s/ySvp47waWKjy4YK7NZIauQ
 
 [网友很强大，发现了Go并发下载的Bug] https://mp.weixin.qq.com/s/Kd4np83CKEOLQ3K0eWxlKg
 
-[连接一个ip不存在的主机时，握手过程是怎样的？]network-》ConnIP
+[连接一个ip不存在的主机时，握手过程是怎样的？]network-》ConnIP  https://mp.weixin.qq.com/s/Czv0CxDKqr2QNItO4aNZMA
     连接一个ip不存在的主机时，握手过程是怎样的？
     连接一个IP地址存在但是端口不存在的主机时，握手过程是怎样的？
-[context使用不当引发的一个bug]
+
+[context使用不当引发的一个bug] https://mp.weixin.qq.com/s/lJxjlDg5SkQyNLZBpOPP5A
 
 
 ---
 
-[从CPU角度理解go中的结构体内存对齐]memory-》align
+[从CPU角度理解go中的结构体内存对齐]memory-》align  https://mp.weixin.qq.com/s/TDIM1tspIEWpQCH_SNGnog
 
-[详解 Go 内存对齐]memory-》align
+[详解 Go 内存对齐]memory-》align https://mp.weixin.qq.com/s/ApJCdMSTydxN5zgxhzj21w
 
 [Go程序内存分配过多？] https://mp.weixin.qq.com/s/zBHPYJWnGf67Ex8i4cV8Eg (如何优化内存)
 
@@ -136,31 +138,31 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 
 [i/o timeout net/http的坑] network->timeout
 
-[go的io库如何选择]network->io库
+[go的io库如何选择]network->io库 https://mp.weixin.qq.com/s/TtN6NZ8hQ2AIf0C8wVzkjA
 
-[Go语言常用文件操作汇总]network->func
+[Go语言常用文件操作汇总]network->func https://mp.weixin.qq.com/s/dQUEq0lJekEUH4CHEMwANw
 
-[怎么使用 direct io？]io-》io.md
+[怎么使用 direct io？]io-》io.md https://mp.weixin.qq.com/s/gW_3JD52rtRdEqXvyg-lJQ
 
-[浅析 Go IO 的知识框架]io
+[浅析 Go IO 的知识框架]io https://mp.weixin.qq.com/s/JniBMBw__WLbYtigj3eiXQ
 
-
-
----
-[go精妙的互斥锁设计]lock
-
-[golang的位运算]lock
 
 
 ---
+[go精妙的互斥锁设计]lock  https://mp.weixin.qq.com/s/j0NCgrU6M8ps0zIOkOT3FQ
 
-[go程序错误处理的一些建议]errors
+[golang的位运算]lock  https://mp.weixin.qq.com/s/8wubPDKO6-CLLhqjGsJ7xw
 
-[对go错误处理的4个误解]errors
 
-[go的panic的三种诞生方式]errors
+---
 
-[go的panic的秘密都在这里]errors
+[go程序错误处理的一些建议]errors https://mp.weixin.qq.com/s/HuZn9hnHUBx3J4bAGYBYpw
+
+[对go错误处理的4个误解]errors  https://mp.weixin.qq.com/s/vrcn2N4ddcAHiZl5UoqTZg
+
+[go的panic的三种诞生方式]errors https://mp.weixin.qq.com/s/sGdTVSRxqxIezdlEASB39A
+
+[go的panic的秘密都在这里]errors https://mp.weixin.qq.com/s/pxWf762ODDkcYO-xCGMm2g
 
 [Go 错误处理：用 panic 取代 err != nil 的模式] https://mp.weixin.qq.com/s/p77V3_LkREuXPVLdebmmmQ （与panic的设计理念相违背）
 
@@ -174,7 +176,7 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 
 [Go 中的 error 居然可以这样封装]  https://mp.weixin.qq.com/s/-X8MKIQFRXmENsdwyRXcCg (封装的目的都是为了添加更多的注解信息)
 
-[如何保存go程序崩溃的现场] errors 
+[如何保存go程序崩溃的现场] errors  https://mp.weixin.qq.com/s/RktnMydDtOZFwEFLLYzlCA
 
 
 
@@ -183,13 +185,13 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 ---
 
 
-[go什么时候会触发gc] gc
+[go什么时候会触发gc] gc https://mp.weixin.qq.com/s/e2-NXWCS0bd2BPWzdeiS_A
 
 ---
 
-[go语言中的零值，他有什么用？]zero
+[go语言中的零值，他有什么用？]zero https://mp.weixin.qq.com/s/pVLs9mCOevEpQtbJVnWPbQ
 
-[两个nil比较结果是什么？]zero
+[两个nil比较结果是什么？]zero https://mp.weixin.qq.com/s/T-qmiyzlOx5T5S6Ca7X9aQ
 
 [true != true？Go 面试官，你坑人！！！]zero  https://mp.weixin.qq.com/s/Xb0ZUUeOw-IgHwGVsCaycA
 
@@ -198,15 +200,15 @@ Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供�
 [小技巧分享：在 Go 如何实现枚举？] https://mp.weixin.qq.com/s/4jvhRQvKlMiYweSOG6xCrA (go的iota实现是不完全的enum)
 
 ---
-[Goroutine 一泄露就看到他，这是个什么？]memory->gopark
+[Goroutine 一泄露就看到他，这是个什么？]memory->gopark https://mp.weixin.qq.com/s/x6Kzn7VA1wUz7g8txcBX7A
 
 [go切片导致内存泄漏、slice的data字段、边界取值] memory->slice
 
 [go map的初始化、访问、赋值、扩容、缩容]memory->map
 
-[go 的负载因子为什么是6.5]memory->map
+[go 的负载因子为什么是6.5]memory->map https://mp.weixin.qq.com/s/vxf7VxRcWL27ST2_VDHhOg
 
-[聊一聊内存逃逸]memory->
+[聊一聊内存逃逸]memory-> https://mp.weixin.qq.com/s/J-WjYpZ40ehGLoJ0dDTWDw
 
 [透过内存看slice和array的异同]
 
@@ -227,11 +229,11 @@ go tool compile -S main.go
 ---
 [一文吃透 Go 语言解密之上下文 context] https://mp.weixin.qq.com/s/A03G3_kCvVFN3TxB-92GVw
 
-[面试官：context携带的数据是线程安全的吗？]contexts 
+[面试官：context携带的数据是线程安全的吗？]contexts  https://mp.weixin.qq.com/s/7L2H3ulyTk4hXQFbFfa79A
 
 [为什么 Go map 和 slice 是非线性安全的？] https://mp.weixin.qq.com/s/TzHvDdtfp0FZ9y1ndqeCRw  Go Slice 主要还是索引位覆写问题
 
-[Context 是怎么在 Go 语言中发挥关键作用的]contexts
+[Context 是怎么在 Go 语言中发挥关键作用的]contexts https://mp.weixin.qq.com/s/NNYyBLOO949ElFriLVRWiA
 
 [一起聊聊 Go Context 的正确使用姿势] https://mp.weixin.qq.com/s/5JDSqNIimNrgm5__Z4FNjw
 
@@ -239,22 +241,22 @@ go tool compile -S main.go
 
 ---
 
-[读者提问：反射是如何获取结构体成员信息的？]reflects
+[读者提问：反射是如何获取结构体成员信息的？]reflects https://mp.weixin.qq.com/s/BYVYhpP70gX4Vp1W9ckkMQ
 
 [解密 Go 语言之反射 reflect] https://mp.weixin.qq.com/s/onl3sBCSNs8l42uihi_p4A  反射在工程实践中，目的一就是可以获取到值和类型，其二就是要能够修改他的值。；Elem 方法来获取指针所指向的源变量；反射本质上与 Interface 存在直接关系
 
 ---
 
 
-[内联函数和编译器对go代码的优化]compile
+[内联函数和编译器对go代码的优化]compile https://mp.weixin.qq.com/s/Or4FmVAf9nvMQzPct87Ecw
 
-[终于识破这个go编译器把戏]compile
+[终于识破这个go编译器把戏]compile https://mp.weixin.qq.com/s/rbIIT26rFQzjVcfFnwso5Q
 
-[翻译了一篇关于Go编译器的文章]compile
+[翻译了一篇关于Go编译器的文章]compile https://mp.weixin.qq.com/s/G7sVQNbgXmyeAT9ZI2q2OA
 
-[迷惑了，Go len() 是怎么计算出来的？]compile->slice
+[迷惑了，Go len() 是怎么计算出来的？]compile->slice https://mp.weixin.qq.com/s/VId32MuVA3ZRvxAHBKHXJA
 
-[一道关于 len 函数的诡异 Go 面试题解析] compile
+[一道关于 len 函数的诡异 Go 面试题解析] compile https://mp.weixin.qq.com/s/FUNE8dI-yFArJF2KCNFCgw
 
 [面试官：小松子知道什么是内联函数吗？] https://mp.weixin.qq.com/s/TaiRDMt0yaG89meT0eaghw  
 将函数调用展开,避免了频繁调用函数对栈内存重复开辟所带来的消耗
@@ -271,11 +273,11 @@ Go在内部维持了一份内联函数的映射关系，会生成一个内联树
 
 [文件存储] stroge
 
-[Go 存储基础 — “文件”被偷偷修改？来，给它装个监控！] storage-->fsnofify
+[Go 存储基础 — “文件”被偷偷修改？来，给它装个监控！] storage-->fsnofify https://mp.weixin.qq.com/s/Czv0CxDKqr2QNItO4aNZMA
 
-[浅析gowatch监听文件变动实现原理]storage-->gowatch
+[浅析gowatch监听文件变动实现原理]storage-->gowatch https://mp.weixin.qq.com/s/tsavVgnxFb6anLvcjvQwlA
 
-[Go 存储基础 — 内存结构体怎么写入文件？]storage->file
+[Go 存储基础 — 内存结构体怎么写入文件？]storage->file https://mp.weixin.qq.com/s/mfNz7r76vZOOgiMSmuVeJA
 
 [深入理解 Linux 的 epoll 机制] https://mp.weixin.qq.com/s/GEoG23wz2JfQQQ9MgoM8tg （IO 多路复用就是 1 个线程处理 多个 fd 的模式）
 
@@ -292,7 +294,7 @@ go build GOFLAGS="-ldflags=-compressdwarf=false"
 在命令中指定了 GOFLAGS 参数，这是因为在 Go1.11 起，为了减少二进制文件大小，调试信息会被压缩。
 导致在 MacOS 上使用 gdb 时无法理解压缩的 DWARF 的含义是什么
 
-[会诱发goroutine挂起的27个原因]
+[会诱发goroutine挂起的27个原因] https://mp.weixin.qq.com/s/h1zrFLWoryA7P5I19kwkpg
 
 [再见 Go 面试官：单核 CPU，开两个 Goroutine，其中一个死循环，会怎么样？] https://mp.weixin.qq.com/s/h27GXmfGYVLHRG3Mu_8axw
 
@@ -320,27 +322,27 @@ go build GOFLAGS="-ldflags=-compressdwarf=false"
 
 
 
-[Go 并发编程 — 结构体多字段的原子操作]concurrent
+[Go 并发编程 — 结构体多字段的原子操作]concurrent https://mp.weixin.qq.com/s/u5NKKqAtrJt-sgTM1iQ0gA
 
 
 ---
 
-[go官方限流器的详解]limiter
+[go官方限流器的详解]limiter https://mp.weixin.qq.com/s/S3_YEyhLcaAUuaSabXdimw
 
-[常用限流算法的应用场景和实现原理]limiter
+[常用限流算法的应用场景和实现原理]limiter https://mp.weixin.qq.com/s/krrUFEHVBw4c-47ziXOK2w
 
 
-[go-monitor：服务质量统计分析警告工具]monitor
-
----
-[Go 的相对路径问题]path
-
-[面试官：你能聊聊string和[]byte的转换吗？] bytes
+[go-monitor：服务质量统计分析警告工具]monitor https://mp.weixin.qq.com/s/WF_-XrzI3lS3tqmrzxMjdg
 
 ---
-[学会使用 GDB 调试 Go 代码] debugs
+[Go 的相对路径问题]path https://mp.weixin.qq.com/s/QOA3Mk20M4rRM9oXOGB9HA
 
-[一个 Demo 学会使用 Go Delve 调试]debugs
+[面试官：你能聊聊string和[]byte的转换吗？] bytes https://mp.weixin.qq.com/s/6vBreVLyPQc-WRBh_s90oA
+ 
+---
+[学会使用 GDB 调试 Go 代码] debugs https://mp.weixin.qq.com/s/O9Ngzgg9xfHMs5RSK5wHQQ
+
+[一个 Demo 学会使用 Go Delve 调试]debugs https://mp.weixin.qq.com/s/Yz_p0S5N4ubf8wxLm5wbmQ
 
 [Go 程序崩了？煎鱼教你用 PProf 工具来救火！] https://mp.weixin.qq.com/s/9yLd7kkYzmbCriolhbvK_g
 
@@ -363,7 +365,7 @@ GC 是怎么影响到 Goroutine 的执行的？
 
 [我无语了，Go 中 +-*/ 四个运算符竟然可以连着用] https://mp.weixin.qq.com/s/8GRq6At23fMho3BKkylcGw
 
-[go程序自己监控自己]
+[go程序自己监控自己] https://mp.weixin.qq.com/s/kASxY9NDYsUpDltO2U3qEw
 
 [想要4个9？本文告诉你监控告警如何做] https://mp.weixin.qq.com/s/qaNWBlDGgE2hNnu6SV4EBg
 
