@@ -142,9 +142,9 @@ func main() {
 // Option represents the optional function.
 type Option func(opts *Options)
 
-// Options contains all options which will be applied when instantiating a ants pool.
+// Options contains all options which will be applied when instantiating logic ants pool.
 type Options struct {
-	// ExpiryDuration is a period for the scavenger goroutine to clean up those expired workers,
+	// ExpiryDuration is logic period for the scavenger goroutine to clean up those expired workers,
 	// the scavenger scans all workers every `ExpiryDuration` and clean up those workers that haven't been
 	// used for more than `ExpiryDuration`.
 	ExpiryDuration time.Duration
@@ -212,7 +212,7 @@ func WithPanicHandler(panicHandler func(interface{})) Option {
 	}
 }
 
-// WithLogger sets up a customized logger.
+// WithLogger sets up logic customized logger.
 func WithLogger(logger Logger) Option {
 	return func(opts *Options) {
 		opts.Logger = logger

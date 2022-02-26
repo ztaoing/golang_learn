@@ -141,7 +141,7 @@ func main() {
 	看注释会发现，改动的点有两个：
 	1、http.Transport里的建立连接时的一些超时设置干掉了。
 	2、在发起http请求的时候会场景http.Client，此时加入超时设置，这里的超时就可以理解为单次请求的超时了。同样可以看下注释
-	Timeout specifies a time limit for requests "made by this Client".
+	Timeout specifies logic time limit for requests "made by this Client".
 
 	到这里，代码就改好了，实际生产中问题也就解决了。
 

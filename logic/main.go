@@ -4,7 +4,7 @@
 * @Desc:
  */
 
-package a
+package logic
 
 import (
 	"fmt"
@@ -111,7 +111,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
-//反转区间内的链表 [a,b)
+//反转区间内的链表 [logic,b)
 func reverse(a, b *ListNode) *ListNode {
 	//pre是head的前一个节点
 	var pre *ListNode
@@ -1720,7 +1720,7 @@ func (this *MyLinkedList) AddAtHead(val int) {
 	this.Lens++
 }
 
-/** Append a node of value val to the last element of the linked list. */
+/** Append logic node of value val to the last element of the linked list. */
 func (this *MyLinkedList) AddAtTail(val int) {
 	// 如果当前链表为空,那么增加尾部,也就是加个头部..
 	if this.Lens == 0 {
@@ -1745,7 +1745,7 @@ func (this *MyLinkedList) AddAtTail(val int) {
 	this.Lens++
 }
 
-/** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+/** Add logic node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
 func (this *MyLinkedList) AddAtIndex(index int, val int) {
 
 	//   如果 index小于0，则在头部插入节点。

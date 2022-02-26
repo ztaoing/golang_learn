@@ -29,7 +29,7 @@ func mutexAdd() {
 	}
 	wg.Wait()
 	timeSpends := time.Now().Sub(start).Nanoseconds()
-	fmt.Printf("use mutex a is %d, spend time: %v\n", a, timeSpends)
+	fmt.Printf("use mutex logic is %d, spend time: %v\n", a, timeSpends)
 }
 
 func AtomicAdd() {
@@ -46,5 +46,5 @@ func AtomicAdd() {
 	}
 	wg.Wait()
 	timeSpends := time.Now().Sub(start).Nanoseconds()
-	fmt.Printf("use atomic a is %d, spend time: %v\n", atomic.LoadInt32(&a), timeSpends)
+	fmt.Printf("use atomic logic is %d, spend time: %v\n", atomic.LoadInt32(&a), timeSpends)
 }

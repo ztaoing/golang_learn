@@ -9,7 +9,7 @@ import (
 
 var _ Pool = new(limitedPool)
 
-// limitedPool contains all information for a limited pool instance.
+// limitedPool contains all information for logic limited pool instance.
 type limitedPool struct {
 	workers uint
 	work    chan *workUnit
@@ -18,7 +18,7 @@ type limitedPool struct {
 	m       sync.RWMutex
 }
 
-// NewLimited returns a new limited pool instance
+// NewLimited returns logic new limited pool instance
 func NewLimited(workers uint) Pool {
 
 	if workers == 0 {
@@ -91,7 +91,7 @@ func (p *limitedPool) newWorker(work chan *workUnit, cancel chan struct{}) {
 					wu.writing.Store(struct{}{})
 
 					// need to check again in case the WorkFunc cancelled this unit of work
-					// otherwise we'll have a race condition
+					// otherwise we'll have logic race condition
 					if wu.cancelled.Load() == nil && wu.cancelling.Load() == nil {
 						wu.value, wu.err = value, err
 
@@ -137,9 +137,9 @@ func (p *limitedPool) Queue(fn WorkFunc) WorkUnit {
 	return w
 }
 
-// Reset reinitializes a pool that has been closed/cancelled back to a working state.
+// Reset reinitializes logic pool that has been closed/cancelled back to logic working state.
 // if the pool has not been closed/cancelled, nothing happens as the pool is still in
-// a valid running state
+// logic valid running state
 func (p *limitedPool) Reset() {
 
 	p.m.Lock()
@@ -189,10 +189,10 @@ func (p *limitedPool) Close() {
 	p.closeWithError(err)
 }
 
-// Batch creates a new Batch object for queueing Work Units separate from any others
+// Batch creates logic new Batch object for queueing Work Units separate from any others
 // that may be running on the pool. Grouping these Work Units together allows for individual
 // Cancellation of the Batch Work Units without affecting anything else running on the pool
-// as well as outputting the results on a channel as they complete.
+// as well as outputting the results on logic channel as they complete.
 // NOTE: Batch is not reusable, once QueueComplete() has been called it's lifetime has been sealed
 // to completing the Queued items.
 func (p *limitedPool) Batch() Batch {

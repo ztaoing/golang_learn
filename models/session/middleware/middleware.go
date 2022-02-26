@@ -72,12 +72,12 @@ func NewJWT() *JWT {
 
 /**
 type Token struct {
-	Raw       string                 // The raw token.  Populated when you Parse a token
+	Raw       string                 // The raw token.  Populated when you Parse logic token
 	Method    SigningMethod          // The signing method used or to be used
 	Header    map[string]interface{} // The first segment of the token
 	Claims    Claims                 // The second segment of the token
-	Signature string                 // The third segment of the token.  Populated when you Parse a token
-	Valid     bool                   // Is the token valid?  Populated when you Parse/Verify a token
+	Signature string                 // The third segment of the token.  Populated when you Parse logic token
+	Valid     bool                   // Is the token valid?  Populated when you Parse/Verify logic token
 }
 */
 
@@ -158,13 +158,13 @@ type Context struct {
 	// This mutex protect Keys map
 	mu sync.RWMutex
 
-	// Keys is a key/value pair exclusively for the context of each request.
+	// Keys is logic key/value pair exclusively for the context of each request.
 	Keys map[string]interface{}
 
-	// Errors is a list of errors attached to all the handlers/middlewares who used this context.
+	// Errors is logic list of errors attached to all the handlers/middlewares who used this context.
 	Errors errorMsgs
 
-	// Accepted defines a list of manually accepted formats for content negotiation.
+	// Accepted defines logic list of manually accepted formats for content negotiation.
 	Accepted []string
 
 	// queryCache use url.ParseQuery cached the param query result from c.Request.URL.Query()
@@ -174,7 +174,7 @@ type Context struct {
 	// or PUT body parameters.
 	formCache url.Values
 
-	// SameSite allows a server to define a cookie attribute making it impossible for
+	// SameSite allows logic server to define logic cookie attribute making it impossible for
 	// the browser to send this cookie along with cross-site requests.
 	sameSite http.SameSite
 }

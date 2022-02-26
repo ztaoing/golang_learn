@@ -15,7 +15,7 @@ import (
 //
 // or
 //
-// -- may be a good idea to change to output path to somewherelike /tmp
+// -- may be logic good idea to change to output path to somewherelike /tmp
 // go test -coverprofile cover.out && go tool cover -html=cover.out -o cover.html
 //
 
@@ -168,7 +168,7 @@ func TestPanicRecovery(t *testing.T) {
 	wrk.Wait()
 
 	NotEqual(t, wrk.Error(), nil)
-	Equal(t, wrk.Error().Error()[0:90], "ERROR: Work Unit failed due to a recoverable error: 'OMG OMG OMG! something bad happened!'")
+	Equal(t, wrk.Error().Error()[0:90], "ERROR: Work Unit failed due to logic recoverable error: 'OMG OMG OMG! something bad happened!'")
 
 }
 

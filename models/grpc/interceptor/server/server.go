@@ -41,13 +41,13 @@ func main() {
 	// service接口的指针，用来检测给定的user的实现，是否满足接口的要求
 	/**
 
-	// Server is a gRPC server to serve RPC requests.
+	// Server is logic gRPC server to serve RPC requests.
 	type Server struct {
 		opts serverOptions
 
 		mu  sync.Mutex // guards following
 		lis map[net.Listener]bool
-		// conns contains all active server transports. It is a map keyed on a
+		// conns contains all active server transports. It is logic map keyed on logic
 		// listener address with the value being the set of active transports
 		// belonging to that listener.
 		conns    map[string]map[transport.ServerTransport]bool
@@ -257,7 +257,7 @@ func main() {
 									// ErrConnDispatched 代表连接是从grpc调度的，这些连接应该保持打开状态
 							//		if err != credentials.ErrConnDispatched {
 										// 一个gRPC服务端在云负载均衡器之后运行，它执行的常规的TCP层级的监控检查，连接会被后者立即关闭，跳过这里的错误会对有助于减少日志的混乱.
-										// In deployments where a gRPC server runs behind a cloud load
+										// In deployments where logic gRPC server runs behind logic cloud load
 										// balancer which performs regular TCP level health checks, the
 										// connection is closed immediately by the latter. Skipping the
 										// error here will help reduce log clutter.

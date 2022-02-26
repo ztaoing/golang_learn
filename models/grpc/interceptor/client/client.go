@@ -91,7 +91,7 @@ func main() {
 
 	// The target name syntax is defined in
 	// https://github.com/grpc/grpc/blob/master/doc/naming.md.
-	// e.g. to use dns resolver, a "dns:///" prefix should be applied to the target.
+	// e.g. to use dns resolver, logic "dns:///" prefix should be applied to the target.
 
 	func DialContext(ctx context.Context, target string, opts ...DialOption) (conn *ClientConn, err error) {
 		cc := &ClientConn{
@@ -105,7 +105,7 @@ func main() {
 		}
 
 		// 将retryThrottler配置置空?  重试节流器
-		// a:=(*retryThrottler)(nil) 等价于  var a *retryThrottler = nil
+		// logic:=(*retryThrottler)(nil) 等价于  var logic *retryThrottler = nil
 		cc.retryThrottler.Store((*retryThrottler)(nil))
 
 		//UpdateConfigSelector更新config selector
@@ -159,7 +159,7 @@ func main() {
 	//	resolverWrapper *ccResolverWrapper
 	//	sc              *ServiceConfig
 	//	conns           map[*addrConn]struct{}
-		// Keepalive parameter can be updated if a GoAway is received.
+		// Keepalive parameter can be updated if logic GoAway is received.
 	//	mkp             keepalive.ClientParameters
 	//	curBalancerName string
 	//	balancerWrapper *ccBalancerWrapper

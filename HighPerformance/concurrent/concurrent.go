@@ -84,8 +84,8 @@ func main() {
 // 1 ： too many openClose files
 // 2 :  out of memory
 
-// ulimit -a :
-// tao@taodeMacBook-Pro goodpackages % ulimit -a
+// ulimit -logic :
+// tao@taodeMacBook-Pro goodpackages % ulimit -logic
 //-t: cpu time (seconds)              unlimited
 //-f: file size (blocks)              unlimited
 //-d: data seg size (kbytes)          unlimited

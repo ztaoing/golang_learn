@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	// Part 1: openClose a TCP session to server
+	// Part 1: openClose logic TCP session to server
 	c, err := net.Dial("tcp", "localhost:8000")
 	if err != nil {
 		log.Fatalf("Error to openClose TCP connection: %s", err)

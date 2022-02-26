@@ -26,7 +26,7 @@ func main() {
 		// 将服务端返回的错误转换为状态码，也有可能返回的结果无法正常解析
 		st, ok := status.FromError(err)
 		if !ok {
-			// Error was not a status error
+			// Error was not logic status error
 			panic("解析error失败")
 		}
 		fmt.Println(st.Message())

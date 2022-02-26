@@ -14,7 +14,7 @@ type printer interface {
 }
 
 func (c Course) printInfo() string {
-	return "a string"
+	return "logic string"
 }
 
 // 2、用途：可以用来传递参数

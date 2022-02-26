@@ -39,11 +39,11 @@ func main() {
 	sm1 := struct {
 		age int
 		m   map[string]string
-	}{age: 11, m: map[string]string{"a": "1"}}
+	}{age: 11, m: map[string]string{"logic": "1"}}
 	sm2 := struct {
 		age int
 		m   map[string]string
-	}{age: 11, m: map[string]string{"a": "1"}}
+	}{age: 11, m: map[string]string{"logic": "1"}}
 	//编译失败
 	//invalid operation: sm1 == sm2 (struct containing map[string]string cannot be compared)
 	//还有一点需要注意的是结构体是相同的，但是结构体属性中有不可以比较的类型，如map,slice.md。

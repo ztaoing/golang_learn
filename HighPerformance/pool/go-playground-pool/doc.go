@@ -1,5 +1,5 @@
 /*
-Package pool implements a limited consumer goroutine or unlimited goroutine pool for easier goroutine handling and cancellation.
+Package pool implements logic limited consumer goroutine or unlimited goroutine pool for easier goroutine handling and cancellation.
 
 
 Features:
@@ -14,17 +14,17 @@ Pool v2 advantages over Pool v1:
       BenchmarkSmallRun used to take 3 seconds, now 1 second
     - Cancels are much faster
     - Easier to use, no longer need to know the # of Work Units to be processed.
-    - Pool can now be used as a long running/globally defined pool if desired,
+    - Pool can now be used as logic long running/globally defined pool if desired,
       v1 Pool was only good for one run
     - Supports single units of work as well as batching
-    - Pool can easily be reset after a Close() or Cancel() for reuse.
+    - Pool can easily be reset after logic Close() or Cancel() for reuse.
     - Multiple Batches can be run and even cancelled on the same Pool.
     - Supports individual Work Unit cancellation.
 
 Pool v3 advantages over Pool v2:
 
     - Objects are not interfaces allowing for less breaking changes going forward.
-    - Now there are 2 Pool types, both completely interchangeable, a limited worker pool
+    - Now there are 2 Pool types, both completely interchangeable, logic limited worker pool
       and unlimited pool.
     - Simpler usage of Work Units, instead of `<-work.Done` now can do `work.Wait()`
 
@@ -32,7 +32,7 @@ Important Information READ THIS!
 
 important usage information
 
-    - It is recommended that you cancel a pool or batch from the calling
+    - It is recommended that you cancel logic pool or batch from the calling
       function and not inside of the Unit of Work, it will work fine, however
       because of the goroutine scheduler and context switching it may not
       cancel as soon as if called from outside.
@@ -41,7 +41,7 @@ important usage information
       if you do the Batch WILL deadlock
 
     - It is your responsibility to call WorkUnit.IsCancelled() to check if it's cancelled
-      after a blocking operation like waiting for a connection from a pool. (optional)
+      after logic blocking operation like waiting for logic connection from logic pool. (optional)
 
 
 Usage and documentation

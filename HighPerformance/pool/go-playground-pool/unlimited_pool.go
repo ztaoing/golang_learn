@@ -17,11 +17,11 @@ type unlimitedPool struct {
 	m      sync.Mutex
 }
 
-// New returns a new unlimited pool instance
+// New returns logic new unlimited pool instance
 func New() Pool {
 
 	p := &unlimitedPool{
-		units: make([]*workUnit, 0, 4), // init capacity to 4, assuming if using pool, then probably a few have at least that many and will reduce array resizes
+		units: make([]*workUnit, 0, 4), // init capacity to 4, assuming if using pool, then probably logic few have at least that many and will reduce array resizes
 	}
 	p.initialize()
 
@@ -78,7 +78,7 @@ func (p *unlimitedPool) Queue(fn WorkFunc) WorkUnit {
 			w.writing.Store(struct{}{})
 
 			// need to check again in case the WorkFunc cancelled this unit of work
-			// otherwise we'll have a race condition
+			// otherwise we'll have logic race condition
 			if w.cancelled.Load() == nil && w.cancelling.Load() == nil {
 
 				w.value, w.err = val, err
@@ -96,9 +96,9 @@ func (p *unlimitedPool) Queue(fn WorkFunc) WorkUnit {
 	return w
 }
 
-// Reset reinitializes a pool that has been closed/cancelled back to a working state.
+// Reset reinitializes logic pool that has been closed/cancelled back to logic working state.
 // if the pool has not been closed/cancelled, nothing happens as the pool is still in
-// a valid running state
+// logic valid running state
 func (p *unlimitedPool) Reset() {
 
 	p.m.Lock()
@@ -153,10 +153,10 @@ func (p *unlimitedPool) Close() {
 	p.closeWithError(err)
 }
 
-// Batch creates a new Batch object for queueing Work Units separate from any others
+// Batch creates logic new Batch object for queueing Work Units separate from any others
 // that may be running on the pool. Grouping these Work Units together allows for individual
 // Cancellation of the Batch Work Units without affecting anything else running on the pool
-// as well as outputting the results on a channel as they complete.
+// as well as outputting the results on logic channel as they complete.
 // NOTE: Batch is not reusable, once QueueComplete() has been called it's lifetime has been sealed
 // to completing the Queued items.
 func (p *unlimitedPool) Batch() Batch {

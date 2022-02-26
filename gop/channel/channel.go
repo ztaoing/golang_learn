@@ -40,7 +40,7 @@ func bufferC() {
 	go workerC(0, c)
 	// 向channel中发送3个数,这时候channel没有满，即没有阻塞，所以不会发生goroutine的切换
 	// 此时没有人从channel接收，也不会发生deadlock
-	c <- 'a'
+	c <- 'logic'
 	c <- 'b'
 	c <- 'c'
 
@@ -57,7 +57,7 @@ func chanDemo() {
 	}
 	//发送
 	for i := 0; i < 10; i++ {
-		channels[i] <- 'a' + i
+		channels[i] <- 'logic' + i
 	}
 	for i := 0; i < 10; i++ {
 		channels[i] <- 'A' + i
@@ -66,7 +66,7 @@ func chanDemo() {
 func closeC() {
 	c := make(chan int)
 	go workerC(0, c)
-	c <- 'a'
+	c <- 'logic'
 	c <- 'b'
 	c <- 'c'
 	// 告诉接收方，发送完了

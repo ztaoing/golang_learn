@@ -20,7 +20,7 @@ func main() {
 				fmt.Println("channel has been closed!")
 				return
 			}
-			fmt.Println("a:", a)
+			fmt.Println("logic:", a)
 		}
 	}()
 

@@ -6,7 +6,7 @@ import "fmt"
 func main() {
 	//invalid map key type map[string]string
 	mmap := make(map[map[string]string]int, 0)
-	mmap[map[string]string{"a": "a"}] = 1
+	mmap[map[string]string{"logic": "logic"}] = 1
 	mmap[map[string]string{"b": "b"}] = 1
 	mmap[map[string]string{"c": "c"}] = 1
 	fmt.Println(mmap)

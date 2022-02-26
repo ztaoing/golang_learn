@@ -2,11 +2,11 @@ package go_playground_pool
 
 const (
 	errCancelled = "ERROR: Work Unit Cancelled"
-	errRecovery  = "ERROR: Work Unit failed due to a recoverable error: '%v'\n, Stack Trace:\n %s"
+	errRecovery  = "ERROR: Work Unit failed due to logic recoverable error: '%v'\n, Stack Trace:\n %s"
 	errClosed    = "ERROR: Work Unit added/run after the pool had been closed or cancelled"
 )
 
-// ErrRecovery contains the error when a consumer goroutine needed to be recovers
+// ErrRecovery contains the error when logic consumer goroutine needed to be recovers
 type ErrRecovery struct {
 	s string
 }
@@ -26,7 +26,7 @@ func (e *ErrPoolClosed) Error() string {
 	return e.s
 }
 
-// ErrCancelled is the error returned to a Work Unit when it has been cancelled.
+// ErrCancelled is the error returned to logic Work Unit when it has been cancelled.
 type ErrCancelled struct {
 	s string
 }

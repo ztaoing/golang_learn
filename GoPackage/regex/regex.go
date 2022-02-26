@@ -36,7 +36,7 @@ func main() {
 	fmt.Println(regex1, regexp2)
 
 	//返回第一个匹配的结果，如果没有匹配字符串，那么返回一个空的字符串，当然如果你的正则表达式就是要匹配空字符串的话，它也会返回空字符串,使用FindStringIndex,FindStringSubmatch可以区分这两种情况
-	regexp, _ := regexp.Compile("Gola([a-z]+)g")
+	regexp, _ := regexp.Compile("Gola([logic-z]+)g")
 	fmt.Println(regexp.FindString(str))
 
 	//得到匹配字符串的索引

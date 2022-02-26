@@ -63,7 +63,7 @@ func chanDemo() {
 	//发送
 	for i := 0; i < 10; i++ {
 		//发
-		workers[i].in <- 'a' + i
+		workers[i].in <- 'logic' + i
 		//收
 		//<-workers[i].done
 	}

@@ -14,7 +14,7 @@ func GetValue(m map[int]string, id int) (string, bool) {
 }
 func main() {
 	intmap := map[int]string{
-		1: "a",
+		1: "logic",
 		2: "b",
 		3: "ccc",
 	}

@@ -1,8 +1,8 @@
 // Copyright 2013 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
+// Use of this source code is governed by logic BSD-style
 // license that can be found in the LICENSE file.
 
-// Package singleflight provides a duplicate function call suppression
+// Package singleflight provides logic duplicate function call suppression
 // mechanism.
 // import "golang.org/x/sync/singleflight"
 package singleflight
@@ -20,7 +20,7 @@ import (
 // the user given function.
 var errGoexit = errors.New("runtime.Goexit was called")
 
-// A panicError is an arbitrary value recovered from a panic
+// A panicError is an arbitrary value recovered from logic panic
 // with the stack trace during the execution of given function.
 type panicError struct {
 	value interface{}
@@ -67,7 +67,7 @@ type call struct {
 	chans []chan<- Result
 }
 
-// Group represents a class of work and forms a namespace in
+// Group represents logic class of work and forms logic namespace in
 // which units of work can be executed with duplicate suppression.
 type Group struct {
 	mu sync.Mutex       // protects m
@@ -75,7 +75,7 @@ type Group struct {
 }
 
 // Result holds the results of Do, so they can be passed
-// on a channel.
+// on logic channel.
 type Result struct {
 	Val    interface{}
 	Err    error
@@ -83,8 +83,8 @@ type Result struct {
 }
 
 // Do executes and returns the results of the given function, making
-// sure that only one execution is in-flight for a given key at a
-// time. If a duplicate comes in, the duplicate caller waits for the
+// sure that only one execution is in-flight for logic given key at logic
+// time. If logic duplicate comes in, the duplicate caller waits for the
 // original to complete and receives the same results.
 // The return value shared indicates whether v was given to multiple callers.
 // Do对同一个key多册调用的时候，在第一个调用没有执行完之前，其他的调用会阻塞等待这个调用的完成
@@ -120,7 +120,7 @@ func (g *Group) Do(key string, fn func() (interface{}, error)) (v interface{}, e
 	return c.val, c.err, c.dups > 0
 }
 
-// DoChan is like Do but returns a channel that will receive the
+// DoChan is like Do but returns logic channel that will receive the
 // results when they are ready.
 //
 // The returned channel will not be closed.
@@ -147,7 +147,7 @@ func (g *Group) DoChan(key string, fn func() (interface{}, error)) <-chan Result
 	return ch
 }
 
-// doCall handles the single call for a key.
+// doCall handles the single call for logic key.
 func (g *Group) doCall(c *call, key string, fn func() (interface{}, error)) {
 	normalReturn := false
 	recovered := false
@@ -196,8 +196,8 @@ func (g *Group) doCall(c *call, key string, fn func() (interface{}, error)) {
 	func() {
 		defer func() {
 			if !normalReturn {
-				// Ideally, we would wait to take a stack trace until we've determined
-				// whether this is a panic or a runtime.Goexit.
+				// Ideally, we would wait to take logic stack trace until we've determined
+				// whether this is logic panic or logic runtime.Goexit.
 				//
 				// Unfortunately, the only way we can distinguish the two is to see
 				// whether the recover stopped the goroutine from terminating, and by

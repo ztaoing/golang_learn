@@ -29,7 +29,7 @@ func main() {
 		start := time.Now()
 		md := metadata.New(map[string]string{
 			"appid":  "10001",
-			"appkey": "this is a appkey",
+			"appkey": "this is logic appkey",
 		})
 		ctx = metadata.NewOutgoingContext(context.Background(), md)
 		err := invoker(ctx, method, req, reply, cc, opts...)

@@ -365,9 +365,11 @@ GC 是怎么影响到 Goroutine 的执行的？
 
 [我无语了，Go 中 +-*/ 四个运算符竟然可以连着用] https://mp.weixin.qq.com/s/8GRq6At23fMho3BKkylcGw
 
-[go程序自己监控自己] https://mp.weixin.qq.com/s/kASxY9NDYsUpDltO2U3qEw
+[go程序自己监控自己] https://mp.weixin.qq.com/s/kASxY9NDYsUpDltO2U3qEw （在宿主机、虚拟机、容器获取性能指标 https://github.com/shirou/gopsutil）
 
 [想要4个9？本文告诉你监控告警如何做] https://mp.weixin.qq.com/s/qaNWBlDGgE2hNnu6SV4EBg
+
+[我要提高 Go 程序健壮性，Fuzzing 来了！] https://mp.weixin.qq.com/s/zdsrmlwVR0bP1Q_Xg_VlpQ (Go 在 dev.fuzz 分支上提供了该功能的 Beta 测试 https://github.com/dvyukov/go-fuzz)
 
 
 ---
@@ -376,39 +378,41 @@ GC 是怎么影响到 Goroutine 的执行的？
 
 [Go项目实战：从零构建一个并发文件下载器] https://mp.weixin.qq.com/s/28CjAeINvlvNqLXP0g2oMw
 
-[用 Go 来了解一下 Redis 通讯协议] https://mp.weixin.qq.com/s/pLwRiG1H_EAANadzz3VaLg
+[用 Go 来了解一下 Redis 通讯协议] https://mp.weixin.qq.com/s/pLwRiG1H_EAANadzz3VaLg  （redis协议的组成）
 
-[我要提高 Go 程序健壮性，Fuzzing 来了！] https://mp.weixin.qq.com/s/zdsrmlwVR0bP1Q_Xg_VlpQ
 
-[一道 Go 闭包题，面试官说原来自己答错了：面别人也涨知识] https://mp.weixin.qq.com/s/OLgsdhXGEMltmjcpTW2ICw
+[一道 Go 闭包题，面试官说原来自己答错了：面别人也涨知识] https://mp.weixin.qq.com/s/OLgsdhXGEMltmjcpTW2ICw 闭包通过一个结构体来实现，它存储一个函数和一个关联的上下文环境。
 
-[我这样升级 Go 版本，你呢？] https://mp.weixin.qq.com/s/bGS5D0UYVp6BxSLjuZy0pg
+[我这样升级 Go 版本，你呢？] https://mp.weixin.qq.com/s/bGS5D0UYVp6BxSLjuZy0pg (go的多版本)
 
-[又吵起来了，Go 是传值还是传引用？] https://mp.weixin.qq.com/s/qsxvfiyZfRCtgTymO9LBZQ
+[又吵起来了，Go 是传值还是传引用？] https://mp.weixin.qq.com/s/qsxvfiyZfRCtgTymO9LBZQ （传递的是副本，值的副本，指针的副本，原指针和指针副本指向同一个数据地址;map 和 slice 的行为类似于指针，它们是包含指向底层 map 或 slice 数据的指针的描述符”）
+func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 
-[Go 面试官问我如何实现面向对象？] https://mp.weixin.qq.com/s/2x4Sajv7HkAjWFPe4oD96g
+[Go 面试官问我如何实现面向对象？] https://mp.weixin.qq.com/s/2x4Sajv7HkAjWFPe4oD96g (封装、继承、多态：在 Go 语言中，多态是通过接口来实现的)
 
 [Go 面试官：什么是协程，协程和线程的区别和联系？] https://mp.weixin.qq.com/s/vW5n_JWa3I-Qopbx4TmIgQ
 
-[用 Go struct 不能犯的一个低级错误！] https://mp.weixin.qq.com/s/K5B2ItkzOb4eCFLxZI5Wvw
+[手撕 Go 面试官：Go 结构体是否可以比较，为什么？] https://mp.weixin.qq.com/s/HScH6nm3xf4POXVk774jUA
 
-[详解 Go 空结构体strcut的 3 种使用场景] https://mp.weixin.qq.com/s/zbYIdB0HlYwYSQRXFFpqSg
+[用 Go struct 不能犯的一个低级错误！] https://mp.weixin.qq.com/s/K5B2ItkzOb4eCFLxZI5Wvw (空结构体，分配在栈(刻意优化)和堆(zerobase)上的不同处理方式)
+
+[详解 Go 空结构体strcut的 3 种使用场景] https://mp.weixin.qq.com/s/zbYIdB0HlYwYSQRXFFpqSg (Go 编译器在内存分配时做的优化)
 
 [你知道 Go 结构体和结构体指针调用有什么区别吗？] https://mp.weixin.qq.com/s/g-D_eVh-8JaIoRne09bJ3Q
 
-[手撕 Go 面试官：Go 结构体是否可以比较，为什么？] https://mp.weixin.qq.com/s/HScH6nm3xf4POXVk774jUA
+
 
 [Go 群友提问：进程、线程都有 ID，为什么 Goroutine 没有 ID？] https://mp.weixin.qq.com/s/qFAtgpbAsHSPVLuo3PYIhg
 
-[Go 面试题：Go interface 的一个 “坑” 及原理分析] https://mp.weixin.qq.com/s/vNACbdSDxC9S0LOAr7ngLQ
+[一文吃透 Go 语言解密之接口 interface] https://mp.weixin.qq.com/s/vSgV_9bfoifnh2LEX0Y7cQ
 
 [生产环境遇到一个 Go 问题，整组人都懵逼了...] https://mp.weixin.qq.com/s/F9II4xc4yimOCSTeKBDWqw interface{}与nil的比较
 
-[一文吃透 Go 语言解密之接口 interface] https://mp.weixin.qq.com/s/vSgV_9bfoifnh2LEX0Y7cQ
+[Go 面试题：Go interface 的一个 “坑” 及原理分析] https://mp.weixin.qq.com/s/vNACbdSDxC9S0LOAr7ngLQ  interface包括类型和值
 
-[Go 面试题： new 和 make 是什么，差异在哪？] https://mp.weixin.qq.com/s/tZg3zmESlLmefAWdTR96Tg
+[Go 面试题： new 和 make 是什么，差异在哪？] https://mp.weixin.qq.com/s/tZg3zmESlLmefAWdTR96Tg 主要用途都是用于分配相应类型的内存空间。 调用 make 函数去初始化切片（slice）的类型时，会带有零值，需要明确是否需要。
 
-[一文带你解密 Go 语言之通道 channel] https://mp.weixin.qq.com/s/ZXYpfLNGyej0df2zXqfnHQ
+[一文带你解密 Go 语言之通道 channel] https://mp.weixin.qq.com/s/ZXYpfLNGyej0df2zXqfnHQ 当缓冲区满了后，发送者就会阻塞并等待。而当缓冲区为空时，接受者就会阻塞并等待，直至有新的数据：
 
 [项目实战：使用 Fiber + Gorm 构建 REST API] https://mp.weixin.qq.com/s/TKphSzgM443DuO9KgZlgKw
 

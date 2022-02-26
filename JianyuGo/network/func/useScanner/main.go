@@ -21,7 +21,7 @@ Scanner是bufio包下的类型,在处理文件中以分隔符分隔的文本时�
 type SplitFunc func(data []byte, atEOF bool) (advance int, token []byte, err error)
 
 // Returning (0, nil, nil) will tell the scanner
-// to scan again, but with a bigger buffer because
+// to scan again, but with logic bigger buffer because
 // it wasn't enough data to reach the delimiter
 */
 

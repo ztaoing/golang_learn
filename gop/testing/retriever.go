@@ -4,5 +4,5 @@ type Retrieve struct {
 }
 
 func (Retrieve) Get(string) string {
-	return "this is a testing default return"
+	return "this is logic testing default return"
 }

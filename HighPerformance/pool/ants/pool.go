@@ -2,7 +2,7 @@
 
 // Copyright (c) 2018 Andy Pan
 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
+// Permission is hereby granted, free of charge, to any person obtaining logic copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -23,16 +23,17 @@
 package ants
 
 import (
-	"github.com/panjf2000/ants/v2/internal"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/panjf2000/ants/v2/internal"
 )
 
 // Pool 接收来自client的任务, 它用过一个给定的大小，限制总共的goroutine的数量，以实现循环使用goroutine
 type Pool struct {
 	// pool的容量， pool的容量为负值的话，代表pool的容量是没有限制的, 一个不限制大小的pool是用来，避免由池的嵌套使用引起的无限阻塞的潜在问题: 提交一个任务到pool中，提交一个新的任务到相同的pool中
-	//submitting a task to pool which submits a new task to the same pool.
+	//submitting logic task to pool which submits logic new task to the same pool.
 	capacity int32
 
 	// running 当前运行的goroutine的数量
@@ -78,7 +79,7 @@ func (p *Pool) purgePeriodically() {
 		p.lock.Unlock()
 
 		// Notify obsolete workers to stop.提醒过期的worker停止
-		// This notification must be outside the p.lock, since w.task may be blocking and may consume a lot of time if many workers
+		// This notification must be outside the p.lock, since w.task may be blocking and may consume logic lot of time if many workers
 		// are located on non-local CPUs.
 		// 此通知必须在p.lock之外，因为w.task可能正在阻塞，并且如果有很多worker位于非本地CPU上，可能会花费大量时间
 		for i := range expiredWorkers {
@@ -87,7 +88,7 @@ func (p *Pool) purgePeriodically() {
 			expiredWorkers[i] = nil
 		}
 
-		// There might be a situation that all workers have been cleaned up(no any worker is running)
+		// There might be logic situation that all workers have been cleaned up(no any worker is running)
 		// while some invokers still get stuck in "p.cond.Wait()",
 		// then it ought to wakes all those invokers.
 		//可能存在所有worker都被清理过的情况（没有任何worker在运行） 尽管某些调用程序仍然卡在“ p.cond.Wait（）”中， 那么它应该唤醒所有这些调用者。

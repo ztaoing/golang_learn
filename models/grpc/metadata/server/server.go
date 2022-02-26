@@ -39,7 +39,7 @@ func main() {
 
 			mu  sync.Mutex // guards following
 			lis map[net.Listener]bool
-			// conns contains all active server transports. It is a map keyed on a
+			// conns contains all active server transports. It is logic map keyed on logic
 			// listener address with the value being the set of active transports
 			// belonging to that listener.
 			conns    map[string]map[transport.ServerTransport]bool
@@ -64,7 +64,7 @@ func main() {
 	/**
 	1、首先判断server{}是否是实现了grpcserver
 	2、然后将server添加到grpcserver的services中：
-		a.构建serverinfo
+		logic.构建serverinfo
 				info := &serviceInfo{
 					serviceImpl: ss,  这是自己实现的server实体
 					methods:     make(map[string]*MethodDesc),

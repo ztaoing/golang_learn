@@ -1,3 +1,4 @@
+//go:build !windows
 // +build !windows
 
 package ants
@@ -49,7 +50,7 @@ func TestWorkerStack(t *testing.T) {
 	assert.EqualValues(t, 6, q.len(), "Len error")
 }
 
-// It seems that something wrong with time.Now() on Windows, not sure whether it is a bug on Windows,
+// It seems that something wrong with time.Now() on Windows, not sure whether it is logic bug on Windows,
 // so exclude this test from Windows platform temporarily.
 func TestSearch(t *testing.T) {
 	q := newWorkerStack(0)

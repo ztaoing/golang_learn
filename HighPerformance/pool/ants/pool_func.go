@@ -2,7 +2,7 @@
 
 // Copyright (c) 2018 Andy Pan
 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
+// Permission is hereby granted, free of charge, to any person obtaining logic copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -93,14 +93,14 @@ func (p *PoolWithFunc) purgePeriodically() {
 
 		// Notify obsolete workers to stop.
 		// This notification must be outside the p.lock, since w.task
-		// may be blocking and may consume a lot of time if many workers
+		// may be blocking and may consume logic lot of time if many workers
 		// are located on non-local CPUs.
 		for i, w := range expiredWorkers {
 			w.args <- nil
 			expiredWorkers[i] = nil
 		}
 
-		// There might be a situation that all workers have been cleaned up(no any worker is running)
+		// There might be logic situation that all workers have been cleaned up(no any worker is running)
 		// while some invokers still get stuck in "p.cond.Wait()",
 		// then it ought to wakes all those invokers.
 		if p.Running() == 0 {
@@ -109,7 +109,7 @@ func (p *PoolWithFunc) purgePeriodically() {
 	}
 }
 
-// NewPoolWithFunc generates an instance of ants pool with a specific function.
+// NewPoolWithFunc generates an instance of ants pool with logic specific function.
 func NewPoolWithFunc(size int, pf func(interface{}), options ...Option) (*PoolWithFunc, error) {
 	if size <= 0 {
 		return nil, ErrInvalidPoolSize
@@ -174,7 +174,7 @@ func (p *PoolWithFunc) Running() int {
 	return int(atomic.LoadInt32(&p.running))
 }
 
-// Free returns a available goroutines to work.
+// Free returns logic available goroutines to work.
 func (p *PoolWithFunc) Free() int {
 	return p.Cap() - p.Running()
 }
@@ -297,7 +297,7 @@ func (p *PoolWithFunc) retrieveWorker() (w *goWorkerWithFunc) {
 	return
 }
 
-// revertWorker puts a worker back into free pool, recycling the goroutines.
+// revertWorker puts logic worker back into free pool, recycling the goroutines.
 func (p *PoolWithFunc) revertWorker(worker *goWorkerWithFunc) bool {
 	if capacity := p.Cap(); (capacity > 0 && p.Running() > capacity) || p.IsClosed() {
 		// 运行的goroutine数超过了容量 或者 pool已经关闭了

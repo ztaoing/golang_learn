@@ -26,9 +26,9 @@ func main() {
 	// 使用sha512.New加密算法是比较安全的
 	option := &password.Options{10, 100, 50, sha512.New}
 	// 返回生成的salt 和 已经加密的key值
-	salt, encodedPwd := password.Encode("a password", option)
+	salt, encodedPwd := password.Encode("logic password", option)
 
-	check := password.Verify("a password", salt, encodedPwd, option)
+	check := password.Verify("logic password", salt, encodedPwd, option)
 	fmt.Println(check)
 
 	//密码的存储问题：
@@ -43,7 +43,7 @@ func main() {
 	fmt.Println(passwordInfo)
 
 	//验证密码
-	check2 := password.Verify("a password", passwordInfo[2], passwordInfo[3], option)
+	check2 := password.Verify("logic password", passwordInfo[2], passwordInfo[3], option)
 	fmt.Println("验证密码", check2)
 
 }

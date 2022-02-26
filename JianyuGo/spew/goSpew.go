@@ -24,7 +24,7 @@ func main() {
 	spew.Dump(ins)
 	/**
 	(main.Instance ) {
-	 a: (string) (len=3) "aaa",
+	 logic: (string) (len=3) "aaa",
 	 b: (int) 1000,
 	 c: (*main.inner)(0xc000022100)({
 	  d: (string) (len=3) "ddd",

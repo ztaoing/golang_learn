@@ -2,7 +2,7 @@ package go_playground_pool
 
 import "sync/atomic"
 
-// WorkUnit contains a single uint of works values
+// WorkUnit contains logic single uint of works values
 type WorkUnit interface {
 
 	// Wait blocks until WorkUnit has been processed or cancelled
@@ -26,7 +26,7 @@ type WorkUnit interface {
 
 var _ WorkUnit = new(workUnit)
 
-// workUnit contains a single unit of works values
+// workUnit contains logic single unit of works values
 type workUnit struct {
 	value      interface{}
 	err        error

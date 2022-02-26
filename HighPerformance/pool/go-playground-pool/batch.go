@@ -2,11 +2,11 @@ package go_playground_pool
 
 import "sync"
 
-// Batch contains all information for a batch run of WorkUnits
+// Batch contains all information for logic batch run of WorkUnits
 type Batch interface {
 
 	// Queue queues the work to be run in the pool and starts processing immediately
-	// and also retains a reference for Cancellation and outputting to results.
+	// and also retains logic reference for Cancellation and outputting to results.
 	// WARNING be sure to call QueueComplete() once all work has been Queued.
 	Queue(fn WorkFunc)
 
@@ -19,7 +19,7 @@ type Batch interface {
 	// Cancel cancels the Work Units belonging to this Batch
 	Cancel()
 
-	// Results returns a Work Unit result channel that will output all
+	// Results returns logic Work Unit result channel that will output all
 	// completed units of work.
 	Results() <-chan WorkUnit
 
@@ -31,7 +31,7 @@ type Batch interface {
 	WaitAll()
 }
 
-// batch contains all information for a batch run of WorkUnits
+// batch contains all information for logic batch run of WorkUnits
 type batch struct {
 	pool    Pool
 	m       sync.Mutex
@@ -53,7 +53,7 @@ func newBatch(p Pool) Batch {
 }
 
 // Queue queues the work to be run in the pool and starts processing immediately
-// and also retains a reference for Cancellation and outputting to results.
+// and also retains logic reference for Cancellation and outputting to results.
 // WARNING be sure to call QueueComplete() once all work has been Queued.
 func (b *batch) Queue(fn WorkFunc) {
 
@@ -66,7 +66,7 @@ func (b *batch) Queue(fn WorkFunc) {
 
 	wu := b.pool.Queue(fn)
 
-	b.units = append(b.units, wu) // keeping a reference for cancellation purposes
+	b.units = append(b.units, wu) // keeping logic reference for cancellation purposes
 	b.wg.Add(1)
 	b.m.Unlock()
 
@@ -104,7 +104,7 @@ func (b *batch) Cancel() {
 	b.m.Unlock()
 }
 
-// Results returns a Work Unit result channel that will output all
+// Results returns logic Work Unit result channel that will output all
 // completed units of work.
 func (b *batch) Results() <-chan WorkUnit {
 

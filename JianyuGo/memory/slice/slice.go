@@ -14,13 +14,13 @@ func f(b []int) []int {
 	a = b[:2]
 	//新的切片append导致切片扩容
 	c = append(c, b[:2]...)
-	fmt.Printf(" a:%p\n c:%p\n b:%p\n", &a[0], &c[0], &b[0])
+	fmt.Printf(" logic:%p\n c:%p\n b:%p\n", &a[0], &c[0], &b[0])
 	return a
 }
 
 /**
 输出结果:
-a: 0xc000102060
+logic: 0xc000102060
 c: 0xc000124010
 b: 0xc000102060
 

@@ -7,8 +7,8 @@ import (
 
 func main() {
 	// int 转 字符串
-	/*	var a int64 = 56
-		fmt.Printf("%T\n", strconv.Itoa(int(a)))*/
+	/*	var logic int64 = 56
+		fmt.Printf("%T\n", strconv.Itoa(int(logic)))*/
 
 	// 字符串 转 int
 	// 他的返回值有int, error

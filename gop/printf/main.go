@@ -53,7 +53,7 @@ func main() {
 	//要左对齐，和数字一样，使用 - 标志。
 	fmt.Printf("|%-6s|%-6s|\n", "foo", "b")
 	//到目前为止，我们已经看过 Printf了，它通过 os.Stdout输出格式化的字符串。Sprintf 则格式化并返回一个字符串而不带任何输出。
-	s := fmt.Sprintf("a %s", "string")
+	s := fmt.Sprintf("logic %s", "string")
 	fmt.Println(s)
 	//你可以使用 Fprintf 来格式化并输出到 io.Writers而不是 os.Stdout。
 	fmt.Fprintf(os.Stderr, "an %s\n", "error")

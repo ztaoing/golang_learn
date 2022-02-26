@@ -2,7 +2,7 @@
 
 // Copyright (c) 2018 Andy Pan
 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
+// Permission is hereby granted, free of charge, to any person obtaining logic copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -51,24 +51,24 @@ var (
 	// 定义了错误的类型.
 	//---------------------------------------------------------------------------
 
-	// ErrInvalidPoolSize will be returned when setting a negative number as pool capacity, this error will be only used
-	// by pool with func because pool without func can be infinite by setting up a negative capacity.
+	// ErrInvalidPoolSize will be returned when setting logic negative number as pool capacity, this error will be only used
+	// by pool with func because pool without func can be infinite by setting up logic negative capacity.
 	ErrInvalidPoolSize = errors.New("invalid size for pool")
 
 	// ErrLackPoolFunc will be returned when invokers don't provide function for pool.
 	ErrLackPoolFunc = errors.New("must provide function for pool")
 
-	// ErrInvalidPoolExpiry will be returned when setting a negative number as the periodic duration to purge goroutines.
+	// ErrInvalidPoolExpiry will be returned when setting logic negative number as the periodic duration to purge goroutines.
 	ErrInvalidPoolExpiry = errors.New("invalid expiry for pool")
 
-	// ErrPoolClosed will be returned when submitting task to a closed pool.
+	// ErrPoolClosed will be returned when submitting task to logic closed pool.
 	ErrPoolClosed = errors.New("this pool has been closed")
 
 	// ErrPoolOverload will be returned when the pool is full and no workers available.
 	ErrPoolOverload = errors.New("too many goroutines blocked on submit or Nonblocking is set")
 
-	// ErrInvalidPreAllocSize will be returned when trying to set up a negative capacity under PreAlloc mode.
-	ErrInvalidPreAllocSize = errors.New("can not set up a negative capacity under PreAlloc mode")
+	// ErrInvalidPreAllocSize will be returned when trying to set up logic negative capacity under PreAlloc mode.
+	ErrInvalidPreAllocSize = errors.New("can not set up logic negative capacity under PreAlloc mode")
 
 	//---------------------------------------------------------------------------
 

@@ -19,34 +19,34 @@ func main() {
 	/**
 	// FileSet
 
-	// A FileSet represents a set of source files.
+	// A FileSet represents logic set of source files.
 	FileSet 代表一组源文件。
 	// Methods of file sets are synchronized
 	文件集的方法是同步的
 	// multiple goroutines may invoke them concurrently.
 	多个 goroutine 可以同时调用它们
 	//
-	// The byte offsets for each file in a file set are mapped into
+	// The byte offsets for each file in logic file set are mapped into
 	// distinct (integer) intervals文件集中每个文件的字节偏移量被映射到不同的（整数）区间,
 	// 每个文件中只保存一个区间 [base, base+size].
 	// Base 代表的是这个文件中的第一个字节,
 	// and size is the corresponding file ；size 而且size对应文件的大小.
-	// A Pos value is a value in such an interval. By determining the interval a Pos value belongs
+	// A Pos value is logic value in such an interval. By determining the interval logic Pos value belongs
 	// to, the file, its file base, and thus the byte offset (position)
 	// the Pos value is representing can be computed.
 	通过确定 Pos 值所属的区间，可以计算文件、它的文件库以及 Pos 值表示的字节偏移量（位置）。
 	//
-	// When adding a new file, a file base must be provided.
+	// When adding logic new file, logic file base must be provided.
 	添加新文件时，必须提供文件的base
 	//  That can be any integer value that is past the end of any interval of any
 	// file already in the file set.
 	它可以是任何整数值，它超过文件集中已有的任何文件的任何间隔的末尾
 	// For convenience,
 	为了方便
-	FileSet.Base 提供了一个值，provides such a value,
+	FileSet.Base 提供了一个值，provides such logic value,
 	which is simply the end of the Pos interval of the most recently added file, plus one.
 	它只是最近添加的文件的 Pos 间隔的末尾加 1（代表了下一个可以使用的位置,所以新创建的file的base=1）。
-	Unless there is a need to extend an interval later, using the FileSet.Base should be used as argument
+	Unless there is logic need to extend an interval later, using the FileSet.Base should be used as argument
 	// for FileSet.AddFile.
 	除非以后需要延长间隔，否则应使用 FileSet.Base 作为FileSet.AddFile参数。
 
@@ -58,7 +58,7 @@ func main() {
 	}
 	*/
 
-	// ParseFile parses the source code of a single Go source file and returns
+	// ParseFile parses the source code of logic single Go source file and returns
 	// the corresponding ast.File node. The source code may be provided via
 	// the filename of the source file, or via the src parameter.
 	// ParseFile 解析单个 Go 源文件的源代码，并返回对应的 ast.File 节点。 源代码可以通过源文件的文件名或通过 src 参数提供。
@@ -84,16 +84,16 @@ func main() {
 	//
 	// If the source couldn't be read, the returned AST is nil and the error
 	// indicates the specific failure. If the source was read but syntax
-	// errors were found, the result is a partial AST (with ast.Bad* nodes
+	// errors were found, the result is logic partial AST (with ast.Bad* nodes
 	// representing the fragments of erroneous source code). Multiple errors
-	// are returned via a scanner.ErrorList which is sorted by source position.
+	// are returned via logic scanner.ErrorList which is sorted by source position.
 	// 如果无法读取源，则返回的 AST 为 nil，错误指示具体的失败原因。
 	// 如果读取了源但发现了语法错误，则结果是部分 AST（使用 ast.Bad* 节点表示错误源代码的片段）。
 	// 通过按源位置排序的scanner.ErrorList 返回多个错误。
 
 	f, _ := parser.ParseFile(fset, "example.go", src, parser.Mode(0))
 	/**
-	// A File node represents a Go source file.
+	// A File node represents logic Go source file.
 	// 一个 File 节点代表一个 Go 源文件
 	// The Comments list contains all comments in the source file in order of
 	// appearance, including the comments that are pointed to from other nodes
@@ -102,7 +102,7 @@ func main() {
 
 	// For correct printing of source code containing comments (using packages
 	// go/format and go/printer), special care must be taken to update comments
-	// when a File's syntax tree is modified: For printing, comments are interspersed
+	// when logic File's syntax tree is modified: For printing, comments are interspersed
 	// between tokens based on their position. If syntax tree nodes are
 	// removed or moved, relevant comments in their vicinity must also be removed
 	// (from the File.Comments list) or moved accordingly (by updating their
@@ -112,7 +112,7 @@ func main() {
 	如果删除或移动语法树节点，也必须删除（从 File.Comments 列表中）或相应地移动（通过更新它们的位置）附近的相关注释。
 	CommentMap 可用于促进其中一些操作。
 
-	// Whether and how a comment is associated with a node depends on the
+	// Whether and how logic comment is associated with logic node depends on the
 	// interpretation of the syntax tree by the manipulating program: Except for Doc
 	// and Comment comments directly associated with nodes, the remaining comments
 	// are "free-floating" (see also issues #18593, #20744).
