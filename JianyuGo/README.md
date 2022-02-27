@@ -1,6 +1,11 @@
-【以下内容来自煎鱼的微信公众号】
+以下内容来自【煎鱼的微信公众号】【网管叨bi叨】
+
+---
 
 [Go: A Documentary 发布！] https://mp.weixin.qq.com/s/5MtBE8vecKPOmRUYu2E-lg
+
+---
+
 
 
 * 值为nil能调用函数吗？
@@ -425,54 +430,82 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 [《漫谈 MQ》设计 MQ 的 3 个难点] https://mp.weixin.qq.com/s/_QZ1mOtSFECab7TkvPePvQ 高可用(水平扩展+配套服务：服务注册、发现机制、负载均衡) 高并发（队列划分，起到分而治之的作用） 高可靠（主要是针对消息发送、存储消息、处理消息这三块进行展开，和 MySQL 数据库的存储模式是有一定的神似之处）
 
 ---
-[上帝视角看 “Go 项目标准布局” 之争] https://mp.weixin.qq.com/s/KnsB9cTGnM0X7hNR9VDzxg
 
-[最新提案：维持 GOPATH 的传统使用方式（Go1.17 移除 GOPATH）] https://mp.weixin.qq.com/s/AzfKHfs6AOolxutdVpZibw
+[上帝视角看 “Go 项目标准布局” 之争] https://mp.weixin.qq.com/s/KnsB9cTGnM0X7hNR9VDzxg  golang-standards/project-layout
 
-[Go1.16 新特性：Go mod 的后悔药，仅需这一招] https://mp.weixin.qq.com/s/0g89yj9sc1oIz9kS9ZIAEA
+---
 
 [干货满满的 Go Modules 知识分享] https://mp.weixin.qq.com/s/uUNTH06_s6yzy5urtjPMsg
 
----
-[万字长文 | 从实践到原理，带你参透 gRPC] https://mp.weixin.qq.com/s/o-K7G9ywCdmW7et6Q4WMeA
+[最新提案：维持 GOPATH 的传统使用方式（Go1.17 移除 GOPATH）] https://mp.weixin.qq.com/s/AzfKHfs6AOolxutdVpZibw
+
+[Go1.16 新特性：Go mod 的后悔药，仅需这一招] https://mp.weixin.qq.com/s/0g89yj9sc1oIz9kS9ZIAEA retract
 
 
+
 ---
+
+[万字长文 | 从实践到原理，带你参透 gRPC] https://mp.weixin.qq.com/s/o-K7G9ywCdmW7et6Q4WMeA gRPC 基于 HTTP/2 标准设计，带来诸如双向流、流控、头部压缩、单 TCP 连接上的多复用请求等特性。这些特性使得其在移动设备上表现更好，更省电和节省空间占用。
+grpc.NewServer()；grpc.DialContext()
+
+---
+
 [使用golang进行证书签发和双向认证]  https://mp.weixin.qq.com/s/JtIWAyOPNgc08JSvqoFBmA
 
-[这 Go 的边界检查，简直让人抓狂~] https://mp.weixin.qq.com/s/397sL-TCaZrOGR2-s1NFLw
+[这 Go 的边界检查，简直让人抓狂~] https://mp.weixin.qq.com/s/397sL-TCaZrOGR2-s1NFLw 是 Go 语言中防止数组、切片越界而导致内存不安全的检查手段。 go build -gcflags="-d=ssa/check_bce/debug=1" main.go
 
-[一个活跃在众多 Go 项目中的编程模式]  https://mp.weixin.qq.com/s/dWY1ZzOl1TwpmM-rrF0m4Q
+[边界检查消除] https://gfw.go101.org/article/bounds-check-elimination.html
 
-[Go udp 的高性能优化]  https://mp.weixin.qq.com/s/ZfjXhgoFP0InA18uWlQByw
+[一个活跃在众多 Go 项目中的编程模式]  https://mp.weixin.qq.com/s/dWY1ZzOl1TwpmM-rrF0m4Q  函数式选项模式( Functional Options)。该模式解决的问题是，如何更动态灵活地为对象配置参数。
 
-[超全总结：Go 读文件的 10 种方法]  https://mp.weixin.qq.com/s/ww27OPuD_Pse_KDNQWyjzA
+[Go udp 的高性能优化]  https://mp.weixin.qq.com/s/ZfjXhgoFP0InA18uWlQByw  golang udp 的锁竞争问题
 
-[选择合适的 Go 字符串拼接方式] https://mp.weixin.qq.com/s/BnJlP7co44__ZCl2lnSENw
+[超全总结：Go 读文件的 10 种方法]  https://mp.weixin.qq.com/s/ww27OPuD_Pse_KDNQWyjzA 
 
-[如何让 Go 程序自动采样]  https://mp.weixin.qq.com/s/0KL9r4osbFwRQTKcscARDg
+[选择合适的 Go 字符串拼接方式] https://mp.weixin.qq.com/s/BnJlP7co44__ZCl2lnSENw 在Go语言中就提供了6种方式进行字符串拼接，那这几种拼接方式该如何选择呢？ 无论什么情况下使用strings.builder进行字符串拼接都是最高效的，不过要主要使用方法，记得调用grow进行容量分配，才会高效
+
+
 
 [在实现小工具的过程中学会 Go 反射] https://mp.weixin.qq.com/s/6_zhqUB3aQr-s_ftTQTR_g
 
-[Go 如何实现启动参数的加载] https://mp.weixin.qq.com/s/NYlAXYdfA0g8JpSdpksPGg
+[Go 如何实现启动参数的加载] https://mp.weixin.qq.com/s/NYlAXYdfA0g8JpSdpksPGg os.Args 函数，获取命令行参数； runtime.argslice； flag 包
+
+Go 汇编语言对 CPU 的重新抽象。Go汇编为了简化汇编代码的编写，引入了 PC、FP、SP、SB 四个伪寄存器。
+四个伪寄存器加上其它的通用寄存器就是 Go 汇编语言对 CPU 的重新抽象。
 
 [写 Go 时如何优雅地查文档] https://mp.weixin.qq.com/s/cCLKCPWEminsC1BJcaguSQ
 
-[Go 的结构体标签] https://mp.weixin.qq.com/s/4FmxImNLcU0-up5aVZLMzw
+[Go 的结构体标签] https://mp.weixin.qq.com/s/4FmxImNLcU0-up5aVZLMzw  
+由空格分隔;
 
-[线上实战:大内存 Go 服务性能优化] https://mp.weixin.qq.com/s/SHcBZNO_t9dNOiWug3weSw
+    type User struct {
+        Name string `json:"name" xml:"name"`
+    }
+键，通常表示后面跟的“值”是被哪个包使用的，例如json这个键会被encoding/json包处理使用。如果要在“键”对应的“值”中传递多个信息，通常通过用逗号（'，'）分隔来指定，;
+
+    Name string `json:"name,omitempty"`
+
+按照惯例，如果一个字段的结构体标签里某个键的“值”被设置成了的破折号 ('-')，那么就意味着告诉处理该结构体标签键值的进程排除该字段。
+
+    Name string `json:"-"`
+
+[线上实战:大内存 Go 服务性能优化] https://mp.weixin.qq.com/s/SHcBZNO_t9dNOiWug3weSw  good 
 
 [应该如何去选择 Go router？] https://mp.weixin.qq.com/s/OoZRkIVVK9Yz63NMYJ34tw
 
-[如何保留 Go 程序崩溃现场] https://mp.weixin.qq.com/s/RktnMydDtOZFwEFLLYzlCA
+[如何保留 Go 程序崩溃现场] https://mp.weixin.qq.com/s/RktnMydDtOZFwEFLLYzlCA core dump 文件是操作系统提供给我们的一把利器，它是程序意外终止时产生的内存快照
 
-[如何有效控制 Go 线程数？] https://mp.weixin.qq.com/s/HYcHfKScBlYCD0IUd0t4jA
+[如何有效控制 Go 线程数？] https://mp.weixin.qq.com/s/HYcHfKScBlYCD0IUd0t4jA 如果真的存在线程数暴涨的问题，那么你应该思考代码逻辑是否合理（为什么你能允许短时间内如此多的系统同步调用），是否可以做一些例如限流之类的处理。
 
 [几个秒杀 Go 官方库的第三方开源库]  https://mp.weixin.qq.com/s/JRsstunuD2UClWb237kPTQ
 
-[Go函数闭包底层实现] https://mp.weixin.qq.com/s/JsnuIyLy3XhQQuuxFIMzrA
+[Go函数闭包底层实现] https://mp.weixin.qq.com/s/JsnuIyLy3XhQQuuxFIMzrA 变量逃逸
 
 [含有CGO代码的项目如何实现跨平台编译] https://mp.weixin.qq.com/s/Xd-YuN-v2OWIFO2wrpruCA
+
+[Go 如何利用 Linux 内核的负载均衡能力] 
+
+---
 
 [golang 垃圾回收 （一）概述篇] https://mp.weixin.qq.com/s/GYYLLlVWMoI-ls8IgrzndA
 
@@ -480,9 +513,14 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 
 [golang 垃圾回收 - 删除写屏障] https://mp.weixin.qq.com/s/T8HvENFlkKuEm2U7rbZTzg
 
-[http 请求怎么确定边界？] https://mp.weixin.qq.com/s/1SzIWYxgAV6Ourb9HSrQZQ
+---
+
+[http 请求怎么确定边界？] https://mp.weixin.qq.com/s/1SzIWYxgAV6Ourb9HSrQZQ ，HTTP 是基于TCP协议的应用层协议，而 TCP 是面向数据流的协议，是没有边界的。HTTP 作为应用层协议需要自己明确定义数据边界。
 
 [Golang 数据结构到底是怎么回事？gdb调一调？] https://mp.weixin.qq.com/s/qtQoZaX_SJi6_TD-uGUPWA
+
+---
+
 
 [6 万 Star！ Go 语言资源大全（上）] https://mp.weixin.qq.com/s/gL3p0pCVlZzrLCwYk7gTvw
 
@@ -490,9 +528,21 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 
 [6 万 Star！ Go 语言资源大全（下）] https://mp.weixin.qq.com/s/KPb4rxv-BuzCpzYv9DWyiQ
 
+
+---
+
+
 [Go原生网络轮询器（netpoller）剖析] https://mp.weixin.qq.com/s/oDLYJqkwF2Em_hcRNLZ9qg
 
 [Golang Profiling: 关于 pprof] https://mp.weixin.qq.com/s/YpUUj4xqlaZ9paEJe7VPYg
+
+[Go 应用的性能优化]  https://xargin.com/go-perf-optimization/
+
+[Go 语言中的一些非常规优化] https://xargin.com/unusual-opt-in-go/
+
+[学会这几招让 Go 程序自己监控自己 ] https://mp.weixin.qq.com/s/H-eCNw7s4e3oz2ReI6Hu_A
+
+[如何让 Go 程序自动采样]  https://mp.weixin.qq.com/s/0KL9r4osbFwRQTKcscARDg
 
 
 
