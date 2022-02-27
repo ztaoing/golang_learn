@@ -422,7 +422,7 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 ---
 [漫谈 MQ：要消息队列（MQ）有什么用？] https://mp.weixin.qq.com/s/aN4VKhzmiqMF7a2GKI2ADQ  解耦 削峰 异步
 
-[《漫谈 MQ》设计 MQ 的 3 个难点] https://mp.weixin.qq.com/s/_QZ1mOtSFECab7TkvPePvQ 高可用 高并发 高可靠
+[《漫谈 MQ》设计 MQ 的 3 个难点] https://mp.weixin.qq.com/s/_QZ1mOtSFECab7TkvPePvQ 高可用(水平扩展+配套服务：服务注册、发现机制、负载均衡) 高并发（队列划分，起到分而治之的作用） 高可靠（主要是针对消息发送、存储消息、处理消息这三块进行展开，和 MySQL 数据库的存储模式是有一定的神似之处）
 
 ---
 [上帝视角看 “Go 项目标准布局” 之争] https://mp.weixin.qq.com/s/KnsB9cTGnM0X7hNR9VDzxg
