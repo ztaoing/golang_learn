@@ -414,10 +414,15 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 
 [一文带你解密 Go 语言之通道 channel] https://mp.weixin.qq.com/s/ZXYpfLNGyej0df2zXqfnHQ 当缓冲区满了后，发送者就会阻塞并等待。而当缓冲区为空时，接受者就会阻塞并等待，直至有新的数据：
 
+---
+
+
 [项目实战：使用 Fiber + Gorm 构建 REST API] https://mp.weixin.qq.com/s/TKphSzgM443DuO9KgZlgKw
 
 ---
-[《漫谈 MQ》设计 MQ 的 3 个难点] https://mp.weixin.qq.com/s/_QZ1mOtSFECab7TkvPePvQ
+[漫谈 MQ：要消息队列（MQ）有什么用？] https://mp.weixin.qq.com/s/aN4VKhzmiqMF7a2GKI2ADQ  解耦 削峰 异步
+
+[《漫谈 MQ》设计 MQ 的 3 个难点] https://mp.weixin.qq.com/s/_QZ1mOtSFECab7TkvPePvQ 高可用 高并发 高可靠
 
 ---
 [上帝视角看 “Go 项目标准布局” 之争] https://mp.weixin.qq.com/s/KnsB9cTGnM0X7hNR9VDzxg
@@ -430,6 +435,65 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 
 ---
 [万字长文 | 从实践到原理，带你参透 gRPC] https://mp.weixin.qq.com/s/o-K7G9ywCdmW7et6Q4WMeA
+
+
+---
+[使用golang进行证书签发和双向认证]  https://mp.weixin.qq.com/s/JtIWAyOPNgc08JSvqoFBmA
+
+[这 Go 的边界检查，简直让人抓狂~] https://mp.weixin.qq.com/s/397sL-TCaZrOGR2-s1NFLw
+
+[一个活跃在众多 Go 项目中的编程模式]  https://mp.weixin.qq.com/s/dWY1ZzOl1TwpmM-rrF0m4Q
+
+[Go udp 的高性能优化]  https://mp.weixin.qq.com/s/ZfjXhgoFP0InA18uWlQByw
+
+[超全总结：Go 读文件的 10 种方法]  https://mp.weixin.qq.com/s/ww27OPuD_Pse_KDNQWyjzA
+
+[选择合适的 Go 字符串拼接方式] https://mp.weixin.qq.com/s/BnJlP7co44__ZCl2lnSENw
+
+[如何让 Go 程序自动采样]  https://mp.weixin.qq.com/s/0KL9r4osbFwRQTKcscARDg
+
+[在实现小工具的过程中学会 Go 反射] https://mp.weixin.qq.com/s/6_zhqUB3aQr-s_ftTQTR_g
+
+[Go 如何实现启动参数的加载] https://mp.weixin.qq.com/s/NYlAXYdfA0g8JpSdpksPGg
+
+[写 Go 时如何优雅地查文档] https://mp.weixin.qq.com/s/cCLKCPWEminsC1BJcaguSQ
+
+[Go 的结构体标签] https://mp.weixin.qq.com/s/4FmxImNLcU0-up5aVZLMzw
+
+[线上实战:大内存 Go 服务性能优化] https://mp.weixin.qq.com/s/SHcBZNO_t9dNOiWug3weSw
+
+[应该如何去选择 Go router？] https://mp.weixin.qq.com/s/OoZRkIVVK9Yz63NMYJ34tw
+
+[如何保留 Go 程序崩溃现场] https://mp.weixin.qq.com/s/RktnMydDtOZFwEFLLYzlCA
+
+[如何有效控制 Go 线程数？] https://mp.weixin.qq.com/s/HYcHfKScBlYCD0IUd0t4jA
+
+[几个秒杀 Go 官方库的第三方开源库]  https://mp.weixin.qq.com/s/JRsstunuD2UClWb237kPTQ
+
+[Go函数闭包底层实现] https://mp.weixin.qq.com/s/JsnuIyLy3XhQQuuxFIMzrA
+
+[含有CGO代码的项目如何实现跨平台编译] https://mp.weixin.qq.com/s/Xd-YuN-v2OWIFO2wrpruCA
+
+[golang 垃圾回收 （一）概述篇] https://mp.weixin.qq.com/s/GYYLLlVWMoI-ls8IgrzndA
+
+[golang 垃圾回收（二）屏障技术] https://mp.weixin.qq.com/s/z0Pt0gUUsHfJGAhMVg4vuQ
+
+[golang 垃圾回收 - 删除写屏障] https://mp.weixin.qq.com/s/T8HvENFlkKuEm2U7rbZTzg
+
+[http 请求怎么确定边界？] https://mp.weixin.qq.com/s/1SzIWYxgAV6Ourb9HSrQZQ
+
+[Golang 数据结构到底是怎么回事？gdb调一调？] https://mp.weixin.qq.com/s/qtQoZaX_SJi6_TD-uGUPWA
+
+[6 万 Star！ Go 语言资源大全（上）] https://mp.weixin.qq.com/s/gL3p0pCVlZzrLCwYk7gTvw
+
+[6 万 Star！ Go 语言资源大全（中）] https://mp.weixin.qq.com/s/DR39kTPz9xLCwNVKV6K4Xw
+
+[6 万 Star！ Go 语言资源大全（下）] https://mp.weixin.qq.com/s/KPb4rxv-BuzCpzYv9DWyiQ
+
+[Go原生网络轮询器（netpoller）剖析] https://mp.weixin.qq.com/s/oDLYJqkwF2Em_hcRNLZ9qg
+
+[Golang Profiling: 关于 pprof] https://mp.weixin.qq.com/s/YpUUj4xqlaZ9paEJe7VPYg
+
 
 
 
