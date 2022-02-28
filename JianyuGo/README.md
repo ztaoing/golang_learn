@@ -552,9 +552,17 @@ netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统
 
 [Go 语言中的一些非常规优化] https://xargin.com/unusual-opt-in-go/
 
+[fasthttp 快在哪里]  https://xargin.com/why-fasthttp-is-fast-and-the-cost-of-it/
+
+[编写和优化Go代码] https://github.com/dgryski/go-perfbook/blob/master/performance-zh.md
+
 [学会这几招让 Go 程序自己监控自己 ] https://mp.weixin.qq.com/s/H-eCNw7s4e3oz2ReI6Hu_A
 
-[如何让 Go 程序自动采样]  https://mp.weixin.qq.com/s/0KL9r4osbFwRQTKcscARDg
+[如何让 Go 程序自动采样]  https://mp.weixin.qq.com/s/0KL9r4osbFwRQTKcscARDg 判断采样时间点的规则
+
+[无人值守的自动 dump（一）] https://mp.weixin.qq.com/s/2nbyWSZMT1HzvYAoaeWK_A
+
+[无人值守的自动 dump（二）] https://mp.weixin.qq.com/s/wKpTiyc1VkZQy0-J8x519g
 
 [go-swagger源码解析] https://zhuanlan.zhihu.com/p/294069197
 
