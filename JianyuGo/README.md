@@ -86,19 +86,22 @@ nil for JSON null
 [select机制] select
 
 
-
-
-    
-
 [在go容器里设置gomaxprocs的正确姿势：]dockers  https://mp.weixin.qq.com/s/kbZsJncgVZv30_TwVrLyLQ
 
 ---
 
 [unsafe包]unsafe https://mp.weixin.qq.com/s/dulgHWM-mjrYIdD9nHZyYg
+
 [详解 Go 团队不建议用的 unsafe.Pointer] https://mp.weixin.qq.com/s/8qtHdw2JiRQ1cXlzbJ0ANA
 
 ---
 
+[http 请求怎么确定边界？] https://mp.weixin.qq.com/s/1SzIWYxgAV6Ourb9HSrQZQ ，HTTP 是基于TCP协议的应用层协议，而 TCP 是面向数据流的协议，是没有边界的。HTTP 作为应用层协议需要自己明确定义数据边界。
+
+
+[Go原生网络轮询器（netpoller）剖析] https://mp.weixin.qq.com/s/oDLYJqkwF2Em_hcRNLZ9qg net.Listen；l.Accept；conn.Read
+
+[Go udp 的高性能优化]  https://mp.weixin.qq.com/s/ZfjXhgoFP0InA18uWlQByw  golang udp 的锁竞争问题
 
 [go网络编程和tcp抓包实操] network-》getTCPPackage https://mp.weixin.qq.com/s/Ou7YSLR1seHfS27rAgdbQQ
 
@@ -360,6 +363,10 @@ go build GOFLAGS="-ldflags=-compressdwarf=false"
 [面试官：你能聊聊string和[]byte的转换吗？] bytes https://mp.weixin.qq.com/s/6vBreVLyPQc-WRBh_s90oA
  
 ---
+
+
+[编写和优化Go代码] https://github.com/dgryski/go-perfbook/blob/master/performance-zh.md
+
 [学会使用 GDB 调试 Go 代码] debugs https://mp.weixin.qq.com/s/O9Ngzgg9xfHMs5RSK5wHQQ
 
 [一个 Demo 学会使用 Go Delve 调试]debugs https://mp.weixin.qq.com/s/Yz_p0S5N4ubf8wxLm5wbmQ
@@ -381,11 +388,18 @@ GC 是怎么影响到 Goroutine 的执行的？
 [生产环境Go程序内存泄露，用pprof如何快速定位] https://mp.weixin.qq.com/s/8UG7qJabqHi6yWARKkZsgA
 
 
+[Golang Profiling: 关于 pprof] https://mp.weixin.qq.com/s/YpUUj4xqlaZ9paEJe7VPYg
+
+[Go 应用的性能优化]  https://xargin.com/go-perf-optimization/
+
+[Go 语言中的一些非常规优化] https://xargin.com/unusual-opt-in-go/
+
+
 [注释竟然还有特殊用途？一文解惑 //go:linkname 指令] https://mp.weixin.qq.com/s/_d1Q0Sx_KPrzEd4psPccMg
 
 [我无语了，Go 中 +-*/ 四个运算符竟然可以连着用] https://mp.weixin.qq.com/s/8GRq6At23fMho3BKkylcGw
 
-[go程序自己监控自己] https://mp.weixin.qq.com/s/kASxY9NDYsUpDltO2U3qEw （在宿主机、虚拟机、容器获取性能指标 https://github.com/shirou/gopsutil）
+
 
 [想要4个9？本文告诉你监控告警如何做] https://mp.weixin.qq.com/s/qaNWBlDGgE2hNnu6SV4EBg
 
@@ -402,6 +416,9 @@ GC 是怎么影响到 Goroutine 的执行的？
 
 
 [一道 Go 闭包题，面试官说原来自己答错了：面别人也涨知识] https://mp.weixin.qq.com/s/OLgsdhXGEMltmjcpTW2ICw 闭包通过一个结构体来实现，它存储一个函数和一个关联的上下文环境。
+
+[Go函数闭包底层实现] https://mp.weixin.qq.com/s/JsnuIyLy3XhQQuuxFIMzrA 变量逃逸
+
 
 [我这样升级 Go 版本，你呢？] https://mp.weixin.qq.com/s/bGS5D0UYVp6BxSLjuZy0pg (go的多版本)
 
@@ -440,6 +457,7 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 [项目实战：使用 Fiber + Gorm 构建 REST API] https://mp.weixin.qq.com/s/TKphSzgM443DuO9KgZlgKw
 
 ---
+
 [漫谈 MQ：要消息队列（MQ）有什么用？] https://mp.weixin.qq.com/s/aN4VKhzmiqMF7a2GKI2ADQ  解耦 削峰 异步
 
 [《漫谈 MQ》设计 MQ 的 3 个难点] https://mp.weixin.qq.com/s/_QZ1mOtSFECab7TkvPePvQ 高可用(水平扩展+配套服务：服务注册、发现机制、负载均衡) 高并发（队列划分，起到分而治之的作用） 高可靠（主要是针对消息发送、存储消息、处理消息这三块进行展开，和 MySQL 数据库的存储模式是有一定的神似之处）
@@ -473,7 +491,7 @@ grpc.NewServer()；grpc.DialContext()
 
 [一个活跃在众多 Go 项目中的编程模式]  https://mp.weixin.qq.com/s/dWY1ZzOl1TwpmM-rrF0m4Q  函数式选项模式( Functional Options)。该模式解决的问题是，如何更动态灵活地为对象配置参数。
 
-[Go udp 的高性能优化]  https://mp.weixin.qq.com/s/ZfjXhgoFP0InA18uWlQByw  golang udp 的锁竞争问题
+
 
 [超全总结：Go 读文件的 10 种方法]  https://mp.weixin.qq.com/s/ww27OPuD_Pse_KDNQWyjzA 
 
@@ -512,9 +530,9 @@ Go 汇编语言对 CPU 的重新抽象。Go汇编为了简化汇编代码的编�
 
 [如何有效控制 Go 线程数？] https://mp.weixin.qq.com/s/HYcHfKScBlYCD0IUd0t4jA 如果真的存在线程数暴涨的问题，那么你应该思考代码逻辑是否合理（为什么你能允许短时间内如此多的系统同步调用），是否可以做一些例如限流之类的处理。
 
-[几个秒杀 Go 官方库的第三方开源库]  https://mp.weixin.qq.com/s/JRsstunuD2UClWb237kPTQ fasthttp；jsoniter；gogo/protobuf；valyala/quicktemplate （它们的重点都是优化对应官方库的性能问题）
 
-[Go函数闭包底层实现] https://mp.weixin.qq.com/s/JsnuIyLy3XhQQuuxFIMzrA 变量逃逸
+
+
 
 [含有CGO代码的项目如何实现跨平台编译] https://mp.weixin.qq.com/s/Xd-YuN-v2OWIFO2wrpruCA
 
@@ -532,37 +550,33 @@ Go 汇编语言对 CPU 的重新抽象。Go汇编为了简化汇编代码的编�
 
 ---
 
-[http 请求怎么确定边界？] https://mp.weixin.qq.com/s/1SzIWYxgAV6Ourb9HSrQZQ ，HTTP 是基于TCP协议的应用层协议，而 TCP 是面向数据流的协议，是没有边界的。HTTP 作为应用层协议需要自己明确定义数据边界。
+---
 
 
 
 
+netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统接口调用的层层封装）。
 
+
+[几个秒杀 Go 官方库的第三方开源库]  https://mp.weixin.qq.com/s/JRsstunuD2UClWb237kPTQ fasthttp；jsoniter；gogo/protobuf；valyala/quicktemplate （它们的重点都是优化对应官方库的性能问题）
+
+[fasthttp 快在哪里]  https://xargin.com/why-fasthttp-is-fast-and-the-cost-of-it/
 
 ---
 
 
-[Go原生网络轮询器（netpoller）剖析] https://mp.weixin.qq.com/s/oDLYJqkwF2Em_hcRNLZ9qg net.Listen；l.Accept；conn.Read
 
-netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统接口调用的层层封装）。
+ 
 
-[Golang Profiling: 关于 pprof] https://mp.weixin.qq.com/s/YpUUj4xqlaZ9paEJe7VPYg
-
-[Go 应用的性能优化]  https://xargin.com/go-perf-optimization/
-
-[Go 语言中的一些非常规优化] https://xargin.com/unusual-opt-in-go/
-
-[fasthttp 快在哪里]  https://xargin.com/why-fasthttp-is-fast-and-the-cost-of-it/
-
-[编写和优化Go代码] https://github.com/dgryski/go-perfbook/blob/master/performance-zh.md
-
-[学会这几招让 Go 程序自己监控自己 ] https://mp.weixin.qq.com/s/H-eCNw7s4e3oz2ReI6Hu_A
+[学会这几招让 Go 程序自己监控自己 ] https://mp.weixin.qq.com/s/H-eCNw7s4e3oz2ReI6Hu_A （在宿主机、虚拟机、容器获取性能指标 https://github.com/shirou/gopsutil）
 
 [如何让 Go 程序自动采样]  https://mp.weixin.qq.com/s/0KL9r4osbFwRQTKcscARDg 判断采样时间点的规则
 
 [无人值守的自动 dump（一）] https://mp.weixin.qq.com/s/2nbyWSZMT1HzvYAoaeWK_A
 
 [无人值守的自动 dump（二）] https://mp.weixin.qq.com/s/wKpTiyc1VkZQy0-J8x519g
+
+---
 
 [go-swagger源码解析] https://zhuanlan.zhihu.com/p/294069197
 
