@@ -1,8 +1,23 @@
-以下内容来自【煎鱼的微信公众号】【网管叨bi叨】
+以下内容来自【煎鱼的微信公众号】【网管叨bi叨】【奇伢云存储】【Golang技术分享】
 
 ---
 
 [Go: A Documentary 发布！] https://mp.weixin.qq.com/s/5MtBE8vecKPOmRUYu2E-lg
+
+---
+
+
+[6 万 Star！ Go 语言资源大全（上）] https://mp.weixin.qq.com/s/gL3p0pCVlZzrLCwYk7gTvw
+
+[6 万 Star！ Go 语言资源大全（中）] https://mp.weixin.qq.com/s/DR39kTPz9xLCwNVKV6K4Xw
+
+[6 万 Star！ Go 语言资源大全（下）] https://mp.weixin.qq.com/s/KPb4rxv-BuzCpzYv9DWyiQ
+
+---
+
+[Golang 数据结构到底是怎么回事？gdb调一调？] https://mp.weixin.qq.com/s/qtQoZaX_SJi6_TD-uGUPWA “ 不仅限于语法，使用gdb，dlv工具更深层的剖析golang的数据结构”
+
+slice，map，channel 这三种类型必须使用make来创建，就是这个道理。因为如果仅仅定义了类型变量，那仅仅是代表了分配了这个变量本身的内存空间，并且初始化是nil，一旦你直接用，那么就会导致非法地址引用的问题
 
 ---
 
@@ -497,13 +512,15 @@ Go 汇编语言对 CPU 的重新抽象。Go汇编为了简化汇编代码的编�
 
 [如何有效控制 Go 线程数？] https://mp.weixin.qq.com/s/HYcHfKScBlYCD0IUd0t4jA 如果真的存在线程数暴涨的问题，那么你应该思考代码逻辑是否合理（为什么你能允许短时间内如此多的系统同步调用），是否可以做一些例如限流之类的处理。
 
-[几个秒杀 Go 官方库的第三方开源库]  https://mp.weixin.qq.com/s/JRsstunuD2UClWb237kPTQ
+[几个秒杀 Go 官方库的第三方开源库]  https://mp.weixin.qq.com/s/JRsstunuD2UClWb237kPTQ fasthttp；jsoniter；gogo/protobuf；valyala/quicktemplate （它们的重点都是优化对应官方库的性能问题）
 
 [Go函数闭包底层实现] https://mp.weixin.qq.com/s/JsnuIyLy3XhQQuuxFIMzrA 变量逃逸
 
 [含有CGO代码的项目如何实现跨平台编译] https://mp.weixin.qq.com/s/Xd-YuN-v2OWIFO2wrpruCA
 
-[Go 如何利用 Linux 内核的负载均衡能力] 
+[Go 如何利用 Linux 内核的负载均衡能力]  https://mp.weixin.qq.com/s/lnOTaraGKINxaqbrMHPP5Q socket五元组 ;linux 内核自 3.9 提供的 SO_REUSEPORT 选项，可以让多进程监听同一个端口。
+
+[SO_REUSEPORT学习笔记]  http://www.blogjava.net/yongboy/archive/2015/02/12/422893.html 
 
 ---
 
@@ -517,22 +534,17 @@ Go 汇编语言对 CPU 的重新抽象。Go汇编为了简化汇编代码的编�
 
 [http 请求怎么确定边界？] https://mp.weixin.qq.com/s/1SzIWYxgAV6Ourb9HSrQZQ ，HTTP 是基于TCP协议的应用层协议，而 TCP 是面向数据流的协议，是没有边界的。HTTP 作为应用层协议需要自己明确定义数据边界。
 
-[Golang 数据结构到底是怎么回事？gdb调一调？] https://mp.weixin.qq.com/s/qtQoZaX_SJi6_TD-uGUPWA
-
----
 
 
-[6 万 Star！ Go 语言资源大全（上）] https://mp.weixin.qq.com/s/gL3p0pCVlZzrLCwYk7gTvw
 
-[6 万 Star！ Go 语言资源大全（中）] https://mp.weixin.qq.com/s/DR39kTPz9xLCwNVKV6K4Xw
-
-[6 万 Star！ Go 语言资源大全（下）] https://mp.weixin.qq.com/s/KPb4rxv-BuzCpzYv9DWyiQ
 
 
 ---
 
 
-[Go原生网络轮询器（netpoller）剖析] https://mp.weixin.qq.com/s/oDLYJqkwF2Em_hcRNLZ9qg
+[Go原生网络轮询器（netpoller）剖析] https://mp.weixin.qq.com/s/oDLYJqkwF2Em_hcRNLZ9qg net.Listen；l.Accept；conn.Read
+
+netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统接口调用的层层封装）。
 
 [Golang Profiling: 关于 pprof] https://mp.weixin.qq.com/s/YpUUj4xqlaZ9paEJe7VPYg
 
@@ -543,6 +555,8 @@ Go 汇编语言对 CPU 的重新抽象。Go汇编为了简化汇编代码的编�
 [学会这几招让 Go 程序自己监控自己 ] https://mp.weixin.qq.com/s/H-eCNw7s4e3oz2ReI6Hu_A
 
 [如何让 Go 程序自动采样]  https://mp.weixin.qq.com/s/0KL9r4osbFwRQTKcscARDg
+
+[go-swagger源码解析] https://zhuanlan.zhihu.com/p/294069197
 
 
 
