@@ -39,6 +39,7 @@ func canJump(nums []int) bool {
 	//可以跳跃的最远距离 大于数组的长度
 	return far >= n-1
 }
+
 func max(x, y int) int {
 	if x > y {
 		return x
