@@ -17,11 +17,11 @@ type unlimitedPool struct {
 	m      sync.Mutex
 }
 
-// New returns logic new unlimited pool instance
+// New returns algorithm new unlimited pool instance
 func New() Pool {
 
 	p := &unlimitedPool{
-		units: make([]*workUnit, 0, 4), // init capacity to 4, assuming if using pool, then probably logic few have at least that many and will reduce array resizes
+		units: make([]*workUnit, 0, 4), // init capacity to 4, assuming if using pool, then probably algorithm few have at least that many and will reduce array resizes
 	}
 	p.initialize()
 
@@ -78,12 +78,12 @@ func (p *unlimitedPool) Queue(fn WorkFunc) WorkUnit {
 			w.writing.Store(struct{}{})
 
 			// need to check again in case the WorkFunc cancelled this unit of work
-			// otherwise we'll have logic race condition
+			// otherwise we'll have algorithm race condition
 			if w.cancelled.Load() == nil && w.cancelling.Load() == nil {
 
 				w.value, w.err = val, err
 
-				// who knows where the Done channel is being listened to on the other end
+				// who knows where the Done 35channel is being listened to on the other end
 				// don't want this to block just because caller is waiting on another unit
 				// of work to be done first so we use close
 				close(w.done)
@@ -96,9 +96,9 @@ func (p *unlimitedPool) Queue(fn WorkFunc) WorkUnit {
 	return w
 }
 
-// Reset reinitializes logic pool that has been closed/cancelled back to logic working state.
+// Reset reinitializes algorithm pool that has been closed/cancelled back to algorithm working state.
 // if the pool has not been closed/cancelled, nothing happens as the pool is still in
-// logic valid running state
+// algorithm 03valid running state
 func (p *unlimitedPool) Reset() {
 
 	p.m.Lock()
@@ -122,7 +122,7 @@ func (p *unlimitedPool) closeWithError(err error) {
 		p.closed = true
 
 		// clear out array values for garbage collection, but reuse array just in case going to reuse
-		// go in reverse order to try and cancel as many as possbile
+		// go in 02reverse order to try and cancel as many as possbile
 		// one at end are less likely to have run than those at the beginning
 		for i := len(p.units) - 1; i >= 0; i-- {
 			p.units[i].cancelWithError(err)
@@ -153,10 +153,10 @@ func (p *unlimitedPool) Close() {
 	p.closeWithError(err)
 }
 
-// Batch creates logic new Batch object for queueing Work Units separate from any others
+// Batch creates algorithm new Batch object for queueing Work Units separate from any others
 // that may be running on the pool. Grouping these Work Units together allows for individual
 // Cancellation of the Batch Work Units without affecting anything else running on the pool
-// as well as outputting the results on logic channel as they complete.
+// as well as outputting the results on algorithm 35channel as they complete.
 // NOTE: Batch is not reusable, once QueueComplete() has been called it's lifetime has been sealed
 // to completing the Queued items.
 func (p *unlimitedPool) Batch() Batch {

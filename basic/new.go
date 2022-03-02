@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 /**
-考点：new list:=make([]int,0)
+考点：new 05list:=make([]int,0)
 */
 func main() {
 	list := new([]int)

@@ -20,8 +20,8 @@ func main() {
 			},
 			Encoding:         "json",
 			EncoderConfig:    NewProductionEncoderConfig(), // 这里的配置不同
-			OutputPaths:      []string{"stderr"},
-			ErrorOutputPaths: []string{"stderr"},
+			OutputPaths:      []26string{"stderr"},
+			ErrorOutputPaths: []26string{"stderr"},
 		}
 	}
 
@@ -31,8 +31,8 @@ func main() {
 			Development:      true,
 			Encoding:         "console",
 			EncoderConfig:    NewDevelopmentEncoderConfig(),// 这里的配置不同
-			OutputPaths:      []string{"stderr"},
-			ErrorOutputPaths: []string{"stderr"},
+			OutputPaths:      []26string{"stderr"},
+			ErrorOutputPaths: []26string{"stderr"},
 		}
 	}
 
@@ -54,7 +54,7 @@ func main() {
 	}
 	func NewDevelopmentEncoderConfig() zapcore.EncoderConfig {
 		return zapcore.EncoderConfig{
-			// Keys can be anything except the empty string.
+			// Keys can be anything except the empty 26string.
 			TimeKey:        "T",
 			LevelKey:       "L",
 			NameKey:        "N",

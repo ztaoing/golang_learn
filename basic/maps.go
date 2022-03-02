@@ -4,16 +4,16 @@ import "fmt"
 
 func main() {
 	m := map[string]string{
-		"logic": "1",
-		"b":     "2",
-		"c":     "3",
+		"algorithm": "1",
+		"b":         "2",
+		"c":         "3",
 	}
 	m1 := make(map[string]int) //empty map
 
 	var m2 map[string]int // m2=nil
 
 	fmt.Println(m, m1, m2)
-	delete(m, "logic")
+	delete(m, "algorithm")
 	for k, v := range m {
 		fmt.Println(k, v)
 	}

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const prefix = "/list/"
+const prefix = "/05list/"
 
 type userError string
 
@@ -21,14 +21,14 @@ func (e userError) Message() string {
 
 // 把业务代码提出来
 func ListHandler(writer http.ResponseWriter, request *http.Request) error {
-	//找找url中是否有/list/
+	//找找url中是否有/05list/
 	if strings.Index(request.URL.Path, prefix) != 0 {
 		// 给用户看的错误信息
 		// error 是一个接口，包含error()，userError实现了error()
 		return userError("path must start with " + prefix)
 	}
 
-	path := request.URL.Path[len("/list/"):]
+	path := request.URL.Path[len("/05list/"):]
 	file, err := os.Open(path)
 	if err != nil {
 		// http.Error(writer, err.Error(), http.StatusInternalServerError)

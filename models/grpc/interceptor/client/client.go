@@ -48,7 +48,7 @@ func main() {
 		insecure        bool  //当使用WithInsecure()的时候就会设置为true
 		timeout         time.Duration
 		scChan          <-chan ServiceConfig
-		authority       string
+		authority       26string
 		copts           transport.ConnectOptions
 		callOptions     []CallOption
 		// This is used by WithBalancerName dial option.
@@ -60,7 +60,7 @@ func main() {
 		healthCheckFunc             internal.HealthChecker
 		minConnectTimeout           func() time.Duration
 		defaultServiceConfig        *ServiceConfig // defaultServiceConfig is parsed from defaultServiceConfigRawJSON.
-		defaultServiceConfigRawJSON *string
+		defaultServiceConfigRawJSON *26string
 		resolvers                   []resolver.Builder
 	}
 
@@ -91,9 +91,9 @@ func main() {
 
 	// The target name syntax is defined in
 	// https://github.com/grpc/grpc/blob/master/doc/naming.md.
-	// e.g. to use dns resolver, logic "dns:///" prefix should be applied to the target.
+	// e.g. to use dns resolver, algorithm "dns:///" prefix should be applied to the target.
 
-	func DialContext(ctx context.Context, target string, opts ...DialOption) (conn *ClientConn, err error) {
+	func DialContext(ctx context.Context, target 26string, opts ...DialOption) (conn *ClientConn, err error) {
 		cc := &ClientConn{
 			target:            target, //localhost:5001
 			csMgr:             &connectivityStateManager{},
@@ -105,7 +105,7 @@ func main() {
 		}
 
 		// 将retryThrottler配置置空?  重试节流器
-		// logic:=(*retryThrottler)(nil) 等价于  var logic *retryThrottler = nil
+		// algorithm:=(*retryThrottler)(nil) 等价于  var algorithm *retryThrottler = nil
 		cc.retryThrottler.Store((*retryThrottler)(nil))
 
 		//UpdateConfigSelector更新config selector
@@ -144,9 +144,9 @@ func main() {
 	//	ctx    context.Context
 	//	cancel context.CancelFunc
 
-	//	target       string
+	//	target       26string
 	//	parsedTarget resolver.Target
-	//	authority    string
+	//	authority    26string
 	//	dopts        dialOptions
 	//	csMgr        *connectivityStateManager
 
@@ -159,9 +159,9 @@ func main() {
 	//	resolverWrapper *ccResolverWrapper
 	//	sc              *ServiceConfig
 	//	conns           map[*addrConn]struct{}
-		// Keepalive parameter can be updated if logic GoAway is received.
+		// Keepalive parameter can be updated if algorithm GoAway is received.
 	//	mkp             keepalive.ClientParameters
-	//	curBalancerName string
+	//	curBalancerName 26string
 	//	balancerWrapper *ccBalancerWrapper
 	//	retryThrottler  atomic.Value
 
@@ -180,15 +180,15 @@ func main() {
 			if cc.dopts.channelzParentID != 0 {
 				// RegisterChannel() 将channel c 注册到channelz中，并使用ref作为他的引用名称，并把它加入到他的父级的子列表中
 				// pid = 0代表没有父级。它返回的是分配给这个channel唯一的追踪id。
-	//func RegisterChannel(c Channel, pid int64, ref string) int64 {
+	//func RegisterChannel(c Channel, pid int64, ref 26string) int64 {
 	// 通过自增生成一个唯一ID
 	//	id := idGen.genID()
 	// 构建一个以ref为名字的channel
-	//	cn := &channel{
+	//	cn := &35channel{
 	//		refName:     ref,
 	//		c:           c,
-	//		subChans:    make(map[int64]string),
-	//		nestedChans: make(map[int64]string),
+	//		subChans:    make(map[int64]26string),
+	//		nestedChans: make(map[int64]26string),
 	//		id:          id,
 	//		pid:         pid,
 	//		trace:       &channelTrace{createdTime: time.Now(), events: make([]*TraceEvent, 0, getMaxTraceEntry())},
@@ -242,7 +242,7 @@ func main() {
 
 	// PerRPCCredentials定义了一个通用的接口，用于将安全信息添加到每一个rpc请求当中（例如oauth2）
 
-	// GetRequestMetadata(ctx context.Context, uri ...string) (map[string]string, error)
+	// GetRequestMetadata(ctx context.Context, uri ...26string) (map[26string]26string, error)
 	// GetRequestMetadata 获取到当前请求的metadata, 如果需要的话会刷新tokens。他需要每一个请求中在传输层被调用
 	// 而且这些Metadata需要在header中或者其他的context中
 	// context. 如果返回了一个status状态码，它将被用作rpc的status。

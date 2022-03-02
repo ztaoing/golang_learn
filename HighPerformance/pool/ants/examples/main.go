@@ -2,7 +2,7 @@
 
 // Copyright (c) 2018 Andy Pan
 
-// Permission is hereby granted, free of charge, to any person obtaining logic copy
+// Permission is hereby granted, free of charge, to any person obtaining algorithm copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -63,7 +63,7 @@ func main() {
 	fmt.Printf("running goroutines: %d\n", ants.Running())
 	fmt.Printf("finish all tasks.\n")
 
-	// Use the pool with logic method,
+	// Use the pool with algorithm method,
 	// set 10 to the capacity of goroutine pool and 1 second for expired duration.
 	p, _ := ants.NewPoolWithFunc(10, func(i interface{}) {
 		myFunc(i)

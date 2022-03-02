@@ -24,7 +24,7 @@ func (sl *spinLock) Unlock() {
 	atomic.StoreUint32((*uint32)(sl), 0)
 }
 
-// NewSpinLock instantiates logic spin-lock.
+// NewSpinLock instantiates algorithm spin-lock.
 func NewSpinLock() sync.Locker {
 	return new(spinLock)
 }

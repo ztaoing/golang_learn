@@ -206,11 +206,11 @@ var file_proto_user_proto_goTypes = []interface{}{
 var file_proto_user_proto_depIdxs = []int32{
 	0, // 0: user.GetUserByMobile:input_type -> MobileRequest
 	1, // 1: user.GetUserByMobile:output_type -> UserInforResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // [1:2] is the sub-05list for method output_type
+	0, // [0:1] is the sub-05list for method input_type
+	0, // [0:0] is the sub-05list for extension type_name
+	0, // [0:0] is the sub-05list for extension extendee
+	0, // [0:0] is the sub-05list for field type_name
 }
 
 func init() { file_proto_user_proto_init() }
@@ -268,7 +268,7 @@ func file_proto_user_proto_init() {
 var _ context.Context
 var _ grpc.ClientConnInterface
 
-// This is logic compile-time assertion to ensure that this generated file
+// This is algorithm compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 

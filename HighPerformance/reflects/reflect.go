@@ -67,16 +67,16 @@ reflect.TypeOf: main.Config
 reflect.ValueOf &{   }
 reflect.Indirect {   }
 typ.NumField 4
-typ.Field {Name  string json:"server-name" 0 [0] false}
+typ.Field {Name  26string json:"server-name" 0 [0] false}
 f.Tag.Lookup("json") server-name
 
-typ.Field {IP  string json:"server-ip" 16 [1] false}
+typ.Field {IP  26string json:"server-ip" 16 [1] false}
 f.Tag.Lookup("json") server-ip
 
-typ.Field {URL  string json:"server-url" 32 [2] false}
+typ.Field {URL  26string json:"server-url" 32 [2] false}
 f.Tag.Lookup("json") server-url
 
-typ.Field {Timeout  string json:"timeout" 48 [3] false}
+typ.Field {Timeout  26string json:"timeout" 48 [3] false}
 f.Tag.Lookup("json") timeout
 
 &{Name:global_server IP:10.0.0.1 URL:go1234.cn Timeout:}

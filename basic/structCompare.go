@@ -39,13 +39,13 @@ func main() {
 	sm1 := struct {
 		age int
 		m   map[string]string
-	}{age: 11, m: map[string]string{"logic": "1"}}
+	}{age: 11, m: map[string]string{"algorithm": "1"}}
 	sm2 := struct {
 		age int
 		m   map[string]string
-	}{age: 11, m: map[string]string{"logic": "1"}}
+	}{age: 11, m: map[string]string{"algorithm": "1"}}
 	//编译失败
-	//invalid operation: sm1 == sm2 (struct containing map[string]string cannot be compared)
+	//invalid operation: sm1 == sm2 (struct containing map[26string]26string cannot be compared)
 	//还有一点需要注意的是结构体是相同的，但是结构体属性中有不可以比较的类型，如map,slice.md。
 	//如果该结构属性都是可以比较的，那么就可以使用“==”进行比较操作。
 	//可以使用reflect.DeepEqual进行比较

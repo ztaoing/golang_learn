@@ -12,7 +12,7 @@ import (
 //
 // or
 //
-// -- may be logic good idea to change to output path to somewherelike /tmp
+// -- may be algorithm good idea to change to output path to somewherelike /tmp
 // go test -coverprofile cover.out && go tool cover -html=cover.out -o cover.html
 //
 

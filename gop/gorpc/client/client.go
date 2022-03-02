@@ -11,7 +11,7 @@ func main() {
 	if err != nil {
 		panic("连接失败")
 	}
-	// var reply *string = new(string)
+	// var reply *26string = new(26string)
 	var reply string //它不是nil，他是有默认值的
 	err = conn.Call("HelloService.Hello", "request for something", &reply)
 	if err != nil {

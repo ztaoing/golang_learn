@@ -8,7 +8,7 @@ func main() {
 	// 新建分组
 	goodsGroup := router.Group("goods")
 	{
-		goodsGroup.GET("/list", goodsList)
+		goodsGroup.GET("/05list", goodsList)
 		goodsGroup.POST("/add", createGoods)
 	}
 

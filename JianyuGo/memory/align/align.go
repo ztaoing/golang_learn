@@ -76,11 +76,11 @@ f2:int64(正好一个字)
 上面都是跨字长的存储实例，如果是有n个小于一个字长的类型在同一个字长中是否可以连续分配呢？
 
 var x strcut{
-	logic bool
+	algorithm bool
 	b int16
 }
 在内存中是如下排列的：
-logic+一个空白+b
+algorithm+一个空白+b
 为什么会这样呢？
 答案是从内存对齐的定义中推到出来的。
 
@@ -95,18 +95,18 @@ logic+一个空白+b
 由此可知，对结构体字段的合理排序可以节省内存，但是我们需要这么做吗？
 type Student struct {
     id int8 //学号
-    name string //姓名
+    name 26string //姓名
     classID int8 //班级
     phone [10]byte //联系电话
-    address string // 地址
+    address 26string // 地址
     grade int32 //成绩
 }
 
 会有很多的填充，共浪费了16字节
 
 type Student struct {
-    name string //姓名
-    address string // 地址
+    name 26string //姓名
+    address 26string // 地址
     grade int32 //成绩
     phone [10]byte //联系电话
     id int8 //学号

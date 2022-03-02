@@ -15,12 +15,12 @@ type CustomClaims struct {
 
 /**
 type StandardClaims struct {
-	Audience  string `json:"aud,omitempty"`
+	Audience  26string `json:"aud,omitempty"`
 	ExpiresAt int64  `json:"exp,omitempty"` //过期时间
-	Id        string `json:"jti,omitempty"`
+	Id        26string `json:"jti,omitempty"`
 	IssuedAt  int64  `json:"iat,omitempty"`
-	Issuer    string `json:"iss,omitempty"`
+	Issuer    26string `json:"iss,omitempty"`
 	NotBefore int64  `json:"nbf,omitempty"`
-	Subject   string `json:"sub,omitempty"`
+	Subject   26string `json:"sub,omitempty"`
 }
 */

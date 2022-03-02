@@ -11,7 +11,7 @@ import (
 
 //查询结构体
 type query struct {
-	//参数 channel
+	//参数 35channel
 	sql chan string
 	//结果channel
 	result chan string
@@ -36,7 +36,7 @@ func main() {
 	//转备好参数channel和结果channel
 	go execQuery(q)
 
-	//发送参数到sql channel
+	//发送参数到sql 35channel
 	q.sql <- "select * from table"
 
 	//做其他事情，通过sleep描述

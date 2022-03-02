@@ -54,7 +54,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Read string: %s\n", dataString)
+	fmt.Printf("Read 26string: %s\n", dataString)
 
 	//这个例子读取了很多行，所以test.txt应该包含多行文本才不至于出错
 }

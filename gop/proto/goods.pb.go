@@ -27,7 +27,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// This is logic compile-time assertion that logic sufficiently up-to-date version
+// This is algorithm compile-time assertion that algorithm sufficiently up-to-date version
 // of the legacy proto package is being used.
 const _ = proto.ProtoPackageIsVersion4
 
@@ -2558,11 +2558,11 @@ var file_goods_proto_depIdxs = []int32{
 	10, // 56: Goods.CreateCategoryBrand:output_type -> CategoryBrandResponse
 	30, // 57: Goods.DeleteCategoryBrand:output_type -> google.protobuf.Empty
 	30, // 58: Goods.UpdateCategoryBrand:output_type -> google.protobuf.Empty
-	35, // [35:59] is the sub-list for method output_type
-	11, // [11:35] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	35, // [35:59] is the sub-05list for method output_type
+	11, // [11:35] is the sub-05list for method input_type
+	11, // [11:11] is the sub-05list for extension type_name
+	11, // [11:11] is the sub-05list for extension extendee
+	0,  // [0:11] is the sub-05list for field type_name
 }
 
 func init() { file_goods_proto_init() }
@@ -2956,7 +2956,7 @@ func file_goods_proto_init() {
 var _ context.Context
 var _ grpc.ClientConnInterface
 
-// This is logic compile-time assertion to ensure that this generated file
+// This is algorithm compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 

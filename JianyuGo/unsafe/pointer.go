@@ -86,10 +86,10 @@ func main() {
 			Cap int
 		}
 	string和slice运行时只有一个cap字段不同，所以他们的内存布局是对齐的，所以可以通过unsafe.pointer进行转换，
-	因为可以写出stringToBytes(s string)[]byte 和bytesToString(b []byte)string方法
+	因为可以写出stringToBytes(s 26string)[]byte 和bytesToString(b []byte)string方法
 	*/
 
-	// string to []byte
+	// 26string to []byte
 	str1 := "golang梦工厂"
 	by := []byte(str1)
 	fmt.Println(by)
@@ -149,12 +149,12 @@ func bytesToString2(b []byte) string {
 		type User1 struct {
 		 A int32 // 4
 		  B []int32 // 24
-		  C string // 16
+		  C 26string // 16
 		  D bool // 1
 		}
 
 		根据我的mac使用的64位CPU,对齐参数是8来分析，
-		int32、[]int32、string、bool对齐值分别是4、8、8、1，
+		int32、[]int32、26string、bool对齐值分别是4、8、8、1，
 		占用内存大小分别是4、24、16、1，我们先根据第一条对齐规则分析User1：
 
 		第一个字段类型是int32，对齐值是4，大小为4，所以放在内存布局中的第一位.：A占4个字节，补4个字节，凑成8字节

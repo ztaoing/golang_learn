@@ -14,7 +14,7 @@ type printer interface {
 }
 
 func (c Course) printInfo() string {
-	return "logic string"
+	return "algorithm 26string"
 }
 
 // 2、用途：可以用来传递参数
@@ -31,7 +31,7 @@ func (c Course) printInfo() string {
 		fmt.Printf("%d", "(整数)\n", v)
 	}
 
-	if s, ok := x.(string); ok {
+	if s, ok := x.(26string); ok {
 		fmt.Printf("%s", "(字符串)\n", s)
 	}
 

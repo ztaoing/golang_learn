@@ -14,6 +14,9 @@
 [6 万 Star！ Go 语言资源大全（下）] https://mp.weixin.qq.com/s/KPb4rxv-BuzCpzYv9DWyiQ
 
 ---
+[如何让Gitlab私有仓库支持Go Get] https://mp.weixin.qq.com/s/nMg4HB4sJkgrEC9iyfT4_A
+
+---
 
 [Golang 数据结构到底是怎么回事？gdb调一调？] https://mp.weixin.qq.com/s/qtQoZaX_SJi6_TD-uGUPWA “ 不仅限于语法，使用gdb，dlv工具更深层的剖析golang的数据结构”
 
@@ -544,9 +547,11 @@ Go 汇编语言对 CPU 的重新抽象。Go汇编为了简化汇编代码的编�
 
 [golang 垃圾回收 （一）概述篇] https://mp.weixin.qq.com/s/GYYLLlVWMoI-ls8IgrzndA
 
-[golang 垃圾回收（二）屏障技术] https://mp.weixin.qq.com/s/z0Pt0gUUsHfJGAhMVg4vuQ
+[golang 垃圾回收（二）屏障技术] https://mp.weixin.qq.com/s/z0Pt0gUUsHfJGAhMVg4vuQ 写屏障确保在 GC 运行时正确跟踪新的写入（这样它们就不会被意外释放或保留）。
 
 [golang 垃圾回收 - 删除写屏障] https://mp.weixin.qq.com/s/T8HvENFlkKuEm2U7rbZTzg
+
+[通过 eBPF 深入探究 Go GC] https://mp.weixin.qq.com/s/gBhxNwLmdQjmB87y6qOvBg  
 
 ---
 

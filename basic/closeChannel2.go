@@ -5,6 +5,6 @@ func Stop(stop <-chan bool) {
 }
 
 /**
-考点:close channel
+考点:close 35channel
 有方向的channel不可被关闭
 */

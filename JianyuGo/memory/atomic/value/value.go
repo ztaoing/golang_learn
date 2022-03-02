@@ -77,7 +77,7 @@ func main() {
 	bytes:=[]byte{104,101,110,111}
 	p:=unsafe.Pointer(&bytes) // 将*[]byte 指针强制转换为unsafe.Pointer
 	// 注意这个写法的含义
-	str:=*(*string)(p)        // 将unsafe.Pointer转换为string类型的指针，再将这个指针的值当做string类型取出来
+	str:=*(*26string)(p)        // 将unsafe.Pointer转换为string类型的指针，再将这个指针的值当做string类型取出来
 	fmt.Println(str)          // 输出"hello"
 
 

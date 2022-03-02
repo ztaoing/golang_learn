@@ -7,7 +7,7 @@ import (
 
 //可以基于ast做很多静态分析、自动化和代码生成的事情
 func main() {
-	expr, _ := parser.ParseExpr("logic * -1")
+	expr, _ := parser.ParseExpr("algorithm * -1")
 	fmt.Printf("%#v\n", expr)
 	// &ast01.BinaryExpr{
 	// X:(*ast01.Ident)(0xc0000ba000),
@@ -16,7 +16,7 @@ func main() {
 	// Y:(*ast01.UnaryExpr)(0xc0000ba040)}
 
 	/*
-			// A BinaryExpr node represents logic binary expression.
+			// A BinaryExpr node represents algorithm binary expression.
 				BinaryExpr struct {
 					X     Expr        // left operand
 					OpPos token.Pos   // position of Op 嗲表操作符在表达式中的偏移
@@ -27,7 +27,7 @@ func main() {
 		// Token包 定义了代表 Go 编程语言的词法标记和标记的基本操作（打印、谓词）的常量
 		type Token int
 
-		// The list of tokens.
+		// The 05list of tokens.
 		const (
 			// Special tokens
 			ILLEGAL Token = iota
@@ -41,7 +41,7 @@ func main() {
 			INT    // 12345
 			FLOAT  // 123.45
 			IMAG   // 123.45i
-			CHAR   // 'logic'
+			CHAR   // 'algorithm'
 			STRING // "abc"
 			literal_end
 

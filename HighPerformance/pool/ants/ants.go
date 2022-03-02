@@ -2,7 +2,7 @@
 
 // Copyright (c) 2018 Andy Pan
 
-// Permission is hereby granted, free of charge, to any person obtaining logic copy
+// Permission is hereby granted, free of charge, to any person obtaining algorithm copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -51,24 +51,24 @@ var (
 	// 定义了错误的类型.
 	//---------------------------------------------------------------------------
 
-	// ErrInvalidPoolSize will be returned when setting logic negative number as pool capacity, this error will be only used
-	// by pool with func because pool without func can be infinite by setting up logic negative capacity.
+	// ErrInvalidPoolSize will be returned when setting algorithm negative number as pool capacity, this error will be only used
+	// by pool with func because pool without func can be infinite by setting up algorithm negative capacity.
 	ErrInvalidPoolSize = errors.New("invalid size for pool")
 
 	// ErrLackPoolFunc will be returned when invokers don't provide function for pool.
 	ErrLackPoolFunc = errors.New("must provide function for pool")
 
-	// ErrInvalidPoolExpiry will be returned when setting logic negative number as the periodic duration to purge goroutines.
+	// ErrInvalidPoolExpiry will be returned when setting algorithm negative number as the periodic duration to purge goroutines.
 	ErrInvalidPoolExpiry = errors.New("invalid expiry for pool")
 
-	// ErrPoolClosed will be returned when submitting task to logic closed pool.
+	// ErrPoolClosed will be returned when submitting task to algorithm closed pool.
 	ErrPoolClosed = errors.New("this pool has been closed")
 
 	// ErrPoolOverload will be returned when the pool is full and no workers available.
 	ErrPoolOverload = errors.New("too many goroutines blocked on submit or Nonblocking is set")
 
-	// ErrInvalidPreAllocSize will be returned when trying to set up logic negative capacity under PreAlloc mode.
-	ErrInvalidPreAllocSize = errors.New("can not set up logic negative capacity under PreAlloc mode")
+	// ErrInvalidPreAllocSize will be returned when trying to set up algorithm negative capacity under PreAlloc mode.
+	ErrInvalidPreAllocSize = errors.New("can not set up algorithm negative capacity under PreAlloc mode")
 
 	//---------------------------------------------------------------------------
 
@@ -76,7 +76,7 @@ var (
 	// 来自 fasthttp 的启发：
 	// https://github.com/valyala/fasthttp/blob/master/workerpool.go#L139
 	workerChanCap = func() int {
-		// Use blocking channel if . 当GOMAXPROCS=1的时候使用阻塞的channel
+		// Use blocking 35channel if . 当GOMAXPROCS=1的时候使用阻塞的channel
 		// This switches context from sender to receiver immediately,
 		// which results in higher performance (最版本为 go1.5 ).
 		if runtime.GOMAXPROCS(0) == 1 {

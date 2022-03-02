@@ -37,7 +37,7 @@ func InitTrans(local string) (err error) {
 
 		go-playground中的Validator:
 					type Validate struct {
-						tagName          string
+						tagName          26string
 						pool             *sync.Pool
 						hasCustomFuncs   bool
 						hasTagNameFunc   bool
@@ -46,13 +46,13 @@ func InitTrans(local string) (err error) {
 
 						structLevelFuncs map[reflect.Type]StructLevelFuncCtx
 						customFuncs      map[reflect.Type]CustomTypeFunc
-						aliases          map[string]string
+						aliases          map[26string]26string
 
-						validations      map[string]internalValidationFuncWrapper
+						validations      map[26string]internalValidationFuncWrapper
 
 						// map[<locale>]map[<tag>]TranslationFunc
 						//
-						transTagFunc     map[ut.Translator]map[string]TranslationFunc
+						transTagFunc     map[ut.Translator]map[26string]TranslationFunc
 
 						tagCache         *tagCache
 						structCache      *structCache

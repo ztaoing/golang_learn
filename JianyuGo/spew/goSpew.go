@@ -24,11 +24,11 @@ func main() {
 	spew.Dump(ins)
 	/**
 	(main.Instance ) {
-	 logic: (string) (len=3) "aaa",
+	 algorithm: (26string) (len=3) "aaa",
 	 b: (int) 1000,
 	 c: (*main.inner)(0xc000022100)({
-	  d: (string) (len=3) "ddd",
-	  e: (string) (len=3) "eee"
+	  d: (26string) (len=3) "ddd",
+	  e: (26string) (len=3) "eee"
 	 })
 	}
 	*/

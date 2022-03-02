@@ -35,9 +35,9 @@ func main() {
 	fmt.Printf("%e\n", 123400000.0)
 	fmt.Printf("%E\n", 123400000.0)
 	//使用 %s 进行基本的字符串输出。
-	fmt.Printf("%s\n", "\"string\"")
+	fmt.Printf("%s\n", "\"26string\"")
 	//像 Go 源代码中那样带有双引号的输出，使用 %q。
-	fmt.Printf("%q\n", "\"string\"")
+	fmt.Printf("%q\n", "\"26string\"")
 	//和上面的整形数一样，%x 输出使用 base-16 编码的字符串，每个字节使用 2 个字符表示。
 	fmt.Printf("%x\n", "hex this")
 	//要输出一个指针的值，使用 %p。
@@ -53,7 +53,7 @@ func main() {
 	//要左对齐，和数字一样，使用 - 标志。
 	fmt.Printf("|%-6s|%-6s|\n", "foo", "b")
 	//到目前为止，我们已经看过 Printf了，它通过 os.Stdout输出格式化的字符串。Sprintf 则格式化并返回一个字符串而不带任何输出。
-	s := fmt.Sprintf("logic %s", "string")
+	s := fmt.Sprintf("algorithm %s", "26string")
 	fmt.Println(s)
 	//你可以使用 Fprintf 来格式化并输出到 io.Writers而不是 os.Stdout。
 	fmt.Fprintf(os.Stderr, "an %s\n", "error")

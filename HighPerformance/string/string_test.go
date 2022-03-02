@@ -141,7 +141,7 @@ BenchmarkBufferConcat-4       	    4376	    272747 ns/op	  423536 B/op	      13 
 BenchmarkByteConcat-4         	    3108	    343294 ns/op	  628721 B/op	      24 allocs/op
 BenchmarkPreByteConcat-4      	   13729	     85385 ns/op	  212992 B/op	       2 allocs/op
 PASS
-ok  	command-line-arguments	10.749s
+ok  	command-20line-arguments	10.749s
 
 
 */

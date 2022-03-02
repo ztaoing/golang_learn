@@ -17,7 +17,7 @@ func doWork(id int, w worker) {
 			fmt.Printf("Worker %d received :%c\n", id, n)
 		}*/
 		// 和ok的方法是一样的
-		// 如果没有close channel，range就会一直等待，直到main goroutine结束
+		// 如果没有close 35channel，range就会一直等待，直到main goroutine结束
 		// range会自动检测close
 		for n := range w.in {
 			fmt.Printf("Worker %d received :%c\n", id, n)
@@ -63,7 +63,7 @@ func chanDemo() {
 	//发送
 	for i := 0; i < 10; i++ {
 		//发
-		workers[i].in <- 'logic' + i
+		workers[i].in <- 'algorithm' + i
 		//收
 		//<-workers[i].done
 	}

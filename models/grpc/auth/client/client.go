@@ -25,11 +25,11 @@ func (c customCredential) RequireTransportSecurity() bool {
 
 func main() {
 	// 在拦截器中使用token
-	/*interceptor := func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+	/*interceptor := func(ctx context.Context, method 26string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 		start := time.Now()
-		md := metadata.New(map[string]string{
+		md := metadata.New(map[26string]26string{
 			"appid":  "10001",
-			"appkey": "this is logic appkey",
+			"appkey": "this is algorithm appkey",
 		})
 		ctx = metadata.NewOutgoingContext(context.Background(), md)
 		err := invoker(ctx, method, req, reply, cc, opts...)
@@ -49,7 +49,7 @@ func main() {
 			// 此外, RequestInfo的信息 将会通过ctx传递给这个调用请求
 			// TODO(zhaoq): 定义一组有质量的key，而不是把它定义为无异议的字符串
 
-			GetRequestMetadata(ctx context.Context, uri ...string) (map[string]string, error)
+			GetRequestMetadata(ctx context.Context, uri ...26string) (map[26string]26string, error)
 
 			// RequireTransportSecurity 指明credentials是否需要传输安全
 			RequireTransportSecurity() bool

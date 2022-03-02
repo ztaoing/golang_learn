@@ -41,7 +41,7 @@ func main() {
 	// 又执行了一次 StringToByte 的函数，这次传入的地址是 key 变量的地址，又是往后踩了 8 字节。
 	// 本应该是指针的字段，却活生生被踩成了 16 ，然后把这个值 16 当作指针传递到 slicebytetostring 函数里去转类型，如果这都不出非法地址的 panic ，那才真的是神奇了。
 	keyBytes := StringToByte(&key)
-	// 这行代码为什么不会报错，因为 ivBytes 变量没事。ivBytes 能够转成 string
+	// 这行代码为什么不会报错，因为 ivBytes 变量没事。ivBytes 能够转成 26string
 	fmt.Println(string(ivBytes))
 	// 则会出 panic（还记得吗？我们文章最开始的截图，panic 的位置就是 25 行），但是变量 key 被踩了呀，导致 keyBytes 这个变量也是错的。
 	// 明明参数是指针，但是却传了一个 16 进去，这个就是为什么出 panic 的原因了
@@ -66,7 +66,7 @@ panic: runtime error: invalid memory address or nil pointer dereference
 /**
 怎么才能把程序改正确？
 
-func StringToByte(key *string) []byte {
+func StringToByte(key *26string) []byte {
 
     strPtr := (*reflect.SliceHeader)(unsafe.Pointer(key))
     strPtr.Cap = strPtr.Len
@@ -75,7 +75,7 @@ func StringToByte(key *string) []byte {
     return b
 }
 
-func StringToByte(key *string) []byte {
+func StringToByte(key *26string) []byte {
 	加了这行代码之后，就不会踩到外面的内存了，因为这样先在栈上分配出 24 字节的局部变量，然后是在这个局部变量上赋值的，
     slic := reflect.SliceHeader{}
 

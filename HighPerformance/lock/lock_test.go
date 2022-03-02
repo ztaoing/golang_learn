@@ -126,7 +126,7 @@ BenchmarkWriteMoreRW-4   	     417	   2544585 ns/op
 BenchmarkEqual-4         	     385	   2907275 ns/op
 BenchmarkEqualRw-4       	     870	   1278216 ns/op
 PASS
-ok  	command-line-arguments	83.635s
+ok  	command-20line-arguments	83.635s
 
 //1纳秒
 tao@taodeMacBook-Pro lock % go test lock_test.go -bench='^Benchmark'
@@ -139,7 +139,7 @@ BenchmarkWriteMoreRW-4   	    1281	    857281 ns/op
 BenchmarkEqual-4         	    1570	    646676 ns/op
 BenchmarkEqualRw-4       	    1880	    877343 ns/op
 PASS
-ok  	command-line-arguments	14.372s
+ok  	command-20line-arguments	14.372s
 
 //10毫秒
 tao@taodeMacBook-Pro lock % go test lock_test.go -bench='^Benchmark'
@@ -152,7 +152,7 @@ BenchmarkWriteMoreRW-4   	    1206	   2392134 ns/op
 BenchmarkEqual-4         	     370	   2958725 ns/op
 BenchmarkEqualRw-4       	     997	   1638529 ns/op
 PASS
-ok  	command-line-arguments	73.240s
+ok  	command-20line-arguments	73.240s
 */
 
 //互斥锁的两种状态：正常状态和饥饿状态

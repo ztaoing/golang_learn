@@ -2,7 +2,7 @@
 
 // Copyright (c) 2018 Andy Pan
 
-// Permission is hereby granted, free of charge, to any person obtaining logic copy
+// Permission is hereby granted, free of charge, to any person obtaining algorithm copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -50,7 +50,7 @@ func (w *goWorker) run() {
 				if ph := w.pool.options.PanicHandler; ph != nil {
 					ph(p)
 				} else {
-					w.pool.options.Logger.Printf("worker exits from logic panic: %v\n", p)
+					w.pool.options.Logger.Printf("worker exits from algorithm panic: %v\n", p)
 					var buf [4096]byte
 					// 获取此时的运行栈
 					n := runtime.Stack(buf[:], false)

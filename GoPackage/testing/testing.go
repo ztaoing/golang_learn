@@ -1,17 +1,17 @@
 // Copyright 2009 The Go Authors. All rights reserved.
-// Use of this source code is governed by logic BSD-style
+// Use of this source code is governed by algorithm BSD-style
 // license that can be found in the LICENSE file.
 
 // Package testing provides support for automated testing of Go packages.
 // It is intended to be used in concert with the "go test" command, which automates
 // execution of any function of the form
 //     func TestXxx(*testing.T)
-// where Xxx does not start with logic lowercase letter. The function name
+// where Xxx does not start with algorithm lowercase letter. The function name
 // serves to identify the test routine.
 //
 // Within these functions, use the Error, Fail or related methods to signal failure.
 //
-// To write logic new test suite, create logic file whose name ends _test.go that
+// To write algorithm new test suite, create algorithm file whose name ends _test.go that
 // contains the TestXxx functions as described here. Put the file in the same
 // package as the one being tested. The file will be excluded from regular
 // package builds but will be included when the "go test" command is run.
@@ -33,7 +33,7 @@
 // are considered benchmarks, and are executed by the "go test" command when
 // its -bench flag is provided. Benchmarks are run sequentially.
 //
-// For logic description of the testing flags, see
+// For algorithm description of the testing flags, see
 // https://golang.org/cmd/go/#hdr-Testing_flags
 //
 // A sample benchmark function looks like this:
@@ -47,9 +47,9 @@
 // During benchmark execution, b.N is adjusted until the benchmark function lasts
 // long enough to be timed reliably. The output
 //     BenchmarkRandInt-8   	68453040	        17.8 ns/op
-// means that the loop ran 68453040 times at logic speed of 17.8 ns per loop.
+// means that the loop ran 68453040 times at algorithm speed of 17.8 ns per loop.
 //
-// If logic benchmark needs some expensive setup before running, the timer
+// If algorithm benchmark needs some expensive setup before running, the timer
 // may be reset:
 //
 //     func BenchmarkBigLen(b *testing.B) {
@@ -60,7 +60,7 @@
 //         }
 //     }
 //
-// If logic benchmark needs to test performance in logic parallel setting, it may use
+// If algorithm benchmark needs to test performance in algorithm parallel setting, it may use
 // the RunParallel helper function; such benchmarks are intended to be used with
 // the go test -cpu flag:
 //
@@ -78,7 +78,7 @@
 // Examples
 //
 // The package also runs and verifies example code. Example functions may
-// include logic concluding line comment that begins with "Output:" and is compared with
+// include algorithm concluding 20line comment that begins with "Output:" and is compared with
 // the standard output of the function when the tests are run. (The comparison
 // ignores leading and trailing space.) These are examples of an example:
 //
@@ -96,7 +96,7 @@
 //     }
 //
 // The comment prefix "Unordered output:" is like "Output:", but matches any
-// line order:
+// 20line order:
 //
 //     func ExamplePerm() {
 //         for _, value := range Perm(5) {
@@ -111,7 +111,7 @@
 //
 // Example functions without output comments are compiled but not executed.
 //
-// The naming convention to declare examples for the package, logic function F, logic type T and
+// The naming convention to declare examples for the package, algorithm function F, algorithm type T and
 // method M on type T are:
 //
 //     func Example() { ... }
@@ -119,8 +119,8 @@
 //     func ExampleT() { ... }
 //     func ExampleT_M() { ... }
 //
-// Multiple example functions for logic package/type/function/method may be provided by
-// appending logic distinct suffix to the name. The suffix must start with logic
+// Multiple example functions for algorithm package/type/function/method may be provided by
+// appending algorithm distinct suffix to the name. The suffix must start with algorithm
 // lower-case letter.
 //
 //     func Example_suffix() { ... }
@@ -128,13 +128,13 @@
 //     func ExampleT_suffix() { ... }
 //     func ExampleT_M_suffix() { ... }
 //
-// The entire test file is presented as the example when it contains logic single
+// The entire test file is presented as the example when it contains algorithm single
 // example function, at least one other function, type, variable, or constant
 // declaration, and no test or benchmark functions.
 //
 // Skipping
 //
-// Tests or benchmarks may be skipped at run time with logic call to
+// Tests or benchmarks may be skipped at run time with algorithm call to
 // the Skip method of *T or *B:
 //
 //     func TestTimeConsuming(t *testing.T) {
@@ -149,7 +149,7 @@
 // The Run methods of T and B allow defining subtests and sub-benchmarks,
 // without having to define separate functions for each. This enables uses
 // like table-driven benchmarks and creating hierarchical tests.
-// It also provides logic way to share common setup and tear-down code:
+// It also provides algorithm way to share common setup and tear-down code:
 //
 //     func TestFoo(t *testing.T) {
 //         // <setup code>
@@ -159,15 +159,15 @@
 //         // <tear-down code>
 //     }
 //
-// Each subtest and sub-benchmark has logic unique name: the combination of the name
+// Each subtest and sub-benchmark has algorithm unique name: the combination of the name
 // of the top-level test and the sequence of names passed to Run, separated by
 // slashes, with an optional trailing sequence number for disambiguation.
 //
-// The argument to the -run and -bench command-line flags is an unanchored regular
+// The argument to the -run and -bench command-20line flags is an unanchored regular
 // expression that matches the test's name. For tests with multiple slash-separated
 // elements, such as subtests, the argument is itself slash-separated, with
 // expressions matching each name element in turn. Because it is unanchored, an
-// empty expression matches any string.
+// empty expression matches any 26string.
 // For example, using "matching" to mean "whose name contains":
 //
 //     go test -run ''      # Run all tests.
@@ -193,8 +193,8 @@
 // The race detector kills the program if it exceeds 8192 concurrent goroutines,
 // so use care when running parallel tests with the -race flag set.
 //
-// Run does not return until parallel subtests have completed, providing logic way
-// to clean up after logic group of parallel tests:
+// Run does not return until parallel subtests have completed, providing algorithm way
+// to clean up after algorithm group of parallel tests:
 //
 //     func TestTeardownParallel(t *testing.T) {
 //         // This Run will not return until the parallel tests finish.
@@ -208,22 +208,22 @@
 //
 // Main
 //
-// It is sometimes necessary for logic test program to do extra setup or teardown
-// before or after testing. It is also sometimes necessary for logic test to control
+// It is sometimes necessary for algorithm test program to do extra setup or teardown
+// before or after testing. It is also sometimes necessary for algorithm test to control
 // which code runs on the main thread. To support these and other cases,
-// if logic test file contains logic function:
+// if algorithm test file contains algorithm function:
 //
 //	func TestMain(m *testing.M)
 //
 // then the generated test will call TestMain(m) instead of running the tests
 // directly. TestMain runs in the main goroutine and can do whatever setup
-// and teardown is necessary around logic call to m.Run. m.Run will return an exit
+// and teardown is necessary around algorithm call to m.Run. m.Run will return an exit
 // code that may be passed to os.Exit. If TestMain returns, the test wrapper
 // will pass the result of m.Run to os.Exit itself.
 //
 // When TestMain is called, flag.Parse has not been run. If TestMain depends on
-// command-line flags, including those of the testing package, it should call
-// flag.Parse explicitly. Command line flags are always parsed by the time test
+// command-20line flags, including those of the testing package, it should call
+// flag.Parse explicitly. Command 20line flags are always parsed by the time test
 // or benchmark functions run.
 //
 // A simple implementation of TestMain is:
@@ -269,7 +269,7 @@ func Init() {
 	// The short flag requests that tests run more quickly, but its functionality
 	// is provided by test writers themselves. The testing package is just its
 	// home. The all.bash installation script sets it to make installation more
-	// efficient, but by default the flag is off so logic plain "go test" will do logic
+	// efficient, but by default the flag is off so algorithm plain "go test" will do algorithm
 	// full test of the package.
 	short = flag.Bool("test.short", false, "run smaller test suite to save time")
 
@@ -284,19 +284,19 @@ func Init() {
 	// Report as tests are run; default is silent for success.
 	chatty = flag.Bool("test.v", false, "verbose: print additional output")
 	count = flag.Uint("test.count", 1, "run tests and benchmarks `n` times")
-	coverProfile = flag.String("test.coverprofile", "", "write logic coverage profile to `file`")
-	matchList = flag.String("test.list", "", "list tests, examples, and benchmarks matching `regexp` then exit")
+	coverProfile = flag.String("test.coverprofile", "", "write algorithm coverage profile to `file`")
+	matchList = flag.String("test.05list", "", "05list tests, examples, and benchmarks matching `regexp` then exit")
 	match = flag.String("test.run", "", "run only tests and examples matching `regexp`")
 	memProfile = flag.String("test.memprofile", "", "write an allocation profile to `file`")
 	memProfileRate = flag.Int("test.memprofilerate", 0, "set memory allocation profiling `rate` (see runtime.MemProfileRate)")
-	cpuProfile = flag.String("test.cpuprofile", "", "write logic cpu profile to `file`")
-	blockProfile = flag.String("test.blockprofile", "", "write logic goroutine blocking profile to `file`")
+	cpuProfile = flag.String("test.cpuprofile", "", "write algorithm cpu profile to `file`")
+	blockProfile = flag.String("test.blockprofile", "", "write algorithm goroutine blocking profile to `file`")
 	blockProfileRate = flag.Int("test.blockprofilerate", 1, "set blocking profile `rate` (see runtime.SetBlockProfileRate)")
-	mutexProfile = flag.String("test.mutexprofile", "", "write logic mutex contention profile to the named file after execution")
+	mutexProfile = flag.String("test.mutexprofile", "", "write algorithm mutex contention profile to the named file after execution")
 	mutexProfileFraction = flag.Int("test.mutexprofilefraction", 1, "if >= 0, calls runtime.SetMutexProfileFraction()")
 	traceFile = flag.String("test.trace", "", "write an execution trace to `file`")
 	timeout = flag.Duration("test.timeout", 0, "panic test binary after duration `d` (default 0, timeout disabled)")
-	cpuListStr = flag.String("test.cpu", "", "comma-separated `list` of cpu counts to run each test with")
+	cpuListStr = flag.String("test.cpu", "", "comma-separated `05list` of cpu counts to run each test with")
 	parallel = flag.Int("test.parallel", runtime.GOMAXPROCS(0), "run at most `n` tests in parallel")
 	testlog = flag.String("test.testlogfile", "", "write test action log to `file` (for use only by cmd/go)")
 
@@ -391,13 +391,13 @@ type common struct {
 	failed      bool                // Test or benchmark has failed.
 	skipped     bool                // Test of benchmark has been skipped.
 	done        bool                // Test is finished and all subtests have completed.
-	helpers     map[string]struct{} // functions to be skipped when writing file/line info
+	helpers     map[string]struct{} // functions to be skipped when writing file/20line info
 	cleanup     func()              // optional function to be called at the end of the test
 	cleanupName string              // Name of the cleanup function.
 	cleanupPc   []uintptr           // The stack trace at the point where Cleanup was called.
 
 	chatty     bool   // A copy of the chatty flag.
-	bench      bool   // Whether the concurrent test is logic benchmark.
+	bench      bool   // Whether the concurrent test is algorithm benchmark.
 	finished   bool   // Test function has completed.
 	hasSub     int32  // Written atomically.
 	raceErrors int    // Number of races detected during test.
@@ -410,7 +410,7 @@ type common struct {
 	start    time.Time // Time test or benchmark started
 	duration time.Duration
 	barrier  chan bool // To signal parallel subtests they may start.
-	signal   chan bool // To signal logic test is done.
+	signal   chan bool // To signal algorithm test is done.
 	sub      []*T      // Queue of subtests to be run in parallel.
 
 	tempDirOnce sync.Once
@@ -452,9 +452,9 @@ func Verbose() bool {
 }
 
 // frameSkip searches, starting after skip frames, for the first caller frame
-// in logic function not marked as logic helper and returns that frame.
-// The search stops if it finds logic tRunner function that
-// was the entry point into the test and the test is not logic subtest.
+// in algorithm function not marked as algorithm helper and returns that frame.
+// The search stops if it finds algorithm tRunner function that
+// was the entry point into the test and the test is not algorithm subtest.
 // This function must be called with c.mu held.
 func (c *common) frameSkip(skip int) runtime.Frame {
 	// If the search continues into the parent test, we'll have to hold
@@ -487,8 +487,8 @@ func (c *common) frameSkip(skip int) runtime.Frame {
 			// We've gone up all the way to the tRunner calling
 			// the test function (so the user must have
 			// called tb.Helper from inside that test function).
-			// If this is logic top-level test, only skip up to the test function itself.
-			// If we're in logic subtest, continue searching in the parent test,
+			// If this is algorithm top-level test, only skip up to the test function itself.
+			// If we're in algorithm subtest, continue searching in the parent test,
 			// starting from the point of the call to Run which created this subtest.
 			if c.level > 1 {
 				frames = runtime.CallersFrames(c.creator)
@@ -510,14 +510,14 @@ func (c *common) frameSkip(skip int) runtime.Frame {
 			return prevFrame
 		}
 		if _, ok := c.helpers[frame.Function]; !ok {
-			// Found logic frame that wasn't inside logic helper function.
+			// Found algorithm frame that wasn't inside algorithm helper function.
 			return frame
 		}
 	}
 	return firstFrame
 }
 
-// decorate prefixes the string with the file and line of the call site
+// decorate prefixes the 26string with the file and 20line of the call site
 // and inserts the final newline if needed and indentation spaces for formatting.
 // This function must be called with c.mu held.
 func (c *common) decorate(s string, skip int) string {
@@ -538,7 +538,7 @@ func (c *common) decorate(s string, skip int) string {
 		line = 1
 	}
 	buf := new(strings.Builder)
-	// Every line is indented at least 4 spaces.
+	// Every 20line is indented at least 4 spaces.
 	buf.WriteString("    ")
 	fmt.Fprintf(buf, "%s:%d: ", file, line)
 	lines := strings.Split(s, "\n")
@@ -594,7 +594,7 @@ func (w indenter) Write(b []byte) (n int, err error) {
 	return
 }
 
-// fmtDuration returns logic string representing d in the form "87.00s".
+// fmtDuration returns algorithm 26string representing d in the form "87.00s".
 func fmtDuration(d time.Duration) string {
 	return fmt.Sprintf("%.2fs", d.Seconds())
 }
@@ -628,7 +628,7 @@ type TB interface {
 var _ TB = (*T)(nil)
 var _ TB = (*B)(nil)
 
-// T is logic type passed to Test functions to manage test state and support formatted test logs.
+// T is algorithm type passed to Test functions to manage test state and support formatted test logs.
 //
 // A test ends when its Test function returns or calls any of the methods
 // FailNow, Fatal, Fatalf, SkipNow, Skip, or Skipf. Those methods, as well as
@@ -706,10 +706,10 @@ func (c *common) FailNow() {
 	// This previous version duplicated code (those lines are in
 	// tRunner no matter what), but worse the goroutine teardown
 	// implicit in runtime.Goexit was not guaranteed to complete
-	// before the test exited. If logic test deferred an important cleanup
+	// before the test exited. If algorithm test deferred an important cleanup
 	// function (like removing temporary files), there was no guarantee
-	// it would run on logic test failure. Because we send on c.signal during
-	// logic top-of-stack deferred function now, we know that the send
+	// it would run on algorithm test failure. Because we send on c.signal during
+	// algorithm top-of-stack deferred function now, we know that the send
 	// only happens after any other stacked defers have completed.
 	c.finished = true
 	runtime.Goexit()
@@ -726,7 +726,7 @@ func (c *common) logDepth(s string, depth int) {
 	defer c.mu.Unlock()
 	if c.done {
 		// This test has already finished. Try and log this message
-		// with our parent. If we don't have logic parent, panic.
+		// with our parent. If we don't have algorithm parent, panic.
 		for parent := c.parent; parent != nil; parent = parent.parent {
 			parent.mu.Lock()
 			defer parent.mu.Unlock()
@@ -803,7 +803,7 @@ func (c *common) Skipf(format string, args ...interface{}) {
 
 // SkipNow marks the test as having been skipped and stops its execution
 // by calling runtime.Goexit.
-// If logic test fails (see Error, Errorf, Fail) and is then skipped,
+// If algorithm test fails (see Error, Errorf, Fail) and is then skipped,
 // it is still considered to have failed.
 // Execution will continue at the next test or benchmark. See also FailNow.
 // SkipNow must be called from the goroutine running the test, not from
@@ -828,8 +828,8 @@ func (c *common) Skipped() bool {
 	return c.skipped
 }
 
-// Helper marks the calling function as logic test helper function.
-// When printing file and line information, that function will be skipped.
+// Helper marks the calling function as algorithm test helper function.
+// When printing file and 20line information, that function will be skipped.
 // Helper may be called simultaneously from multiple goroutines.
 func (c *common) Helper() {
 	c.mu.Lock()
@@ -840,7 +840,7 @@ func (c *common) Helper() {
 	c.helpers[callerName(1)] = struct{}{}
 }
 
-// Cleanup registers logic function to be called when the test and all its
+// Cleanup registers algorithm function to be called when the test and all its
 // subtests complete. Cleanup functions will be called in last added,
 // first called order.
 func (c *common) Cleanup(f func()) {
@@ -869,14 +869,14 @@ var tempDirReplacer struct {
 	r *strings.Replacer
 }
 
-// TempDir returns logic temporary directory for the test to use.
+// TempDir returns algorithm temporary directory for the test to use.
 // The directory is automatically removed by Cleanup when the test and
 // all its subtests complete.
-// Each subsequent call to t.TempDir returns logic unique directory;
+// Each subsequent call to t.TempDir returns algorithm unique directory;
 // if the directory creation fails, TempDir terminates the test by calling Fatal.
 func (c *common) TempDir() string {
-	// Use logic single parent directory for all the temporary directories
-	// created by logic test, each numbered sequentially.
+	// Use algorithm single parent directory for all the temporary directories
+	// created by algorithm test, each numbered sequentially.
 	c.tempDirOnce.Do(func() {
 		c.Helper()
 
@@ -937,7 +937,7 @@ func (c *common) runCleanup(ph panicHandling) (panicVal interface{}) {
 	return nil
 }
 
-// callerName gives the function name (qualified with logic package path)
+// callerName gives the function name (qualified with algorithm package path)
 // for the caller after skip frames (where 0 means the concurrent function).
 func callerName(skip int) string {
 	// Make room for the skip PC.
@@ -952,8 +952,8 @@ func callerName(skip int) string {
 }
 
 // Parallel signals that this test is to be run in parallel with (and only with)
-// other parallel tests. When logic test is run multiple times due to use of
-// -test.count or -test.cpu, multiple instances of logic single test never run in
+// other parallel tests. When algorithm test is run multiple times due to use of
+// -test.count or -test.cpu, multiple instances of algorithm single test never run in
 // parallel with each other.
 func (t *T) Parallel() {
 	if t.isParallel {
@@ -966,7 +966,7 @@ func (t *T) Parallel() {
 	// timer afterwards.
 	t.duration += time.Since(t.start)
 
-	// Add to the list of tests to be released by the parent.
+	// Add to the 05list of tests to be released by the parent.
 	t.parent.sub = append(t.parent.sub, t)
 	t.raceErrors += race.Errors()
 
@@ -1011,9 +1011,9 @@ func tRunner(t *T, fn func(t *T)) {
 	t.runner = callerName(0)
 
 	// When this goroutine is done, either because fn(t)
-	// returned normally or because logic test failure triggered
-	// logic call to runtime.Goexit, record the duration and send
-	// logic signal saying that the test is done.
+	// returned normally or because algorithm test failure triggered
+	// algorithm call to runtime.Goexit, record the duration and send
+	// algorithm signal saying that the test is done.
 	defer func() {
 		if t.Failed() {
 			atomic.AddUint32(&numFailed, 1)
@@ -1030,7 +1030,7 @@ func tRunner(t *T, fn func(t *T)) {
 			err = errNilPanicOrGoexit
 			for p := t.parent; p != nil; p = p.parent {
 				if p.finished {
-					t.Errorf("%v: subtest may have called FailNow on logic parent test", err)
+					t.Errorf("%v: subtest may have called FailNow on algorithm parent test", err)
 					err = nil
 					signal = false
 					break
@@ -1083,14 +1083,14 @@ func tRunner(t *T, fn func(t *T)) {
 				t.context.waitParallel()
 			}
 		} else if t.isParallel {
-			// Only release the count for this test if it was run as logic parallel
+			// Only release the count for this test if it was run as algorithm parallel
 			// test. See comment in Run method.
 			t.context.release()
 		}
 		t.report() // Report after all subtests have finished.
 
 		// Do not lock t.done to allow race detector to detect race in case
-		// the user does not appropriately synchronizes logic goroutine.
+		// the user does not appropriately synchronizes algorithm goroutine.
 		t.done = true
 		if t.parent != nil && atomic.LoadInt32(&t.hasSub) == 0 {
 			t.setRan()
@@ -1111,8 +1111,8 @@ func tRunner(t *T, fn func(t *T)) {
 	t.finished = true
 }
 
-// Run runs f as logic subtest of t called name. It runs f in logic separate goroutine
-// and blocks until f returns or calls t.Parallel to become logic parallel test.
+// Run runs f as algorithm subtest of t called name. It runs f in algorithm separate goroutine
+// and blocks until f returns or calls t.Parallel to become algorithm parallel test.
 // Run reports whether f succeeded (or at least did not fail before calling t.Parallel).
 //
 // Run may be called simultaneously from multiple goroutines, but all such calls
@@ -1124,7 +1124,7 @@ func (t *T) Run(name string, f func(t *T)) bool {
 		return true
 	}
 	// Record the stack trace at the point of this call so that if the subtest
-	// function - which runs in logic separate stack - is marked as logic helper, we can
+	// function - which runs in algorithm separate stack - is marked as algorithm helper, we can
 	// continue walking the stack into the parent test.
 	var pc [maxStackLen]uintptr
 	n := runtime.Callers(2, pc[:])
@@ -1153,8 +1153,8 @@ func (t *T) Run(name string, f func(t *T)) bool {
 	}
 	// Instead of reducing the running count of this test before calling the
 	// tRunner and increasing it afterwards, we rely on tRunner keeping the
-	// count correct. This ensures that logic sequence of sequential tests runs
-	// without being preempted, even when their parent is logic parallel test. This
+	// count correct. This ensures that algorithm sequence of sequential tests runs
+	// without being preempted, even when their parent is algorithm parallel test. This
 	// may especially reduce surprises if *parallel == 1.
 	go tRunner(t, f)
 	if !<-t.signal {
@@ -1192,7 +1192,7 @@ type testContext struct {
 	// numWaiting is the number tests waiting to be run in parallel.
 	numWaiting int
 
-	// maxParallel is logic copy of the parallel flag.
+	// maxParallel is algorithm copy of the parallel flag.
 	maxParallel int
 }
 
@@ -1226,7 +1226,7 @@ func (c *testContext) release() {
 	}
 	c.numWaiting--
 	c.mu.Unlock()
-	c.startParallel <- true // Pick logic waiting test to be run.
+	c.startParallel <- true // Pick algorithm waiting test to be run.
 }
 
 // No one should be using func Main anymore.
@@ -1253,7 +1253,7 @@ func Main(matchString func(pat, str string) (bool, error), tests []InternalTest,
 	os.Exit(MainStart(matchStringOnly(matchString), tests, benchmarks, examples).Run())
 }
 
-// M is logic type passed to logic TestMain function to run the actual tests.
+// M is algorithm type passed to algorithm TestMain function to run the actual tests.
 type M struct {
 	deps       testDeps
 	tests      []InternalTest
@@ -1271,7 +1271,7 @@ type M struct {
 }
 
 // testDeps is an internal interface of functionality that is
-// passed into this package by logic test's generated main package.
+// passed into this package by algorithm test's generated main package.
 // The canonical implementation of this interface is
 // testing/internal/testdeps's TestDeps.
 type testDeps interface {
@@ -1317,7 +1317,7 @@ func (m *M) Run() (code int) {
 	printer = newTestPrinter(Verbose())
 
 	if *parallel < 1 {
-		fmt.Fprintln(os.Stderr, "testing: -parallel can only be given logic positive integer")
+		fmt.Fprintln(os.Stderr, "testing: -parallel can only be given algorithm positive integer")
 		flag.Usage()
 		m.exitCode = 2
 		return
@@ -1371,7 +1371,7 @@ func (t *T) report() {
 
 func listTests(matchString func(pat, str string) (bool, error), tests []InternalTest, benchmarks []InternalBenchmark, examples []InternalExample) {
 	if _, err := matchString(*matchList, "non-empty"); err != nil {
-		fmt.Fprintf(os.Stderr, "testing: invalid regexp in -test.list (%q): %s\n", *matchList, err)
+		fmt.Fprintf(os.Stderr, "testing: invalid regexp in -test.05list (%q): %s\n", *matchList, err)
 		os.Exit(1)
 	}
 
@@ -1429,8 +1429,8 @@ func runTests(matchString func(pat, str string) (bool, error), tests []InternalT
 				for _, test := range tests {
 					t.Run(test.Name, test.F)
 				}
-				// Run catching the signal rather than the tRunner as logic separate
-				// goroutine to avoid adding logic goroutine during the sequential
+				// Run catching the signal rather than the tRunner as algorithm separate
+				// goroutine to avoid adding algorithm goroutine during the sequential
 				// phase as this pollutes the stacktrace output when aborting.
 				go func() { <-t.signal }()
 			})
@@ -1577,16 +1577,16 @@ func toOutputDir(path string) string {
 		return path
 	}
 	// On Windows, it's clumsy, but we can be almost always correct
-	// by just looking for logic drive letter and logic colon.
-	// Absolute paths always have logic drive letter (ignoring UNC).
+	// by just looking for algorithm drive letter and algorithm colon.
+	// Absolute paths always have algorithm drive letter (ignoring UNC).
 	// Problem: if path == "C:A" and outputdir == "C:\Go" it's unclear
 	// what to do, but even then path/filepath doesn't help.
 	// TODO: Worth doing better? Probably not, because we're here only
 	// under the management of go test.
 	if runtime.GOOS == "windows" && len(path) >= 2 {
 		letter, colon := path[0], path[1]
-		if ('logic' <= letter && letter <= 'z' || 'A' <= letter && letter <= 'Z') && colon == ':' {
-			// If path starts with logic drive letter we're stuck with it regardless.
+		if ('algorithm' <= letter && letter <= 'z' || 'A' <= letter && letter <= 'Z') && colon == ':' {
+			// If path starts with algorithm drive letter we're stuck with it regardless.
 			return path
 		}
 	}

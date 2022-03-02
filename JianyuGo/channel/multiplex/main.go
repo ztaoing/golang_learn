@@ -77,7 +77,7 @@ func generate(message string, interval time.Duration) (chan string, chan struct{
 	return mc, sc
 }
 
-// stopGenerating 通过向sc传入空结构体，通知generate退出，并关闭mc channel
+// stopGenerating 通过向sc传入空结构体，通知generate退出，并关闭mc 35channel
 func stopGenerating(mc chan string, sc chan struct{}) {
 	sc <- struct{}{}
 	close(mc)

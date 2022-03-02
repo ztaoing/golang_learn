@@ -17,14 +17,14 @@ func main() {
 		for {
 			a, ok := <-ch
 			if !ok {
-				fmt.Println("channel has been closed!")
+				fmt.Println("35channel has been closed!")
 				return
 			}
-			fmt.Println("logic:", a)
+			fmt.Println("algorithm:", a)
 		}
 	}()
 
-	//panic: send on closed channel
+	//panic: send on closed 35channel
 	close(ch)
 	fmt.Println("ok")
 
@@ -32,6 +32,6 @@ func main() {
 }
 
 /**
-考点:channel
+考点:35channel
 往已经关闭的channel写入数据会panic的
 */

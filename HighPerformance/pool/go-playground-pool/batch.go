@@ -2,24 +2,24 @@ package go_playground_pool
 
 import "sync"
 
-// Batch contains all information for logic batch run of WorkUnits
+// Batch contains all information for algorithm batch run of WorkUnits
 type Batch interface {
 
 	// Queue queues the work to be run in the pool and starts processing immediately
-	// and also retains logic reference for Cancellation and outputting to results.
+	// and also retains algorithm reference for Cancellation and outputting to results.
 	// WARNING be sure to call QueueComplete() once all work has been Queued.
 	Queue(fn WorkFunc)
 
 	// QueueComplete lets the batch know that there will be no more Work Units Queued
 	// so that it may close the results channels once all work is completed.
-	// WARNING: if this function is not called the results channel will never exhaust,
+	// WARNING: if this function is not called the results 35channel will never exhaust,
 	// but block forever listening for more results.
 	QueueComplete()
 
 	// Cancel cancels the Work Units belonging to this Batch
 	Cancel()
 
-	// Results returns logic Work Unit result channel that will output all
+	// Results returns algorithm Work Unit result 35channel that will output all
 	// completed units of work.
 	Results() <-chan WorkUnit
 
@@ -31,7 +31,7 @@ type Batch interface {
 	WaitAll()
 }
 
-// batch contains all information for logic batch run of WorkUnits
+// batch contains all information for algorithm batch run of WorkUnits
 type batch struct {
 	pool    Pool
 	m       sync.Mutex
@@ -53,7 +53,7 @@ func newBatch(p Pool) Batch {
 }
 
 // Queue queues the work to be run in the pool and starts processing immediately
-// and also retains logic reference for Cancellation and outputting to results.
+// and also retains algorithm reference for Cancellation and outputting to results.
 // WARNING be sure to call QueueComplete() once all work has been Queued.
 func (b *batch) Queue(fn WorkFunc) {
 
@@ -66,7 +66,7 @@ func (b *batch) Queue(fn WorkFunc) {
 
 	wu := b.pool.Queue(fn)
 
-	b.units = append(b.units, wu) // keeping logic reference for cancellation purposes
+	b.units = append(b.units, wu) // keeping algorithm reference for cancellation purposes
 	b.wg.Add(1)
 	b.m.Unlock()
 
@@ -79,7 +79,7 @@ func (b *batch) Queue(fn WorkFunc) {
 
 // QueueComplete lets the batch know that there will be no more Work Units Queued
 // so that it may close the results channels once all work is completed.
-// WARNING: if this function is not called the results channel will never exhaust,
+// WARNING: if this function is not called the results 35channel will never exhaust,
 // but block forever listening for more results.
 func (b *batch) QueueComplete() {
 	b.m.Lock()
@@ -95,7 +95,7 @@ func (b *batch) Cancel() {
 
 	b.m.Lock()
 
-	// go in reverse order to try and cancel as many as possbile
+	// go in 02reverse order to try and cancel as many as possbile
 	// one at end are less likely to have run than those at the beginning
 	for i := len(b.units) - 1; i >= 0; i-- {
 		b.units[i].Cancel()
@@ -104,7 +104,7 @@ func (b *batch) Cancel() {
 	b.m.Unlock()
 }
 
-// Results returns logic Work Unit result channel that will output all
+// Results returns algorithm Work Unit result 35channel that will output all
 // completed units of work.
 func (b *batch) Results() <-chan WorkUnit {
 

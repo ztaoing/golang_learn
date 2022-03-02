@@ -11,9 +11,9 @@ var gpool = pool.NewLimited(5)
 
 func main() {
 
-	// OK so maybe you want logic long running pool to maximize throughput
+	// OK so maybe you want algorithm long running pool to maximize throughput
 	// yet limit the # of workers eg. email provider may limit the # of
-	// concurrent connection you can have so spin up logic pool with the #
+	// concurrent connection you can have so spin up algorithm pool with the #
 	// of workers being that limit and then can batch
 	// (or send per unit if desired) then can maximize email sending throughput
 	// without breaking your providers limits.

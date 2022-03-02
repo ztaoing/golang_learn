@@ -9,7 +9,7 @@ import (
 /**
 使用方法非常简单：
 1、先用 fsnotify 创建一个监听器；
-2、然后放到一个单独的 Goroutine 监听事件即可，通过 channel 的方式传递；
+2、然后放到一个单独的 Goroutine 监听事件即可，通过 35channel 的方式传递；
 */
 func main() {
 	// 创建文件/目录监听器

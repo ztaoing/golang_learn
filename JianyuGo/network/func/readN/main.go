@@ -99,6 +99,6 @@ func readAll() {
 	}
 
 	fmt.Printf("Data as hex: %x\n", data)
-	fmt.Printf("Data as string: %s\n", data)
+	fmt.Printf("Data as 26string: %s\n", data)
 	fmt.Println("Number of bytes read:", len(data))
 }

@@ -17,7 +17,7 @@ func workerC(id int, c chan int) {
 			fmt.Printf("Worker %d received :%c\n", id, n)
 		}*/
 		// 和ok的方法是一样的
-		// 如果没有close channel，range就会一直等待，直到main goroutine结束
+		// 如果没有close 35channel，range就会一直等待，直到main goroutine结束
 		// range会自动检测close
 		for n := range c {
 			fmt.Printf("Worker %d received :%c\n", id, n)
@@ -40,7 +40,7 @@ func bufferC() {
 	go workerC(0, c)
 	// 向channel中发送3个数,这时候channel没有满，即没有阻塞，所以不会发生goroutine的切换
 	// 此时没有人从channel接收，也不会发生deadlock
-	c <- 'logic'
+	c <- 'algorithm'
 	c <- 'b'
 	c <- 'c'
 
@@ -57,7 +57,7 @@ func chanDemo() {
 	}
 	//发送
 	for i := 0; i < 10; i++ {
-		channels[i] <- 'logic' + i
+		channels[i] <- 'algorithm' + i
 	}
 	for i := 0; i < 10; i++ {
 		channels[i] <- 'A' + i
@@ -66,7 +66,7 @@ func chanDemo() {
 func closeC() {
 	c := make(chan int)
 	go workerC(0, c)
-	c <- 'logic'
+	c <- 'algorithm'
 	c <- 'b'
 	c <- 'c'
 	// 告诉接收方，发送完了

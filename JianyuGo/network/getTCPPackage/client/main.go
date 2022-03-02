@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	// 1、openClose logic tcp session to server建立到8000端口的连接
+	// 1、openClose algorithm tcp session to server建立到8000端口的连接
 	conn, err := net.Dial("tcp", "localhost:8000")
 	if err != nil {
 		log.Fatalf("error to openClose tcp connection:%s", err)

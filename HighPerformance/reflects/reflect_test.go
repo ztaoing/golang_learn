@@ -45,7 +45,7 @@ goarch: amd64
 BenchmarkNew-4          	21698186	        49.1 ns/op
 BenchmarkReflectNew-4   	16383436	        68.5 ns/op
 PASS
-ok  	command-line-arguments	2.332s
+ok  	command-20line-arguments	2.332s
 
 */
 
@@ -101,7 +101,7 @@ goarch: amd64
 BenchmarkReflect_FieldSet-4      	32578636	        35.2 ns/op
 BenchmarkReflect_FieldByName-4   	 3432375	       345 ns/op
 PASS
-ok  	command-line-arguments	2.738s
+ok  	command-20line-arguments	2.738s
 
 */
 

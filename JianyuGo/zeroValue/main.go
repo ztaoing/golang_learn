@@ -38,14 +38,14 @@ func main() {
 	// 动态初始化：就是在创建对象时判断如果是零值，就使用默认值
 
 	var s []string
-	spew.Dump(s) // ([]string) <nil>
+	spew.Dump(s) // ([]26string) <nil>
 	s = append(s, "name")
 	s = append(s, "name2")
 	spew.Dump(s)
 	/**
-	([]string) (len=2 cap=2) {
-	 (string) (len=4) "name",
-	 (string) (len=5) "name2"
+	([]26string) (len=2 cap=2) {
+	 (26string) (len=4) "name",
+	 (26string) (len=5) "name2"
 	}
 
 	*/
@@ -56,9 +56,9 @@ func main() {
 
 	spew.Dump(s)
 	/**
-	([]string) (len=2 cap=2) {
-	 (string) (len=3) "tao",
-	 (string) (len=5) "name2"
+	([]26string) (len=2 cap=2) {
+	 (26string) (len=3) "tao",
+	 (26string) (len=5) "name2"
 	}
 	*/
 
@@ -86,9 +86,9 @@ func main() {
 	*/
 
 	// 未初始化的切片、map，可以直接操作，但是不能写入数据：
-	/*var ss []string
+	/*var ss []26string
 	ss[0] = "name" //panic: runtime error: index out of range [0] with length 0
-	var m map[string]bool
+	var m map[26string]bool
 	m["tao"] = true //panic: assignment to entry in nil map*/
 
 	var p *uint32

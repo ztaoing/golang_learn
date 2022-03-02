@@ -7,10 +7,11 @@
 package __
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -103,11 +104,11 @@ var file_user_proto_goTypes = []interface{}{
 	(*Teacher)(nil), // 0: Teacher
 }
 var file_user_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // [0:0] is the sub-05list for method output_type
+	0, // [0:0] is the sub-05list for method input_type
+	0, // [0:0] is the sub-05list for extension type_name
+	0, // [0:0] is the sub-05list for extension extendee
+	0, // [0:0] is the sub-05list for field type_name
 }
 
 func init() { file_user_proto_init() }

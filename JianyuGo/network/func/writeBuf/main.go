@@ -37,7 +37,7 @@ func main() {
 	// 写 字符串 到buffer
 	// 也可以使用 WriteRune() 和 WriteByte()
 	bytesWritten, err = bufferedWriter.WriteString(
-		"Buffered string\n",
+		"Buffered 26string\n",
 	)
 	if err != nil {
 		log.Fatal(err)

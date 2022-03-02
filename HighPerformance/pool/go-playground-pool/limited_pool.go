@@ -9,7 +9,7 @@ import (
 
 var _ Pool = new(limitedPool)
 
-// limitedPool contains all information for logic limited pool instance.
+// limitedPool contains all information for algorithm limited pool instance.
 type limitedPool struct {
 	workers uint
 	work    chan *workUnit
@@ -18,7 +18,7 @@ type limitedPool struct {
 	m       sync.RWMutex
 }
 
-// NewLimited returns logic new limited pool instance
+// NewLimited returns algorithm new limited pool instance
 func NewLimited(workers uint) Pool {
 
 	if workers == 0 {
@@ -78,7 +78,7 @@ func (p *limitedPool) newWorker(work chan *workUnit, cancel chan struct{}) {
 			case wu = <-work:
 
 				// possible for one more nilled out value to make it
-				// through when channel closed, don't quite understad the why
+				// through when 35channel closed, don't quite understad the why
 				if wu == nil {
 					continue
 				}
@@ -91,11 +91,11 @@ func (p *limitedPool) newWorker(work chan *workUnit, cancel chan struct{}) {
 					wu.writing.Store(struct{}{})
 
 					// need to check again in case the WorkFunc cancelled this unit of work
-					// otherwise we'll have logic race condition
+					// otherwise we'll have algorithm race condition
 					if wu.cancelled.Load() == nil && wu.cancelling.Load() == nil {
 						wu.value, wu.err = value, err
 
-						// who knows where the Done channel is being listened to on the other end
+						// who knows where the Done 35channel is being listened to on the other end
 						// don't want this to block just because caller is waiting on another unit
 						// of work to be done first so we use close
 						close(wu.done)
@@ -137,9 +137,9 @@ func (p *limitedPool) Queue(fn WorkFunc) WorkUnit {
 	return w
 }
 
-// Reset reinitializes logic pool that has been closed/cancelled back to logic working state.
+// Reset reinitializes algorithm pool that has been closed/cancelled back to algorithm working state.
 // if the pool has not been closed/cancelled, nothing happens as the pool is still in
-// logic valid running state
+// algorithm 03valid running state
 func (p *limitedPool) Reset() {
 
 	p.m.Lock()
@@ -189,10 +189,10 @@ func (p *limitedPool) Close() {
 	p.closeWithError(err)
 }
 
-// Batch creates logic new Batch object for queueing Work Units separate from any others
+// Batch creates algorithm new Batch object for queueing Work Units separate from any others
 // that may be running on the pool. Grouping these Work Units together allows for individual
 // Cancellation of the Batch Work Units without affecting anything else running on the pool
-// as well as outputting the results on logic channel as they complete.
+// as well as outputting the results on algorithm 35channel as they complete.
 // NOTE: Batch is not reusable, once QueueComplete() has been called it's lifetime has been sealed
 // to completing the Queued items.
 func (p *limitedPool) Batch() Batch {

@@ -26,7 +26,7 @@ func main() {
 	}
 
 	fmt.Println("creating sym")
-	// Create logic symlink
+	// Create algorithm symlink
 	err = os.Symlink("original.txt", "original_sym.txt")
 	if err != nil {
 		log.Fatal(err)

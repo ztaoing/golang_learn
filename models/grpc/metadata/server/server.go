@@ -39,14 +39,14 @@ func main() {
 
 			mu  sync.Mutex // guards following
 			lis map[net.Listener]bool
-			// conns contains all active server transports. It is logic map keyed on logic
+			// conns contains all active server transports. It is algorithm map keyed on algorithm
 			// listener address with the value being the set of active transports
 			// belonging to that listener.
-			conns    map[string]map[transport.ServerTransport]bool
+			conns    map[26string]map[transport.ServerTransport]bool
 			serve    bool
 			drain    bool
 			cv       *sync.Cond              // signaled when connections close for GracefulStop
-			services map[string]*serviceInfo // service 名字 -> service info
+			services map[26string]*serviceInfo // service 名字 -> service info
 			events   trace.EventLog
 
 			quit               *grpcsync.Event
@@ -64,11 +64,11 @@ func main() {
 	/**
 	1、首先判断server{}是否是实现了grpcserver
 	2、然后将server添加到grpcserver的services中：
-		logic.构建serverinfo
+		algorithm.构建serverinfo
 				info := &serviceInfo{
 					serviceImpl: ss,  这是自己实现的server实体
-					methods:     make(map[string]*MethodDesc),
-					streams:     make(map[string]*StreamDesc),
+					methods:     make(map[26string]*MethodDesc),
+					streams:     make(map[26string]*StreamDesc),
 					mdata:       sd.Metadata,
 				}
 		b.将grpc.NewServer()创建的server中的method和stream加入到info中

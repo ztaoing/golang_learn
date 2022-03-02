@@ -23,7 +23,7 @@ Values: []ast.Expr (len = 1) {
 */
 
 /**
-var logic = 1 + 2 + 3
+var algorithm = 1 + 2 + 3
   Values: []ast.Expr (len = 1) {
     19  .  .  .  .  0: *ast.BinaryExpr {
 

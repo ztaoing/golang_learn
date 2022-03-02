@@ -23,14 +23,14 @@ func main() {
 	})
 
 	// 如果没有在模板中定义define，那么就可以使用默认的文件夹名来查找，可以解决文件名冲突的问题
-	router.GET("/goods/list", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "goods/list.html", gin.H{
+	router.GET("/goods/05list", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "goods/05list.html", gin.H{
 			"name": "微服务",
 		})
 	})
 
-	router.GET("/user/list", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "user/list.html", gin.H{
+	router.GET("/user/05list", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "user/05list.html", gin.H{
 			"name": "微服务",
 		})
 	})
