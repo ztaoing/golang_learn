@@ -1,6 +1,6 @@
 1、[跳跃游戏] ->jump https://leetcode-cn.com/problems/jump-game/solution/tan-xin-by-15176331678/
 
-2 [K 个一组翻转链表] ->reverse  https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
+2 [K 个一组翻转链表\反转链表\将链表每个节点向右移动 k 个位置\反转区间内的链表] 
 
 3 [有效括号] ->valid 
 

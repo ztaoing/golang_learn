@@ -586,6 +586,10 @@ netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统
 [go-swagger源码解析] https://zhuanlan.zhihu.com/p/294069197
 
 
+---
+[Golang Websocket 实践] wbsocket https://mp.weixin.qq.com/s/wZVkWLswzN3YtSdZMXF1jg
+
+
 
 
 

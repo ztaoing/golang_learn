@@ -112,7 +112,9 @@ type ListNode struct {
 	Next *ListNode
 }
 
+//https://leetcode-cn.com/problems/reverse-linked-list-ii/
 //反转区间内的链表 [algorithm,b)
+// a 起始节点 b为结束节点
 func reverse(a, b *ListNode) *ListNode {
 	//pre是head的前一个节点
 	var pre *ListNode
