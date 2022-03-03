@@ -138,16 +138,8 @@ slice，map，channel 这三种类型必须使用make来创建，就是这个道
 ---
 
 
-* [go五种原子性操作的用法详解] memory-》atomic-》cas +atomicMutex
-  原子性：外界不会看到只执行到一半的状态！
-  CPU执行一些列操作时不可能不发生中断，但是如果我们在执行多个操作时，能让他们的中间状态对外不可见，
-  那我们就可以说他拥有了"不可分割"的原子性
-  Go语言通过内置包sync/atomic提供了对原子操作的支持，其提供的原子操作有以下几大类：
-  1、增减，操作的方法名方式为AddXXXType，保证对操作数进行原子的增减，支持的类型为int32、int64、uint32、uint64、uintptr，使用时以实际类型替换前面我说的XXXType就是对应的操作方法。
-  2、载入，保证了读取到操作数前没有其他任务对它进行变更，操作方法的命名方式为LoadXXXType，支持的类型除了基础类型外还支持Pointer，也就是支持载入任何类型的指针。
-  3、存储，有载入了就必然有存储操作，这类操作的方法名以Store开头，支持的类型跟载入操作支持的那些一样。
-  4、比较并交换，也就是CAS （Compare And Swap），像Go的很多并发原语实现就是依赖的CAS操作，同样是支持上面列的那些类型。
-  5、交换，这个简单粗暴一些，不比较直接交换，这个操作很少会用。
+* [go五种原子性操作的用法详解](https://mp.weixin.qq.com/s/W48sjzxwjPYKgcY8DavBYA) memory-》atomic-》cas +atomicMutex
+
 
 * *互斥锁和院系操作的区别：
   1、使用目的：互斥锁是用来保护一段逻辑，原子操作用于对一个变量的更新保护。
@@ -195,7 +187,7 @@ errors
 
 * [Go 错误处理：用 panic 取代 err != nil 的模式]( https://mp.weixin.qq.com/s/p77V3_LkREuXPVLdebmmmQ) （与panic的设计理念相违背）
 
-* [你考虑过defer close的风险吗？]errors
+* [你考虑过defer close的风险吗？](https://mp.weixin.qq.com/s/7J6zEj_5gksZbFy0ANlvwg) errors
 
 * [说好 defer 在 return 之后执行，为什么结果却不是？]( https://mp.weixin.qq.com/s/oP90maykSzMXjdnudOKdSw) （需要再次阅读）
 
@@ -231,15 +223,23 @@ errors
 ---
 * [Goroutine 一泄露就看到他，这是个什么？](https://mp.weixin.qq.com/s/x6Kzn7VA1wUz7g8txcBX7A)
 
-* [go切片导致内存泄漏、slice的data字段、边界取值] memory->slice
 
-* [go map的初始化、访问、赋值、扩容、缩容]memory->map
+* [Go 切片导致内存泄露，被坑两次了！](https://mp.weixin.qq.com/s/FSouDTvKarYOFxqtHy7IRg)
+
+* [一文啃透 Go map：初始化和访问](https://mp.weixin.qq.com/s/iL9dgMW47q0ySTYkvfl6fg)
+
+* [Go map 如何缩容？](https://mp.weixin.qq.com/s/Slvgl3KZax2jsy2xGDdFKw)
+
+*[面试官：为什么 Go 的负载因子是 6.5？](https://mp.weixin.qq.com/s/nL7jkskVHTmCy3Ed9e-RZA)
+
+* [一篇文章把 Go map 赋值和扩容扒干净！](https://mp.weixin.qq.com/s/nmhZEkWC-xB-Fr-0gvE3hw)
+
 
 * [go 的负载因子为什么是6.5](https://mp.weixin.qq.com/s/vxf7VxRcWL27ST2_VDHhOg)
 
 * [聊一聊内存逃逸](https://mp.weixin.qq.com/s/J-WjYpZ40ehGLoJ0dDTWDw)
 
-* [透过内存看slice和array的异同]
+* [透过内存看slice和array的异同](https://mp.weixin.qq.com/s/d9kP77eKRm2MSW_9ySlVGA)
 
 * [Go 数组比切片好在哪？]( https://mp.weixin.qq.com/s/zp1vdhGukEYKpzAdPt--Mw )（定长，可控的内存）
 
@@ -300,7 +300,9 @@ Go在内部维持了一份内联函数的映射关系，会生成一个内联树
 
 ---
 
-* [文件存储] stroge
+* [Go 存储基础 — “文件”被偷偷修改？来，给它装个监控！](https://mp.weixin.qq.com/s/Vq5WxDyorMQ2nNkUAr6DjQ)
+* [Go 存储基础 — 内存结构体怎么写入文件？](https://mp.weixin.qq.com/s/28ScdoPWrQ2t870GtgLX1Q)
+* [浅析gowatch监听文件变动实现原理](https://mp.weixin.qq.com/s/tsavVgnxFb6anLvcjvQwlA)
 
 * [Go 存储基础 — “文件”被偷偷修改？来，给它装个监控！storage-->fsnofify](  https://mp.weixin.qq.com/s/Czv0CxDKqr2QNItO4aNZMA)
 
@@ -340,7 +342,7 @@ Go在内部维持了一份内联函数的映射关系，会生成一个内联树
 
 * [Go 群友提问：Goroutine 数量控制在多少合适，会影响 GC 和调度？]( https://mp.weixin.qq.com/s/uWP2X6iFu7BtwjIv5H55vw)  还是得看 Goroutine 里面跑的是什么东西。
 
-* [go官方信号量库]Semaphore
+* [go官方信号量库](https://mp.weixin.qq.com/s/7PL42fkFC7D6flR95dM7yw)
 
 ---
 
@@ -431,7 +433,7 @@ Go在内部维持了一份内联函数的映射关系，会生成一个内联树
 * [我这样升级 Go 版本，你呢？]( https://mp.weixin.qq.com/s/bGS5D0UYVp6BxSLjuZy0pg) (go的多版本)
 
 * [又吵起来了，Go 是传值还是传引用？]( https://mp.weixin.qq.com/s/qsxvfiyZfRCtgTymO9LBZQ) （传递的是副本，值的副本，指针的副本，原指针和指针副本指向同一个数据地址;map 和 slice 的行为类似于指针，它们是包含指向底层 map 或 slice 数据的指针的描述符”）
-* func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
+     func makemap(t *maptype, hint int, h *hmap) *hmap {} 返回的是一个指针
 
 * [Go 面试官问我如何实现面向对象？]( https://mp.weixin.qq.com/s/2x4Sajv7HkAjWFPe4oD96g) (封装、继承、多态：在 Go 语言中，多态是通过接口来实现的)
 
@@ -480,17 +482,17 @@ Go在内部维持了一份内联函数的映射关系，会生成一个内联树
 
 ---
 
-* [干货满满的 Go Modules 知识分享] (https://mp.weixin.qq.com/s/uUNTH06_s6yzy5urtjPMsg)
+* [干货满满的 Go Modules 知识分享](https://mp.weixin.qq.com/s/uUNTH06_s6yzy5urtjPMsg)
 
-* [最新提案：维持 GOPATH 的传统使用方式（Go1.17 移除 GOPATH）] (https://mp.weixin.qq.com/s/AzfKHfs6AOolxutdVpZibw)
+* [最新提案：维持 GOPATH 的传统使用方式（Go1.17 移除 GOPATH）](https://mp.weixin.qq.com/s/AzfKHfs6AOolxutdVpZibw)
 
-* [Go1.16 新特性：Go mod 的后悔药，仅需这一招] (https://mp.weixin.qq.com/s/0g89yj9sc1oIz9kS9ZIAEA) retract
+* [Go1.16 新特性：Go mod 的后悔药，仅需这一招](https://mp.weixin.qq.com/s/0g89yj9sc1oIz9kS9ZIAEA) retract
 
 
 
 ---
 
-* [万字长文 | 从实践到原理，带你参透 gRPC] (https://mp.weixin.qq.com/s/o-K7G9ywCdmW7et6Q4WMeA) gRPC 基于 HTTP/2 标准设计，带来诸如双向流、流控、头部压缩、单 TCP 连接上的多复用请求等特性。这些特性使得其在移动设备上表现更好，更省电和节省空间占用。
+* [万字长文 | 从实践到原理，带你参透 gRPC](https://mp.weixin.qq.com/s/o-K7G9ywCdmW7et6Q4WMeA) gRPC 基于 HTTP/2 标准设计，带来诸如双向流、流控、头部压缩、单 TCP 连接上的多复用请求等特性。这些特性使得其在移动设备上表现更好，更省电和节省空间占用。
   grpc.NewServer()；grpc.DialContext()
 
 ---
@@ -499,7 +501,7 @@ Go在内部维持了一份内联函数的映射关系，会生成一个内联树
 
 * [这 Go 的边界检查，简直让人抓狂~](https://mp.weixin.qq.com/s/397sL-TCaZrOGR2-s1NFLw) 是 Go 语言中防止数组、切片越界而导致内存不安全的检查手段。 go build -gcflags="-d=ssa/check_bce/debug=1" main.go
 
-* [边界检查消除] (https://gfw.go101.org/article/bounds-check-elimination.html)
+* [边界检查消除](https://gfw.go101.org/article/bounds-check-elimination.html)
 
 * [一个活跃在众多 Go 项目中的编程模式](  https://mp.weixin.qq.com/s/dWY1ZzOl1TwpmM-rrF0m4Q)  函数式选项模式( Functional Options)。该模式解决的问题是，如何更动态灵活地为对象配置参数。
 
@@ -824,7 +826,7 @@ netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统
 
 -------
 
-[Go 使用场景和用 Go 的顶级公司]( https://mp.weixin.qq.com/s/Y1Dr3UykTvWuzjNKr-NMTg)
+* [Go 使用场景和用 Go 的顶级公司]( https://mp.weixin.qq.com/s/Y1Dr3UykTvWuzjNKr-NMTg)
 
 
 
