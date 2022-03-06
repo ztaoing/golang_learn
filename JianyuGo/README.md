@@ -829,6 +829,12 @@ netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统
 * [Go 使用场景和用 Go 的顶级公司]( https://mp.weixin.qq.com/s/Y1Dr3UykTvWuzjNKr-NMTg)
 
 
+---
+* [go单例实现—双重检测是否安全](https://blog.csdn.net/q5706503/article/details/105870179) sync.Once内部其实也是一个双重检验锁，但是对于共享变量（done字段）的读和写使用了atomic包的StoreUint32和LoadUint32方法
+  
+* [字节安全团队开源自研敏感信息保护方案](https://github.com/bytedance/godlp)
+
+
 
 
 

@@ -6,6 +6,8 @@
 
 package main
 
+import "fmt"
+
 /*
 有效括号 20题
 https://leetcode-cn.com/problems/valid-parentheses/
@@ -31,14 +33,27 @@ func isValid(s string) bool {
 	stack := []byte{}
 
 	for i := 0; i < n; i++ {
+		// 如果在map中，是右括号
 		if pairs[s[i]] > 0 {
 			if len(stack) == 0 || stack[len(stack)-1] != pairs[s[i]] {
 				return false
 			}
+			//
 			stack = stack[:len(stack)-1]
 		} else {
+			// 不在map中，是左括号
 			stack = append(stack, s[i])
 		}
 	}
 	return len(stack) == 0
+}
+
+func main() {
+	slices := []int{1, 2, 3, 4, 5, 6, 7, 8}
+	slicesNew := slices[:len(slices)-1]
+	for _, v := range slicesNew {
+		fmt.Println(v)
+	}
+	fmt.Println("\n")
+	fmt.Println(slices[len(slices)-1])
 }

@@ -319,7 +319,9 @@ func timeOf(pile int, speed int) int {
 		//当pile的数量小于吃的速度，也就是，在这个小时内只能吃这一对
 		return 1
 	} else {
+
 		//当pile比吃的速度大，也就是，一小时内不能吃完这一堆
+		// 向零取整：向 0 方向取最接近精确值的整数，换言之就是舍去小数部分，因此又称截断取整。
 		return pile/speed + 1
 	}
 
