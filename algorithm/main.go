@@ -359,7 +359,7 @@ func recur(L, R *TreeNode) bool {
 	return recur(L.Left, R.Right) && recur(L.Right, R.Left)
 }
 
-// 04.05. 合法二叉搜索树
+// 04.05. 合法二叉搜索树:左子树小于根节点，右子树大于根节点
 //递归调用  时间复杂度O（N）
 //空间复杂度O（N）递归函数在递归过程中需要为每一层递归函数分配栈空间，所以这里需要额外的空间且该空间取决于递归的深度，即二叉树的高度
 func isValidBst(root *TreeNode) bool {

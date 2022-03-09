@@ -1,8 +1,8 @@
-以下内容来自【煎鱼的微信公众号】【网管叨bi叨】【奇伢云存储】【Golang技术分享】
+以下内容来自【煎鱼的微信公众号】【网管叨bi叨】【奇伢云存储】【Golang技术分享】【云峰就是她了】
+
 
 ---
-
-* [Go: A Documentary 发布！]( https://mp.weixin.qq.com/s/5MtBE8vecKPOmRUYu2E-lg)
+* [Go: A Documentary 发布！]( https://mp.weixin.qq.com/s/5MtBE8vecKPOmRUYu2E-lg) https://golang.design/history/
 
 ---
 
@@ -230,7 +230,7 @@ errors
 
 * [Go map 如何缩容？](https://mp.weixin.qq.com/s/Slvgl3KZax2jsy2xGDdFKw)
 
-*[面试官：为什么 Go 的负载因子是 6.5？](https://mp.weixin.qq.com/s/nL7jkskVHTmCy3Ed9e-RZA)
+* [面试官：为什么 Go 的负载因子是 6.5？](https://mp.weixin.qq.com/s/nL7jkskVHTmCy3Ed9e-RZA)
 
 * [一篇文章把 Go map 赋值和扩容扒干净！](https://mp.weixin.qq.com/s/nmhZEkWC-xB-Fr-0gvE3hw)
 
@@ -834,6 +834,12 @@ netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统
   
 * [字节安全团队开源自研敏感信息保护方案](https://github.com/bytedance/godlp)
 
+---
+* [go的请求追踪神器go tool trace](https://mp.weixin.qq.com/s/xS5XbT2QcINQDc8ZgVr2oA)
+* [go trace 剖析 go1.14 异步抢占式调度](https://mp.weixin.qq.com/s/4py671q_OZj4ufmF1ubunw)
+* [深入浅出 Go trace](https://mp.weixin.qq.com/s/I9xSMxy32cALSNQAN8wlnQ)
+* [Go 调试分析的高阶技巧](https://mp.weixin.qq.com/s/GJxHVbaVXnHussFXf1tDMQ)
+* [go tool flags(译)](https://mp.weixin.qq.com/s/zp8Rm5SEFH9ruftoDbklxA)
 
 
 
