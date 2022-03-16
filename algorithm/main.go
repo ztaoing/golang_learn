@@ -777,7 +777,7 @@ func Atoi(str string) int {
 //dp[i] ：表示以nums[i]结尾的最长上升子序列的长度
 //nums[5]= 3，因为是递增的，所以找到前面比3小的子序列，然后再把3接到最后，就可以形成一个新的递增子序列了
 func lengthOfLIS(nums []int) int {
-	if len(nums) < 1 {
+	if len(nums) == 0 {
 		return 0
 	}
 	dp := make([]int, len(nums))
