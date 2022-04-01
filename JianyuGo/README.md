@@ -495,6 +495,8 @@ Go在内部维持了一份内联函数的映射关系，会生成一个内联树
 
 * [万字长文 | 从实践到原理，带你参透 gRPC](https://mp.weixin.qq.com/s/o-K7G9ywCdmW7et6Q4WMeA) gRPC 基于 HTTP/2 标准设计，带来诸如双向流、流控、头部压缩、单 TCP 连接上的多复用请求等特性。这些特性使得其在移动设备上表现更好，更省电和节省空间占用。
   grpc.NewServer()；grpc.DialContext()
+  
+* [GRPC连接池的设计与实现](https://mp.weixin.qq.com/s/DCJMUQAsUk7353AAEHkllg)
 
 ---
 
@@ -604,6 +606,7 @@ netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统
 
 ---
     redis
+* [一文搞懂redis](https://mp.weixin.qq.com/s/7ct-mvSIaT3o4-tsMaKRWA)
 * [Golang使用redigo实现redis的分布式锁](http://xiaorui.cc/?p=3028)
 * [Golang使用redis protocol实现pubsub通信](http://xiaorui.cc/?p=4847)
 * [golang基于redis lua封装的优先级去重队列](http://xiaorui.cc/?p=4828)
@@ -836,6 +839,7 @@ netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统
 * [字节安全团队开源自研敏感信息保护方案](https://github.com/bytedance/godlp)
 
 ---
+---
 * [go的请求追踪神器go tool trace](https://mp.weixin.qq.com/s/xS5XbT2QcINQDc8ZgVr2oA)
 * [go trace 剖析 go1.14 异步抢占式调度](https://mp.weixin.qq.com/s/4py671q_OZj4ufmF1ubunw)
 * [深入浅出 Go trace](https://mp.weixin.qq.com/s/I9xSMxy32cALSNQAN8wlnQ)
@@ -843,6 +847,20 @@ netFD、poll.FD、pollDesc（这三个数据结构可以理解为对操作系统
 * [go tool flags(译)](https://mp.weixin.qq.com/s/zp8Rm5SEFH9ruftoDbklxA)
 * [golang 内存管理分析](https://mp.weixin.qq.com/s/rydO2JK-r8JjG9v_Uy7gXg)
 
+
+---
+
+* [OAuth2 vs JWT，到底怎么选？](https://mp.weixin.qq.com/s/Bsge9UVmWA3wkLZ0BVFL_A) 
+  JWT是一种认证协议:令牌（Token）本身包含了一系列声明，应用程序可以根据这些声明限制用户对资源的访问。header(声明了类型和产生签名所使用的算法).claims(声明是整个token的核心，表示要发送的用户详细信息).signature(签名的目的是为了保证header和claim不被篡改)
+  OAuth2是一种授权框架:提供了一套详细的授权机制
+
+* [JWT官方网站](http://jwt.io) 也可以查看到使用不同语言实现的库的状态。
+  
+* [oauth的官方网站](http://oauth.net/2) 也可以查看到使用不同语言实现的库的状态。
+
+---
+    架构
+* [京东到家订单履约时效系统演进](https://mp.weixin.qq.com/s/hJX9xiCWr-m6MJLf_qrJNg)
 
 ---
  《Go 1.18 源码剖析》
