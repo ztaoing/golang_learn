@@ -85,7 +85,8 @@ func countSubstrings(s string) int {
 	// 回文子串的个数
 	result := 0
 
-	// 遍历的方式：因为需要知道i+1，和j-1，所以需要从下向上，从左向右遍历
+	// 遍历的方式：因为需要知道i+1，和j-1，
+	// 所以需要从下向上，从左向右遍历
 	for i := m - 1; i >= 0; i-- {
 		for j := i; j < m; j++ {
 			// 递推公式
@@ -105,7 +106,7 @@ func countSubstrings(s string) int {
 }
 
 /**
-通过观察可以发现 dp[i][j] 只与dp[i+1][j-1]有关
+通过观察可以发现 dp[i][j] 只与dp[i+1][j-1]有关，所以可以把dp[i+1][j-1]压缩到dp[i]这个数组中
 */
 
 func countSubstringsDown(s string) int {
@@ -113,10 +114,12 @@ func countSubstringsDown(s string) int {
 	l := len(s1)
 	dp := make([]bool, l)
 	result := 0
+	// 遍历的方向：先遍历i，再遍历j
+	// 从上向下
 	for j := 0; j < l; j++ {
 		for i := 0; i < l; i++ {
 			if s1[i] == s1[j] {
-				// 压缩
+				// 压缩,此时的dp[i+1]代表的是[i+1:j-1]这个范围内，是否是回文子串
 				if j-i <= 1 || dp[i+1] {
 					result++
 					dp[i] = true
@@ -147,7 +150,27 @@ func dumpDP(dp [][]bool) {
 */
 
 func countSubstringsWithTwoPointers(s string) int {
-	return 0
+	s1 := strings.TrimSpace(s)
+	n := len(s1)
+	var palindrome func(l, r int) int
+	palindrome = func(l, r int) (count int) {
+		//
+		for l >= 0 && r < n && s1[l] == s1[r] {
+			l--
+			r++
+			count++
+		}
+		return
+	}
+	ans := 0
+
+	// 这个为什么不是n-1
+	for i := 0; i < n; i++ {
+		ans += palindrome(i, i)
+		ans += palindrome(i, i+1)
+	}
+	return ans
+
 }
 func main() {
 	countSubstrings(" asddds ")
