@@ -18,7 +18,73 @@ import (
 定义dp数组：在子串s[i...j]中，最长回文子序列的长度为dp[i][j]（状态转移需要归纳思维，就是从已知的结果推出未知的部分），这样定义容易归纳，容易发现状态转移的关系
 "bbbab" 4
 注意：需要将dp[i][j]关联到从i到j这个范围来思考
+
+如果s[i]和s[j]相同：那么dp[i][j]这个范围中子序列的长度就位dp[i+1][j-1]+2 :dp[i][j] = dp[i+1][j-1]+2
+如果s[i]和s[j]不相同:说明同时加入s[i]和s[j]不能增加区间回文子串的长度，那么分别加入s[i]和s[j]，看哪一个可以组成更长的回文子串。
+	加入j的回文子序列的长度为dp[i+1][j]
+	加入i的回文子序列的长度为dp[i][j-1]
+	此时dp[i][j]范围内的回文子序列的最大长度为max(dp[i+1][j],dp[i][j-1])
+
+由递推公式可以看出，dp[i][j] 依赖dp[i+1][j],dp[i][j-1]，
+
 */
+func longestPalindromeSubseq(s string) int {
+	l := len(s)
+	if l == 0 {
+		return 0
+	}
+	//定义dp数组
+	dp := make([][]int, len(s))
+	for k := range dp {
+		dp[k] = make([]int, len(s))
+	}
+	// dp 下标的含义：dp[i][j] 在范围i-j内的回文子序列的长度
+
+	// 由于dp[i][j] 依赖dp[i+1][j],dp[i][j-1]；所以需要从下向上，从左到右的遍历
+	// i和j是可以等于0的
+	for i := l - 1; i >= 0; i-- {
+		// 注意这里的j=i+1,i是左下标，j是右下标，j必须大于i
+		for j := i + 1; j < l; j++ {
+			if s[i] == s[j] {
+				dp[i][j] = dp[i+1][j-1] + 2
+			} else {
+				dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+			}
+		}
+	}
+	return dp[0][l-1]
+}
+func longestPalindromeSubseq1(s string) int {
+	n := len(s)
+	if n == 0 {
+		return 0
+	}
+	dp := make([]int, n)
+	for i := 0; i < n; i++ {
+		dp[i] = 1
+	}
+	for i := n - 2; i >= 0; i-- {
+		pre := 0
+		for j := i + 1; j < n; j++ {
+			temp := dp[j]
+			if s[i] == s[j] {
+				dp[j] = pre + 2
+			} else {
+				dp[j] = max(dp[j], dp[j-1])
+			}
+			//todo pre的更新为什么必须在这里
+			pre = temp
+		}
+	}
+	return dp[n-1]
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 
 /*
 647题：回文子串:面试中常见 https://leetcode-cn.com/problems/palindromic-substrings/
@@ -173,12 +239,81 @@ func countSubstringsWithTwoPointers(s string) int {
 
 }
 func main() {
-	countSubstrings(" asddds ")
+	/*countSubstrings(" asddds ")
+	countSubstringsDown("asddds")
+	countSubstringsWithTwoPointers("asddds")*/
+
+	// 回文子序列
+	//longestPalindromeSubseq("asddds")
+	minInsert("qasdtd6dd")
+	minInsertP("qasdtd6dd")
+
 }
 
-//构造回文串
-//输入一个字符串s，可以在字符串的任意位置插入任意的字符。把s变成回文串，请计算最少要进行多少次的计算
-//回文问题一般都是从字符串的中间向两端扩散，构造回文串也是类似的
-//dp[i][j]：对字符串s[i...j]，最少需要进行dp[i][j]次操作成为回文串
-//当s[i]=s[j]时，不需要要进行任何操作，
-//状态转移就是从小规模的问题的答案，推导出更大规模问题的答案，从base case向其他状态推导
+/*
+构造回文串
+输入一个字符串s，可以在字符串的任意位置插入任意的字符。把s变成回文串，请计算最少要进行多少次的计算
+
+回文问题一般都是从字符串的中间向两端扩散，构造回文串也是类似的
+dp[i][j]：对字符串s[i...j]，最少需要进行dp[i][j]次操作成为回文串
+
+当s[i]=s[j]时，不需要要进行任何操作，
+状态转移就是从小规模的问题的答案，推导出更大规模问题的答案，从base case向其他状态推导
+*/
+func minInsert(s string) int {
+	n := len(s)
+	if n == 0 {
+		return 0
+	}
+	dp := make([][]int, n)
+	for i := 0; i < n; i++ {
+		dp[i] = make([]int, n)
+		dp[i][i] = 0
+	}
+	//从下向上遍历
+	for i := n - 2; i >= 0; i-- {
+		//从左向右遍历
+		for j := i + 1; j < n; j++ {
+			if s[i] == s[j] {
+				dp[i][j] = dp[i+1][j-1]
+			} else {
+				dp[i][j] = min(dp[i][j-1], dp[i+1][j]) + 1
+			}
+		}
+	}
+	fmt.Println(dp[0][n-1])
+	return dp[0][n-1]
+}
+
+//压缩成一维数组
+func minInsertP(s string) int {
+	n := len(s)
+	if n == 0 {
+		return 0
+	}
+	dp := make([]int, n)
+	for i := n - 2; i >= 0; i-- {
+		// dp[i+1][j-1]会覆盖dp[i+1][j-1]，所以把dp[i+1][j-1]保存到pre中
+
+		pre := 0
+		for j := i + 1; j < n; j++ {
+			temp := dp[j]
+			if s[i] == s[j] {
+				dp[j] = pre
+			} else {
+				// 把dp[i][j-1], dp[i+1][j]压缩为一个一维数组：dp[j]
+				dp[j] = min(dp[j], dp[j-1]) + 1
+			}
+			pre = temp
+		}
+
+	}
+	fmt.Println(dp[n-1])
+	return dp[n-1]
+}
+func min(x, y int) int {
+	if x > y {
+		return y
+	}
+	return x
+}

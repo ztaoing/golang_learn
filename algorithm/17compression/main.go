@@ -1,10 +1,10 @@
 /**
 * @Author:zhoutao
 * @Date:2022/3/1 09:12
-* @Desc:
+* @Desc: 对dp数组降维
  */
 
-package _7compression
+package main
 
 //状态压缩：将2维的降维到1维数组
 //dp[i][j]只和 dp[i][j-1]、dp[i+1][j-1]、dp[i+][j]有关

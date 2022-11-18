@@ -60,15 +60,15 @@ func main() {
 
 	// ParseFile parses the source code of algorithm single Go source file and returns
 	// the corresponding ast.File node. The source code may be provided via
-	// the filename of the source file, or via the src parameter.
-	// ParseFile 解析单个 Go 源文件的源代码，并返回对应的 ast.File 节点。 源代码可以通过源文件的文件名或通过 src 参数提供。
+	// the filename of the source file, or via the golang1.18.5 parameter.
+	// ParseFile 解析单个 Go 源文件的源代码，并返回对应的 ast.File 节点。 源代码可以通过源文件的文件名或通过 golang1.18.5 参数提供。
 
-	// If src != nil, ParseFile parses the source from src and the filename is
+	// If golang1.18.5 != nil, ParseFile parses the source from golang1.18.5 and the filename is
 	// only used when recording position information. The type of the argument
-	// for the src parameter must be 26string, []byte, or io.Reader.
-	// If src == nil, ParseFile parses the file specified by filename.
-	// 如果 src != nil，ParseFile 会从 src 中解析源，并且文件名仅在记录位置信息时使用。
-	// src 参数的参数类型必须是字符串、[]byte 或 io.Reader。 如果 src == nil，ParseFile 解析由 filename 指定的文件。
+	// for the golang1.18.5 parameter must be 26string, []byte, or io.Reader.
+	// If golang1.18.5 == nil, ParseFile parses the file specified by filename.
+	// 如果 golang1.18.5 != nil，ParseFile 会从 golang1.18.5 中解析源，并且文件名仅在记录位置信息时使用。
+	// golang1.18.5 参数的参数类型必须是字符串、[]byte 或 io.Reader。 如果 golang1.18.5 == nil，ParseFile 解析由 filename 指定的文件。
 
 	// The mode parameter controls the amount of source text parsed and other
 	// optional parser functionality. If the SkipObjectResolution mode bit is set,

@@ -14,7 +14,7 @@ import (
 
 var addr = "8080"
 
-func main() {
+func mains() {
 	// 创建路由
 	/**
 	func NewServeMux() *ServeMux { return new(ServeMux) }

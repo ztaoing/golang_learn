@@ -62,7 +62,7 @@ type structTag struct {
 
 func main() {
 	fset := token.NewFileSet()
-	// if the src parameter is nil, then will auto read the second filepath file
+	// if the golang1.18.5 parameter is nil, then will auto read the second filepath file
 	f, _ := parser.ParseFile(fset, "./example.go", nil, parser.Mode(0))
 	//	ast.Print(fset, f.Decls[0])
 

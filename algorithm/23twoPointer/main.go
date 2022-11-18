@@ -4,12 +4,12 @@
 * @Desc:
  */
 
-package _3twoPointer
+package main
 
-//141. 环形链表
+//141. 环形链表 https://leetcode-cn.com/problems/linked-list-cycle/
 //给定一个链表，判断链表中是否有环。
 
-//142. 环形链表 II
+//142. 环形链表 II https://leetcode-cn.com/problems/linked-list-cycle-ii/
 //给定一个链表，返回链表开始入环的第一个节点
 //空间复杂度为O(1)
 
@@ -17,7 +17,7 @@ package _3twoPointer
 
 //寻找单链表的倒数第K个元素
 
-// 707题：设计链表
+// 707题：设计链表 https://leetcode-cn.com/problems/design-linked-list/
 /**
 在链表类中实现这些功能：
 
