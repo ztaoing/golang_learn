@@ -285,7 +285,12 @@ type Request struct {
 	// This field is ignored by the HTTP client.
 	RemoteAddr string
 
-	// RequestURI is the unmodified request-target of the
+	// RequestURI 是client发送的请求行中的未修改的请求行。
+
+	// URL: http://127.0.0.1:8001/hello/world/5555
+	// URI: /hello/world/5555
+
+	// is the unmodified request-target of the
 	// Request-Line (RFC 7230, Section 3.1.1) as sent by the client
 	// to a server. Usually the URL field should be used instead.
 	// It is an error to set this field in an HTTP client request.
