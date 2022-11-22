@@ -27,6 +27,7 @@ type Header map[string][]string
 // It appends to any existing values associated with key.
 // The key is case insensitive; it is canonicalized by
 // CanonicalHeaderKey.
+//添加value到指定key，如果value已存在，则追加，因为value是[]string的格式。即一个key可以对应多个value
 func (h Header) Add(key, value string) {
 	textproto.MIMEHeader(h).Add(key, value)
 }
