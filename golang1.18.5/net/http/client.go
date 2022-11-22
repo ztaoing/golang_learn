@@ -61,7 +61,7 @@ type Client struct {
 	// If nil, DefaultTransport is used.
 	// 指定了发送单个http请求的方法
 	// RoundTripper表示执行单个HTTP事务的接口，必须是并发安全的。
-	// 它的相关源码我们在前面已经介绍过了，可以参考以下地址
+	// 它的相关源码我们在前面已经介绍过了，可以参考以下地址:https://blog.csdn.net/skh2015java/article/details/89340215
 	Transport RoundTripper
 
 	// CheckRedirect specifies the policy for handling redirects.
@@ -123,6 +123,10 @@ var DefaultClient = &Client{}
 //
 // A RoundTripper must be safe for concurrent use by multiple
 // goroutines.
+
+// 使用golang net/http库发送http请求，最后都是调用 transport的 RoundTrip方法中。
+// RoundTripper必须是并发安全的。
+// RoundTripper接口的实现Transport结构体在源码包net/http/transport.go 中。
 type RoundTripper interface {
 	// RoundTrip executes a single HTTP transaction, returning
 	// a Response for the provided Request.
