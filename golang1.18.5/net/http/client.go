@@ -56,9 +56,12 @@ import (
 // If Jar is nil, the initial cookies are forwarded without change.
 //
 type Client struct {
-	// Transport specifies the mechanism by which individual
+	// Transport specifies the mechanism(方法，机制) by which individual
 	// HTTP requests are made.
 	// If nil, DefaultTransport is used.
+	// 指定了发送单个http请求的方法
+	// RoundTripper表示执行单个HTTP事务的接口，必须是并发安全的。
+	// 它的相关源码我们在前面已经介绍过了，可以参考以下地址
 	Transport RoundTripper
 
 	// CheckRedirect specifies the policy for handling redirects.
@@ -71,21 +74,24 @@ type Client struct {
 	// instead of issuing the Request req.
 	// As a special case, if CheckRedirect returns ErrUseLastResponse,
 	// then the most recent response is returned with its body
-	// unclosed, along with a nil error.
+	// unclosed, along with(随同...一起) a nil error.
 	//
 	// If CheckRedirect is nil, the Client uses its default policy,
 	// which is to stop after 10 consecutive requests.
+	// 用于指定处理重定向的策略
+
 	CheckRedirect func(req *Request, via []*Request) error
 
 	// Jar specifies the cookie jar.
 	//
-	// The Jar is used to insert relevant cookies into every
-	// outbound Request and is updated with the cookie values
-	// of every inbound Response. The Jar is consulted for every
+	// The Jar is used to insert relevant(相关的) cookies into every
+	// outbound(向外) Request and is updated with the cookie values
+	// of every inbound Response. The Jar is consulted(商量) for every
 	// redirect that the Client follows.
 	//
-	// If Jar is nil, cookies are only sent if they are explicitly
+	// If Jar is nil, cookies are only sent if they are explicitly(明确地)
 	// set on the Request.
+	// 指定cookie的jar
 	Jar CookieJar
 
 	// Timeout specifies a time limit for requests made by this
@@ -103,6 +109,9 @@ type Client struct {
 	// CancelRequest method on Transport if found. New
 	// RoundTripper implementations should use the Request's Context
 	// for cancellation instead of implementing CancelRequest.
+	// 指定客户端请求的最大超时时间，该超时时间包括连接,任何的重定向以及读取响应体的时间。
+	// 如果服务器已经返回响应信息该计时器仍然运行，并将终端Response.Body的读取。
+	// 如果Timeout为0则意味着没有超时
 	Timeout time.Duration
 }
 
@@ -167,12 +176,15 @@ func refererForURL(lastReq, newReq *url.URL) string {
 }
 
 // didTimeout is non-nil only if err != nil.
+// send方法主要调用send函数将请求发送到Transport中，并返回response。
 func (c *Client) send(req *Request, deadline time.Time) (resp *Response, didTimeout func() bool, err error) {
+	//如果Jar不为nil，则将Jar中的Cookie添加到请求中
 	if c.Jar != nil {
 		for _, cookie := range c.Jar.Cookies(req.URL) {
 			req.AddCookie(cookie)
 		}
 	}
+	//发送请求到服务端，并返回从服务端读取到的response信息resp
 	resp, didTimeout, err = send(req, c.transport(), deadline)
 	if err != nil {
 		return nil, didTimeout, err
@@ -201,8 +213,9 @@ func (c *Client) transport() RoundTripper {
 
 // send issues an HTTP request.
 // Caller should close resp.Body when done reading from it.
+// 主要作用是调用RoundTrip完成一个HTTP事务，并返回一个resp。
 func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, didTimeout func() bool, err error) {
-	req := ireq // req is either the original request, or a modified fork
+	req := ireq //  req是原始的请求或者一个拷贝 . req is either the original request, or a modified fork
 
 	if rt == nil {
 		req.closeBody()
@@ -221,6 +234,7 @@ func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, d
 
 	// forkReq forks req into a shallow clone of ireq the first
 	// time it's called.
+	// 第一次调用时，将req转换为ireq的拷贝
 	forkReq := func() {
 		if ireq == req {
 			req = new(Request)
@@ -231,11 +245,18 @@ func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, d
 	// Most the callers of send (Get, Post, et al) don't need
 	// Headers, leaving it uninitialized. We guarantee to the
 	// Transport that this has been initialized, though.
+	/*
+	   由于大多数的调用(Get,Post等)都不需要Headers，而是将其保留成为初始化状态。不过我们传输到Transport需要保证其被初始化，所以这里将
+	   没有Header为nil的进行初始化
+	   如果请求头为nil
+	*/
 	if req.Header == nil {
 		forkReq()
 		req.Header = make(Header)
 	}
-
+	/*
+	   如果URL中协议用户和密码信息，并且请求头的Authorization为空，我们需要设置Header的Authorization
+	*/
 	if u := req.URL.User; u != nil && req.Header.Get("Authorization") == "" {
 		username := u.Username()
 		password, _ := u.Password()
@@ -244,14 +265,16 @@ func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, d
 		req.Header.Set("Authorization", "Basic "+basicAuth(username, password))
 	}
 
+	//如果设置了超时时间，则需要调用forkReq，来确保req是ireq的拷贝，而不是执行同一地址的指针
 	if !deadline.IsZero() {
 		forkReq()
 	}
+	//根据deadline设置超时
 	stopTimer, didTimeout := setRequestCancel(req, rt, deadline)
-
+	//调用RoundTrip完成一个HTTP事务，并返回一个resp
 	resp, err = rt.RoundTrip(req)
-	if err != nil {
-		stopTimer()
+	if err != nil { //如果err不为nil
+		stopTimer() //取消监听超时
 		if resp != nil {
 			log.Printf("RoundTripper returned a response & error; ignoring response")
 		}
@@ -284,7 +307,7 @@ func send(ireq *Request, rt RoundTripper, deadline time.Time) (resp *Response, d
 		}
 		resp.Body = io.NopCloser(strings.NewReader(""))
 	}
-	if !deadline.IsZero() {
+	if !deadline.IsZero() { //如果设置了超时，则将Body转成cancelTimerBody
 		resp.Body = &cancelTimerBody{
 			stop:          stopTimer,
 			rc:            resp.Body,
@@ -595,6 +618,28 @@ func (c *Client) Do(req *Request) (*Response, error) {
 
 var testHookClientDoResult func(retres *Response, reterr error)
 
+/**
+Do发送一个HTTP请求并且返回一个客户端响应，遵循客户端上配置的策略（例如redirects，cookie，auth）,
+如果服务端回复的Body非空，则该Body需要客户端关闭，否则会对”keep-alive”请求中的持久化TCP连接可能不会被复用。
+
+如果服务端回复一个重定向，客户端首先会调用CheckRedirect函数来确定是否遵循重定向。
+
+如果允许，一个301,302或者303重定向会导致后续请求使用HTTP的GET方法。
+
+该方法的大致流程如下：
+
+1.首先会进行相关参数的校验
+
+2.参数校验通过后，会调用send方法来发送客户端请求，并获取服务端的响应信息。
+
+3.如果服务端回复的不需要重定向，则将该响应resp返回
+
+4.如果服务端回复的需要重定向，则获取重定向的Request，并进行重定向校验
+
+5.重定向校验通过后，会继续调用send方法来发送重定向的请求。
+
+6.不需要重定向时返回从服务端响应的结果resp。
+*/
 func (c *Client) do(req *Request) (retres *Response, reterr error) {
 	if testHookClientDoResult != nil {
 		defer func() { testHookClientDoResult(retres, reterr) }()
@@ -611,13 +656,14 @@ func (c *Client) do(req *Request) (retres *Response, reterr error) {
 		deadline      = c.deadline()
 		reqs          []*Request
 		resp          *Response
-		copyHeaders   = c.makeHeadersCopier(req)
-		reqBodyClosed = false // have we closed the current req.Body?
+		copyHeaders   = c.makeHeadersCopier(req) // 拷贝一份headers
+		reqBodyClosed = false                    // have we closed the current req.Body?
 
 		// Redirect behavior:
 		redirectMethod string
 		includeBody    bool
 	)
+	// 错误处理函数
 	uerr := func(err error) error {
 		// the body may have been closed already by c.send()
 		if !reqBodyClosed {
@@ -638,19 +684,21 @@ func (c *Client) do(req *Request) (retres *Response, reterr error) {
 	for {
 		// For all but the first request, create the next
 		// request hop and replace req.
-		if len(reqs) > 0 {
-			loc := resp.Header.Get("Location")
+		// 对于非第一个请求 ，创建下一个hop并且替换req
+		if len(reqs) > 0 { //有重定向
+			loc := resp.Header.Get("Location") //获取响应resp的Header中的Location
 			if loc == "" {
 				resp.closeBody()
 				return nil, uerr(fmt.Errorf("%d response missing Location header", resp.StatusCode))
 			}
-			u, err := req.URL.Parse(loc)
+
+			u, err := req.URL.Parse(loc) //将loc解析成URL
 			if err != nil {
 				resp.closeBody()
 				return nil, uerr(fmt.Errorf("failed to parse Location header %q: %v", loc, err))
 			}
 			host := ""
-			if req.Host != "" && req.Host != req.URL.Host {
+			if req.Host != "" && req.Host != req.URL.Host { //解析host
 				// If the caller specified a custom Host header and the
 				// redirect location is relative, preserve the Host header
 				// through the redirect. See issue #22233.
@@ -659,6 +707,7 @@ func (c *Client) do(req *Request) (retres *Response, reterr error) {
 				}
 			}
 			ireq := reqs[0]
+			// 获取重定向的Request  req
 			req = &Request{
 				Method:   redirectMethod,
 				Response: resp,
@@ -685,6 +734,7 @@ func (c *Client) do(req *Request) (retres *Response, reterr error) {
 
 			// Add the Referer header from the most recent
 			// request URL to the new one, if it's not https->http:
+			//如果不是https-> http，请将最新请求URL中的Referer标头添加到新标头中：
 			if ref := refererForURL(reqs[len(reqs)-1].URL, req.URL); ref != "" {
 				req.Header.Set("Referer", ref)
 			}
@@ -718,14 +768,16 @@ func (c *Client) do(req *Request) (retres *Response, reterr error) {
 				return resp, ue
 			}
 		}
-
+		// 将req写入到reps中
 		reqs = append(reqs, req)
 		var err error
 		var didTimeout func() bool
+		// 发送请求到服务端，并获取响应信息resp
 		if resp, didTimeout, err = c.send(req, deadline); err != nil {
 			// c.send() always closes req.Body
 			reqBodyClosed = true
 			if !deadline.IsZero() && didTimeout() {
+				//已超时
 				err = &httpError{
 					err:     err.Error() + " (Client.Timeout exceeded while awaiting headers)",
 					timeout: true,
@@ -735,8 +787,9 @@ func (c *Client) do(req *Request) (retres *Response, reterr error) {
 		}
 
 		var shouldRedirect bool
+		//根据请求的Method，响应的消息resp和 第一次请求req获取是否需要重定向，重定向的方法，重定向时是否包含body
 		redirectMethod, shouldRedirect, includeBody = redirectBehavior(req.Method, resp, reqs[0])
-		if !shouldRedirect {
+		if !shouldRedirect { //不重发，则返回
 			return resp, nil
 		}
 

@@ -100,6 +100,7 @@ var reqWriteExcludeHeader = map[string]bool{
 // The field semantics differ slightly between client and server
 // usage. In addition to the notes on the fields below, see the
 // documentation for Request.Write and RoundTripper.
+// Request结构体和如何设置Header
 type Request struct {
 	// Method specifies the HTTP method (GET, POST, PUT, etc.).
 	// For client requests, an empty string means GET.
@@ -107,6 +108,7 @@ type Request struct {
 	// Go's HTTP client does not support sending a request with
 	// the CONNECT method. See the documentation on Transport for
 	// details.
+	//HTTP的方法(GET、POST、PUT等)，此包不支持CONNECT method
 	Method string
 
 	// URL specifies either the URI being requested (for server
@@ -121,6 +123,7 @@ type Request struct {
 	// connect to, while the Request's Host field optionally
 	// specifies the Host header value to send in the HTTP
 	// request.
+	// 请求解析后的url
 	URL *url.URL
 
 	// The protocol version for incoming server requests.
@@ -128,9 +131,9 @@ type Request struct {
 	// For client requests, these fields are ignored. The HTTP
 	// client code always uses either HTTP/1.1 or HTTP/2.
 	// See the docs on Transport for details.
-	Proto      string // "HTTP/1.0"
-	ProtoMajor int    // 1
-	ProtoMinor int    // 0
+	Proto      string // "HTTP/1.0" 协议版本
+	ProtoMajor int    // 1 主版本号
+	ProtoMinor int    // 0 次版本号
 
 	// Header contains the request header fields either received
 	// by the server or to be sent by the client.
@@ -163,6 +166,7 @@ type Request struct {
 	// and Connection are automatically written when needed and
 	// values in Header may be ignored. See the documentation
 	// for the Request.Write method.
+	// 发送到服务端携带的header信息，使用map存储。map[string][]string{}
 	Header Header
 
 	// Body is the request's body.
@@ -179,6 +183,9 @@ type Request struct {
 	// Body must allow Read to be called concurrently with Close.
 	// In particular, calling Close should unblock a Read waiting
 	// for input.
+	//
+	// 请求的消息体,HTTP客户端的Transport负责调用Close方法关闭
+	//
 	Body io.ReadCloser
 
 	// GetBody defines an optional func to return a new copy of
@@ -187,6 +194,9 @@ type Request struct {
 	// requires setting Body.
 	//
 	// For server requests, it is unused.
+	// GetBody 定义一个可选的方法用来返回Body的副本
+	// 当客户端的请求被多次重定向的时候，会用到该函数
+	// 使用GetBody方法需要设置Body
 	GetBody func() (io.ReadCloser, error)
 
 	// ContentLength records the length of the associated content.
@@ -196,6 +206,9 @@ type Request struct {
 	//
 	// For client requests, a value of 0 with a non-nil Body is
 	// also treated as unknown.
+	// ContentLength  存储消息体的字节长度
+	//  如果为 -1 则表示消息长度未知
+	// 对于客户端的请求，如果body的值是0，
 	ContentLength int64
 
 	// TransferEncoding lists the transfer encodings from outermost to
@@ -203,6 +216,9 @@ type Request struct {
 	// TransferEncoding can usually be ignored; chunked encoding is
 	// automatically added and removed as necessary when sending and
 	// receiving requests.
+	//   TransferEncoding列出从最外层到最内层的传输编码。
+	//   空列表表示“identity”编码。 TransferEncoding通常可以忽略
+	//   发送和接收请求时，会根据需要自动添加和删除分块编码。
 	TransferEncoding []string
 
 	// Close indicates whether to close the connection after
@@ -215,6 +231,13 @@ type Request struct {
 	// For client requests, setting this field prevents re-use of
 	// TCP connections between requests to the same hosts, as if
 	// Transport.DisableKeepAlives were set.
+	/**
+	  Close
+		对于服务端是 回复此请求后是否关闭连接
+	    对于客户端,发送此请求并读取服务端的响应后是否关闭连接
+	    对于服务器请求，HTTP服务器自动处理此请求，处理程序不需要此字段。
+		对于客户端请求，设置此字段可防止在对相同主机的请求之间重复使用TCP连接，就像设置了Transport.DisableKeepAlives一样。
+	*/
 	Close bool
 
 	// For server requests, Host specifies the host on which the
@@ -236,12 +259,22 @@ type Request struct {
 	// header to send. If empty, the Request.Write method uses
 	// the value of URL.Host. Host may contain an international
 	// domain name.
+	/*
+	   主机地址
+	   对于服务器请求，Host指定要在其上查找URL的主机
+	   对于客户端请求，Host可以选择覆盖要发送的Host头。
+	   如果为空，则Request.Write方法使用URL.Host的值。 主机可能包含国际域名。
+	*/
 	Host string
 
 	// Form contains the parsed form data, including both the URL
 	// field's query parameters and the PATCH, POST, or PUT form data.
 	// This field is only available after ParseForm is called.
 	// The HTTP client ignores Form and uses Body instead.
+	/*
+	   储存解析后的表单数据，包括URL字段查询的参数和 POST或PUT表单数据
+	   该字段仅在调用ParseForm后可用。 HTTP客户端不使用Form，而使用Body。
+	*/
 	Form url.Values
 
 	// PostForm contains the parsed form data from PATCH, POST
@@ -249,11 +282,20 @@ type Request struct {
 	//
 	// This field is only available after ParseForm is called.
 	// The HTTP client ignores PostForm and uses Body instead.
+	/*
+	   PostForm储存了 从POST,PATCH,PUT解析后表单数据
+	   该字段仅在调用ParseForm后可用，HTTP客户端会忽略PostForm而是使用Body
+	*/
 	PostForm url.Values
 
 	// MultipartForm is the parsed multipart form, including file uploads.
 	// This field is only available after ParseMultipartForm is called.
 	// The HTTP client ignores MultipartForm and uses Body instead.
+	/*
+		   MultipartForm是解析的多部分表单，包括文件上载。
+			该字段仅在调用ParseMultipartForm后可用。
+		   HTTP客户端忽略MultipartForm而使用Body
+	*/
 	MultipartForm *multipart.Form
 
 	// Trailer specifies additional headers that are sent after the request
@@ -274,6 +316,10 @@ type Request struct {
 	// not mutate Trailer.
 	//
 	// Few HTTP clients, servers, or proxies support HTTP trailers.
+	/*
+		   指定请求体发送之后发送的额外请求头
+			Trailer：拖车
+	*/
 	Trailer Header
 
 	// RemoteAddr allows HTTP servers and other software to record
@@ -283,9 +329,14 @@ type Request struct {
 	// sets RemoteAddr to an "IP:port" address before invoking a
 	// handler.
 	// This field is ignored by the HTTP client.
+	/*
+	   RemoteAddr允许HTTP服务器和其他软件记录发送请求的网络地址，通常用于记录。
+	   ReadRequest未填写此字段，并且没有已定义的格式。
+	   在调用处理程序之前，此程序包中的HTTP服务器将RemoteAddr设置为“IP：port”地址。 HTTP客户端忽略此字段。
+	*/
 	RemoteAddr string
 
-	// RequestURI 是client发送的请求行中的未修改的请求行。
+	// RequestURI 是客户端发送到服务端的未经解析的Request-URI
 
 	// URL: http://127.0.0.1:8001/hello/world/5555
 	// URI: /hello/world/5555
@@ -303,6 +354,11 @@ type Request struct {
 	// TLS-enabled connections before invoking a handler;
 	// otherwise it leaves the field nil.
 	// This field is ignored by the HTTP client.
+	/*
+		TLS允许HTTP服务器和其他软件记录有关收到请求的TLS连接的信息。 ReadRequest未填写此字段。
+		此包中的HTTP服务器在调用处理程序之前启用TLS的连接设置字段; 否则它仍旧是nil的。
+		HTTP客户端忽略此字段。
+	*/
 	TLS *tls.ConnectionState
 
 	// Cancel is an optional channel whose closure indicates that the client
@@ -314,17 +370,23 @@ type Request struct {
 	// Deprecated: Set the Request's context with NewRequestWithContext
 	// instead. If a Request's Cancel field and context are both
 	// set, it is undefined whether Cancel is respected.
+	/*
+	   用于通知客户端的请求应该被取消.不是所有的RoundTripper都支持取消
+	   此字段不适用于服务端的请求
+	*/
 	Cancel <-chan struct{}
 
 	// Response is the redirect response which caused this request
 	// to be created. This field is only populated during client
 	// redirects.
+	// 重定向时使用该字段
 	Response *Response
 
 	// ctx is either the client or server context. It should only
 	// be modified via copying the whole Request using WithContext.
 	// It is unexported to prevent people from using Context wrong
 	// and mutating the contexts held by callers of the same request.
+	// 客户端或者服务端的上下文。只有通过WithContext来改变该上下文
 	ctx context.Context
 }
 
